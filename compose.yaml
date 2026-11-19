@@ -1,5 +1,6 @@
 services:
   api:
+    image: "${IMAGE_OUTFIT_IMAGE:-image-outfit-api:local}"
     build: .
     restart: unless-stopped
     # Linux host networking preserves the loopback address checked by development login.

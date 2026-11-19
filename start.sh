@@ -5,6 +5,12 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 project_dir=$(pwd -P)
 die() { printf '启动失败：%s\n' "$*" >&2; exit 1; }
 
+local_image=''
+if (( $# > 0 )); then
+  [[ $# == 2 && $1 == --image && -n ${2:-} && $2 != -* ]] || die '用法：bash start.sh [--image 本机镜像标签]'
+  local_image=$2
+fi
+
 [[ $(uname -s) == Linux ]] || die '请在 Linux 服务器上运行此脚本。'
 (( EUID == 0 )) || die '请用 sudo bash start.sh 运行。'
 export DOCKER_HOST=unix:///var/run/docker.sock
@@ -69,8 +75,31 @@ export IMAGE_OUTFIT_DB_NAME="$(basename -- "$db_path")"
 export IMAGE_OUTFIT_RUN_AS="$(stat -c '%u:%g' -- "$data_dir")"
 compose+=(--project-name image-outfit --env-file "$env_file" -f "$project_dir/compose.yaml")
 
-printf '正在构建并启动服务。首次运行会下载运行环境和抠图模型。\n'
-"${compose[@]}" up --build -d api
+if [[ -n $local_image ]]; then
+  platform=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' "$local_image") || die '请先用 docker load -i 导入离线镜像包。'
+  host_platform=$(docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
+  [[ $platform == "$host_platform" ]] || die "镜像适用 $platform，当前服务器是 $host_platform。"
+  export IMAGE_OUTFIT_IMAGE="$local_image"
+  printf '使用已导入的本机镜像 %s。\n' "$local_image"
+else
+  export IMAGE_OUTFIT_IMAGE=image-outfit-api:local
+  build_log=$(mktemp)
+  trap 'rm -f -- "$build_log"' EXIT
+  printf '正在构建服务镜像。首次运行会下载运行环境和抠图模型。\n'
+  if ! "${compose[@]}" build api 2>&1 | tee "$build_log"; then
+    if ! grep -Eiq '(failed to (resolve source metadata|load metadata)|registry-1\.docker\.io|auth\.docker\.io|error pulling image configuration|toomanyrequests:)' "$build_log"; then
+      die '镜像构建失败，请检查上面的具体错误。'
+    fi
+    printf 'Docker Hub 拉取失败，改用 Google 提供的 Docker Hub 缓存重试。\n'
+    "${compose[@]}" build --build-arg BASE_IMAGE_PREFIX=mirror.gcr.io/library/ api ||
+      die '备用构建也失败。若服务器无法访问镜像源，请按 README 使用离线镜像。'
+  fi
+fi
+up_args=(--no-build -d)
+if [[ -n $local_image ]] && [[ $("${compose[@]}" up --help) == *--pull* ]]; then
+  up_args+=(--pull never)
+fi
+"${compose[@]}" up "${up_args[@]}" api
 container=$("${compose[@]}" ps -q api)
 if [[ -n $container ]]; then
   for ((attempt=0; attempt<30; attempt++)); do

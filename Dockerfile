@@ -1,5 +1,6 @@
-FROM node:22-bookworm-slim AS node
-FROM python:3.12-slim-bookworm
+ARG BASE_IMAGE_PREFIX=docker.io/library/
+FROM ${BASE_IMAGE_PREFIX}node:22-bookworm-slim AS node
+FROM ${BASE_IMAGE_PREFIX}python:3.12-slim-bookworm
 
 WORKDIR /app
 COPY --from=node /usr/local/bin/node /usr/local/bin/node

@@ -14,6 +14,25 @@ cd /opt/image-outfit && git pull --ff-only && bash start.sh
 
 脚本优先读取 `/etc/image-outfit.env`，其次读取项目根目录的 `.env`。首次无配置时会从 `.env.example` 创建本机开发配置。SQLite 默认保存在宿主机的 `server/data/image-outfit.sqlite`。真机连接需配置 HTTPS 反向代理、生产模式及微信登录凭据。
 
+### 服务器拉取基础镜像超时
+
+重新执行上面的启动命令。Docker Hub 拉取失败时，脚本会通过 Google 的 Docker Hub 缓存重试。若服务器访问两个源都超时，可在能联网的同架构电脑上构建并导出镜像。以下示例适用于 Linux x86_64 服务器，在项目根目录运行：
+
+```bash
+docker build --platform linux/amd64 -t image-outfit-api:offline .
+docker save -o image-outfit-api.tar image-outfit-api:offline
+```
+
+将 tar 文件通过 SCP 上传到服务器的 `/opt/`，然后执行：
+
+```bash
+cd /opt/image-outfit && git pull --ff-only
+docker load -i /opt/image-outfit-api.tar
+bash start.sh --image image-outfit-api:offline
+```
+
+离线启动会沿用原有配置和 SQLite 目录。更新后端时需要重新构建并导入新版镜像。
+
 ## 本地开发
 
 安装 Node.js 22.13.0 或更高版本，在项目根目录运行以下命令。
