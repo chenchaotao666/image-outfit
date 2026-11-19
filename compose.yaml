@@ -1,0 +1,35 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    # Linux host networking preserves the loopback address checked by development login.
+    network_mode: host
+    env_file: "${IMAGE_OUTFIT_ENV_FILE:?run start.sh}"
+    environment:
+      HOST: 127.0.0.1
+      SQLITE_PATH: "/data/${IMAGE_OUTFIT_DB_NAME:?run start.sh}"
+      CUTOUT_PYTHON: /usr/local/bin/python
+    user: "${IMAGE_OUTFIT_RUN_AS:?run start.sh}"
+    volumes:
+      - type: bind
+        source: "${IMAGE_OUTFIT_DATA_DIR:?run start.sh}"
+        target: /data
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - |
+          fetch('http://127.0.0.1:' + (process.env.PORT || 4173) + '/api/capabilities')
+            .then(async r => { if (!r.ok || typeof (await r.json()).ready !== 'boolean') process.exit(1) })
+            .catch(() => process.exit(1))
+      interval: 5s
+      timeout: 4s
+      retries: 5
