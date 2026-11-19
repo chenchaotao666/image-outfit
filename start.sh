@@ -6,8 +6,11 @@ project_dir=$(pwd -P)
 die() { printf '启动失败：%s\n' "$*" >&2; exit 1; }
 
 local_image=''
-if (( $# > 0 )); then
-  [[ $# == 2 && $1 == --image && -n ${2:-} && $2 != -* ]] || die '用法：bash start.sh [--image 本机镜像标签]'
+build_locally=false
+if [[ $# == 1 && $1 == --build ]]; then
+  build_locally=true
+elif (( $# > 0 )); then
+  [[ $# == 2 && $1 == --image && -n ${2:-} && $2 != -* ]] || die '用法：bash start.sh [--build | --image 本机镜像标签]'
   local_image=$2
 fi
 
@@ -74,6 +77,38 @@ export IMAGE_OUTFIT_DATA_DIR="$data_dir"
 export IMAGE_OUTFIT_DB_NAME="$(basename -- "$db_path")"
 export IMAGE_OUTFIT_RUN_AS="$(stat -c '%u:%g' -- "$data_dir")"
 compose+=(--project-name image-outfit --env-file "$env_file" -f "$project_dir/compose.yaml")
+
+if [[ -z $local_image && $build_locally == false ]]; then
+  revision=$(git rev-parse --verify HEAD) || die '请从 Git 仓库运行，或使用 bash start.sh --build。'
+  arch=$(docker version --format '{{.Server.Arch}}')
+  [[ $arch == amd64 || $arch == arm64 ]] || die "当前架构 $arch 需要使用 bash start.sh --build。"
+  local_image="image-outfit-api:$revision-$arch"
+  image_revision() { docker image inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$local_image" 2>/dev/null; }
+  if [[ $(image_revision) != "$revision" ]]; then
+    if ! command -v curl >/dev/null; then apt_update; apt-get install -y curl ca-certificates; fi
+    release_url="https://github.com/chenchaotao666/image-outfit/releases/download/server-$revision-$arch"
+    download_dir=$(mktemp -d)
+    trap 'rm -f -- "$download_dir/api.tar.gz" "$download_dir/checksum"; rmdir -- "$download_dir"' EXIT
+    printf '正在从 GitHub 获取当前提交的 Linux/%s 镜像…\n' "$arch"
+    for ((attempt=1; attempt<=60; attempt++)); do
+      status=$(curl --silent --show-error --location --connect-timeout 12 --max-time 45 --retry 2 \
+        --output "$download_dir/checksum" --write-out '%{http_code}' "$release_url/api.tar.gz.sha256?t=$(date +%s)") ||
+        die '服务器无法连接 GitHub Releases，请检查服务器访问 GitHub 的 HTTPS 网络。'
+      [[ $status == 200 ]] && break
+      [[ $status == 404 ]] || die "GitHub Releases 返回 HTTP $status。"
+      if (( attempt == 1 )); then printf '镜像尚未发布，正在等待 GitHub Actions 完成构建…\n'; fi
+      if (( attempt == 60 )); then die "该版本的镜像尚未就绪，请查看 https://github.com/chenchaotao666/image-outfit/actions"; fi
+      sleep 10
+    done
+    read -r checksum _ < "$download_dir/checksum"
+    [[ $checksum =~ ^[[:xdigit:]]{64}$ ]] || die '发布包校验文件格式不正确。'
+    curl --fail --show-error --location --connect-timeout 12 --speed-time 90 --speed-limit 1024 --retry 2 \
+      --output "$download_dir/api.tar.gz" "$release_url/api.tar.gz" || die '从 GitHub 下载服务器镜像失败。'
+    printf '%s  %s\n' "$checksum" "$download_dir/api.tar.gz" | sha256sum --check --status || die '镜像校验失败。'
+    docker load -i "$download_dir/api.tar.gz"
+    [[ $(image_revision) == "$revision" ]] || die '导入的镜像与当前代码版本不符。'
+  fi
+fi
 
 if [[ -n $local_image ]]; then
   platform=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' "$local_image") || die '请先用 docker load -i 导入离线镜像包。'

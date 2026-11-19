@@ -8,30 +8,11 @@
 cd /opt/image-outfit && git pull --ff-only && bash start.sh
 ```
 
-- **首次启动**时，脚本会安装所需的 Docker 和 Compose，构建图片处理环境并启动后台服务。
-- **后续更新**时，先在开发电脑上将改动提交并推送到 GitHub 的 `main` 分支，再在服务器执行上面同一条命令。代码拉取成功后，脚本会重新构建镜像并启动服务，沿用已有配置和 SQLite 数据。看到“服务已启动”表示 API 已通过健康检查。
+- **首次启动**时，脚本会安装所需的 Docker 和 Compose，从本项目的 GitHub Releases 下载当前提交对应的镜像，校验后启动。服务器需能通过 HTTPS 访问 GitHub 及其发布文件下载地址。
+- **后续更新**时，将改动推送到 GitHub 的 `main` 分支，再在服务器执行同一条命令。GitHub Actions 会为每个提交构建 Linux amd64 和 arm64 镜像。脚本会等待对应版本发布，已下载的同版本镜像会直接复用。配置与 SQLite 数据沿用宿主机文件。看到“服务已启动”表示 API 已通过健康检查。
 - 如果改动涉及小程序前端，还需通过微信开发者工具上传新版，按微信发布流程审核上线。
 
 脚本优先读取 `/etc/image-outfit.env`，其次读取项目根目录的 `.env`。首次无配置时会从 `.env.example` 创建本机开发配置。SQLite 默认保存在宿主机的 `server/data/image-outfit.sqlite`。真机连接需配置 HTTPS 反向代理、生产模式及微信登录凭据。
-
-### 服务器拉取基础镜像超时
-
-重新执行上面的启动命令。Docker Hub 拉取失败时，脚本会通过 Google 的 Docker Hub 缓存重试。若服务器访问两个源都超时，可在能联网的同架构电脑上构建并导出镜像。以下示例适用于 Linux x86_64 服务器，在项目根目录运行：
-
-```bash
-docker build --platform linux/amd64 -t image-outfit-api:offline .
-docker save -o image-outfit-api.tar image-outfit-api:offline
-```
-
-将 tar 文件通过 SCP 上传到服务器的 `/opt/`，然后执行：
-
-```bash
-cd /opt/image-outfit && git pull --ff-only
-docker load -i /opt/image-outfit-api.tar
-bash start.sh --image image-outfit-api:offline
-```
-
-离线启动会沿用原有配置和 SQLite 目录。更新后端时需要重新构建并导入新版镜像。
 
 ## 本地开发
 

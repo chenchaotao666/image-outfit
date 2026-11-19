@@ -13,6 +13,10 @@ services:
     user: "${IMAGE_OUTFIT_RUN_AS:?run start.sh}"
     volumes:
       - type: bind
+        source: ./config
+        target: /app/config
+        read_only: true
+      - type: bind
         source: "${IMAGE_OUTFIT_DATA_DIR:?run start.sh}"
         target: /data
     read_only: true

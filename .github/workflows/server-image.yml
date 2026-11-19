@@ -1,0 +1,42 @@
+name: Package server image
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  package:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    env:
+      ARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build and verify server image
+        run: |
+          image="image-outfit-api:${GITHUB_SHA}-$ARCH"
+          docker build --label "org.opencontainers.image.revision=$GITHUB_SHA" -t "$image" .
+          docker run --rm "$image" node -e "require('./server/api').createApi(require('./server/config').config())"
+          docker save "$image" | gzip -1 > "$RUNNER_TEMP/api.tar.gz"
+          cd "$RUNNER_TEMP"
+          sha256sum api.tar.gz > api.tar.gz.sha256
+      - name: Publish image for this commit and architecture
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="server-${GITHUB_SHA}-$ARCH"
+          if gh release view "$tag" --json assets --jq '.assets[].name' | grep -Fxq api.tar.gz.sha256; then exit 0; fi
+          gh release create "$tag" "$RUNNER_TEMP/api.tar.gz" "$RUNNER_TEMP/api.tar.gz.sha256" \
+            --target "$GITHUB_SHA" --title "Server ${GITHUB_SHA:0:8} (linux/$ARCH)" \
+            --notes "Docker image for the server startup script." --latest=false
