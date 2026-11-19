@@ -1,0 +1,1 @@
+The bundled `u2netp.onnx` is the U²-Net lightweight foreground segmentation model by Xuebin Qin and colleagues, distributed in ONNX format by rembg. The file is unchanged from the upstream release. [U²-Net](https://github.com/xuebinqin/U-2-Net) · [ONNX release](https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx) · [U²-Net license](LICENSE-U2NET)

@@ -2,24 +2,23 @@
 
 ## 服务器启动与更新
 
-将项目克隆到 Ubuntu 或 Debian 服务器的 `/opt/image-outfit` 后，以 `root` 身份执行下面的命令。如果使用普通账号，请将最后的 `bash start.sh` 改为 `sudo bash start.sh`。
+在使用 systemd 的 Ubuntu 22.04+ 或 Debian 12+ 服务器上，以 root 身份运行：
 
 ```bash
 cd /opt/image-outfit && git pull --ff-only && bash start.sh
 ```
 
-- **首次启动**时，脚本会安装所需的 Docker 和 Compose，从本项目的 GitHub Releases 下载当前提交对应的镜像，校验后启动。服务器需能通过 HTTPS 访问 GitHub 及其发布文件下载地址。
-- **后续更新**时，将改动推送到 GitHub 的 `main` 分支，再在服务器执行同一条命令。GitHub Actions 会为每个提交构建 Linux amd64 和 arm64 镜像。脚本会等待对应版本发布，已下载的同版本镜像会直接复用。配置与 SQLite 数据沿用宿主机文件。看到“服务已启动”表示 API 已通过健康检查。
-- 如果改动涉及小程序前端，还需通过微信开发者工具上传新版，按微信发布流程审核上线。
+首次启动会复用或安装 Node.js，为图片处理安装 Python 依赖，并设置开机自启。抠图模型随 Git 代码一起下载。看到“服务已启动”表示 API 健康检查已通过。以后更新代码时运行同一条命令，已就绪的运行环境会复用。
 
-脚本优先读取 `/etc/image-outfit.env`，其次读取项目根目录的 `.env`。首次无配置时会从 `.env.example` 创建本机开发配置。SQLite 默认保存在宿主机的 `server/data/image-outfit.sqlite`。真机连接需配置 HTTPS 反向代理、生产模式及微信登录凭据。
+脚本优先读取 `/etc/image-outfit.env`，其次读取项目根目录的 `.env`。首次缺少配置时会从 `.env.example` 创建 `.env`。SQLite 默认保存在 `server/data/image-outfit.sqlite`。API 默认监听 `127.0.0.1:4173`，供反向代理转发；真机上线需配置 HTTPS、生产模式和微信登录凭据。
+
+查看状态和日志：
+
+```bash
+systemctl status image-outfit --no-pager
+journalctl -u image-outfit -n 50 --no-pager
+```
 
 ## 本地开发
 
-安装 Node.js 22.13.0 或更高版本，在项目根目录运行以下命令。
-
-```sh
-npm start
-```
-
-默认 API 地址为 `http://127.0.0.1:4173/api`。
+安装 Node.js 22.13 或更高版本，在项目根目录运行 `npm start`。默认 API 地址为 `http://127.0.0.1:4173/api`。

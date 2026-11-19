@@ -2,7 +2,7 @@ const http = require('node:http');
 const { loadEnv, config } = require('./config');
 const { createApi } = require('./api');
 
-loadEnv();
+loadEnv(process.env.IMAGE_OUTFIT_ENV_FILE);
 const settings = config();
 const handleApi = createApi(settings);
 

@@ -1,161 +1,153 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
-project_dir=$(pwd -P)
 die() { printf '启动失败：%s\n' "$*" >&2; exit 1; }
 
-local_image=''
-build_locally=false
-if [[ $# == 1 && $1 == --build ]]; then
-  build_locally=true
-elif (( $# > 0 )); then
-  [[ $# == 2 && $1 == --image && -n ${2:-} && $2 != -* ]] || die '用法：bash start.sh [--build | --image 本机镜像标签]'
-  local_image=$2
-fi
-
-[[ $(uname -s) == Linux ]] || die '请在 Linux 服务器上运行此脚本。'
-(( EUID == 0 )) || die '请用 sudo bash start.sh 运行。'
-export DOCKER_HOST=unix:///var/run/docker.sock
-unset DOCKER_CONTEXT
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+project=$(pwd -P)
+[[ $(uname -s) == Linux && -d /run/systemd/system ]] || die '请在使用 systemd 的 Ubuntu 或 Debian 服务器上运行。'
+(( EUID == 0 )) || die '请使用 sudo bash start.sh。'
+(( $# == 0 )) || die '用法：bash start.sh'
 exec 9>/run/lock/image-outfit-start.lock
 flock -n 9 || die '已有启动脚本在运行。'
+runtime=/opt/image-outfit-runtime
+install -d -m 755 "$runtime"
 
-apt_updated=false
-apt_update() {
-  command -v apt-get >/dev/null || die '自动安装 Docker 需要 Ubuntu 或 Debian。'
-  if [[ $apt_updated == false ]]; then
-    apt-get update
-    apt_updated=true
+packages=()
+for pkg in ca-certificates curl xz-utils python3 python3-venv libgomp1 libstdc++6; do
+  if [[ $(dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null) != 'install ok installed' ]]; then packages+=("$pkg"); fi
+done
+if (( ${#packages[@]} )); then
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${packages[@]}"
+fi
+
+service_user=image-outfit
+if ! id "$service_user" >/dev/null 2>&1; then
+  useradd --system --user-group --no-create-home --shell /usr/sbin/nologin "$service_user"
+fi
+node_bin=''
+for candidate in "$(command -v node || true)" "$runtime/node"; do
+  if [[ -x $candidate ]] && runuser -u "$service_user" -- "$candidate" -e '
+    const [major, minor] = process.versions.node.split(".").map(Number);
+    if (major < 22 || (major === 22 && minor < 13)) process.exit(1);
+    require("node:sqlite");
+  ' >/dev/null 2>&1; then
+    node_bin=$candidate
+    break
   fi
-}
-
-if ! command -v docker >/dev/null; then
-  apt_update
-  apt-get install -y docker.io
-fi
-if ! docker info >/dev/null 2>&1; then
-  systemctl enable --now docker || die '无法启动 Docker，请查看 systemctl status docker。'
-fi
-if ! docker compose version >/dev/null 2>&1 && ! command -v docker-compose >/dev/null; then
-  apt_update
-  for package in docker-compose-plugin docker-compose-v2 docker-compose; do
-    if apt-cache show "$package" >/dev/null 2>&1; then
-      apt-get install -y "$package"
+done
+if [[ -z $node_bin ]]; then
+  version=v22.23.5
+  case $(uname -m) in
+    x86_64) arch=x64; digest=cdeb8670a0c81f51b4dc4ac61919f9b1ad917b304bf8221eb939570663d240f8 ;;
+    aarch64) arch=arm64; digest=2babb9eb5264860d540849f4b064a6fbdebcdc323657d9d382ce23d313fd5e09 ;;
+    *) die '请先安装带 node:sqlite 的 Node.js 22.13 或更高版本。' ;;
+  esac
+  name="node-$version-linux-$arch"
+  temp=$(mktemp -d "$runtime/.install-XXXXXXXX")
+  trap 'rm -rf -- "$temp"' EXIT
+  downloaded=false
+  for base in https://nodejs.org/dist https://npmmirror.com/mirrors/node; do
+    printf '正在从 %s 安装 Node.js %s…\n' "$base" "$version"
+    if curl -fLsS --connect-timeout 10 --speed-limit 1024 --speed-time 30 --max-time 600 \
+      "$base/$version/$name.tar.xz" -o "$temp/node.tar.xz" &&
+      printf '%s  %s\n' "$digest" "$temp/node.tar.xz" | sha256sum --check --status; then
+      downloaded=true
       break
     fi
   done
-fi
-if docker compose version >/dev/null 2>&1; then
-  compose=(docker compose)
-elif command -v docker-compose >/dev/null; then
-  compose=(docker-compose)
-else
-  die '请安装 Docker Compose 后重新运行。'
+  [[ $downloaded == true ]] || die 'Node.js 下载或校验失败。也可自行安装 Node.js 后重试。'
+  tar -xJf "$temp/node.tar.xz" -C "$temp" "$name/bin/node"
+  install -m 755 "$temp/$name/bin/node" "$runtime/node.new"
+  mv -f "$runtime/node.new" "$runtime/node"
+  node_bin="$runtime/node"
 fi
 
-if [[ -f /etc/image-outfit.env ]]; then
-  env_file=/etc/image-outfit.env
-else
-  env_file="$project_dir/.env"
-  if [[ ! -e "$env_file" ]]; then
-    install -m 600 .env.example "$env_file"
-  fi
+/usr/bin/python3 -c 'import sys; sys.exit(sys.version_info < (3,10))' || die '抠图需要 Python 3.10 或更高版本。'
+requirements=models/vision/requirements-cutout.txt
+py_version=$(/usr/bin/python3 -c 'import sys; print("%s.%s" % sys.version_info[:2])')
+read -r dep_hash _ < <(sha256sum "$requirements")
+venv="$runtime/venvs/$py_version-${dep_hash:0:16}"
+if [[ ! -f $venv/.ready ]] || ! "$venv/bin/python" -c 'import numpy, onnxruntime, PIL' 2>/dev/null; then
+  printf '正在安装图片处理依赖…\n'
+  /usr/bin/python3 -m venv "$venv"
+  "$venv/bin/python" -m pip install --disable-pip-version-check --only-binary=:all: -r "$requirements"
+  "$venv/bin/python" -c 'import numpy, onnxruntime, PIL'
+  touch "$venv/.ready"
 fi
-export IMAGE_OUTFIT_ENV_FILE="$env_file"
-# Read just the SQLite path as text. Environment files may contain secrets and are not shell scripts.
-db_path=$(sed -nE 's/^[[:space:]]*SQLITE_PATH[[:space:]]*=[[:space:]]*(.*)$/\1/p' "$env_file" | head -n 1)
-db_path=${db_path%$'\r'}
-if [[ $db_path == \"*\" || $db_path == \'*\' ]]; then db_path=${db_path:1:-1}; fi
-db_path=${db_path:-server/data/image-outfit.sqlite}
-[[ $db_path == /* ]] || db_path="$project_dir/$db_path"
-data_dir=$(realpath -m -- "$(dirname -- "$db_path")")
-if [[ ! -d "$data_dir" ]]; then
-  install -d -m 700 -o 10001 -g 10001 -- "$data_dir"
-fi
-export IMAGE_OUTFIT_DATA_DIR="$data_dir"
-export IMAGE_OUTFIT_DB_NAME="$(basename -- "$db_path")"
-export IMAGE_OUTFIT_RUN_AS="$(stat -c '%u:%g' -- "$data_dir")"
-compose+=(--project-name image-outfit --env-file "$env_file" -f "$project_dir/compose.yaml")
+printf '%s  %s\n' 309c8469258dda742793dce0ebea8e6dd393174f89934733ecc8b14c76f4ddd8 models/vision/u2netp.onnx | sha256sum --check --status || die '抠图模型缺失或损坏，请检查 Git 工作区。'
 
-if [[ -z $local_image && $build_locally == false ]]; then
-  revision=$(git rev-parse --verify HEAD) || die '请从 Git 仓库运行，或使用 bash start.sh --build。'
-  arch=$(docker version --format '{{.Server.Arch}}')
-  [[ $arch == amd64 || $arch == arm64 ]] || die "当前架构 $arch 需要使用 bash start.sh --build。"
-  local_image="image-outfit-api:$revision-$arch"
-  image_revision() { docker image inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$local_image" 2>/dev/null; }
-  if [[ $(image_revision) != "$revision" ]]; then
-    if ! command -v curl >/dev/null; then apt_update; apt-get install -y curl ca-certificates; fi
-    release_url="https://github.com/chenchaotao666/image-outfit/releases/download/server-$revision-$arch"
-    download_dir=$(mktemp -d)
-    trap 'rm -f -- "$download_dir/api.tar.gz" "$download_dir/checksum"; rmdir -- "$download_dir"' EXIT
-    printf '正在从 GitHub 获取当前提交的 Linux/%s 镜像…\n' "$arch"
-    for ((attempt=1; attempt<=60; attempt++)); do
-      status=$(curl --silent --show-error --location --connect-timeout 12 --max-time 45 --retry 2 \
-        --output "$download_dir/checksum" --write-out '%{http_code}' "$release_url/api.tar.gz.sha256?t=$(date +%s)") ||
-        die '服务器无法连接 GitHub Releases，请检查服务器访问 GitHub 的 HTTPS 网络。'
-      [[ $status == 200 ]] && break
-      [[ $status == 404 ]] || die "GitHub Releases 返回 HTTP $status。"
-      if (( attempt == 1 )); then printf '镜像尚未发布，正在等待 GitHub Actions 完成构建…\n'; fi
-      if (( attempt == 60 )); then die "该版本的镜像尚未就绪，请查看 https://github.com/chenchaotao666/image-outfit/actions"; fi
-      sleep 10
-    done
-    read -r checksum _ < "$download_dir/checksum"
-    [[ $checksum =~ ^[[:xdigit:]]{64}$ ]] || die '发布包校验文件格式不正确。'
-    curl --fail --show-error --location --connect-timeout 12 --speed-time 90 --speed-limit 1024 --retry 2 \
-      --output "$download_dir/api.tar.gz" "$release_url/api.tar.gz" || die '从 GitHub 下载服务器镜像失败。'
-    printf '%s  %s\n' "$checksum" "$download_dir/api.tar.gz" | sha256sum --check --status || die '镜像校验失败。'
-    docker load -i "$download_dir/api.tar.gz"
-    [[ $(image_revision) == "$revision" ]] || die '导入的镜像与当前代码版本不符。'
-  fi
+env_file=/etc/image-outfit.env
+if [[ ! -f $env_file ]]; then
+  env_file="$project/.env"
+  [[ -e $env_file ]] || install -m 600 .env.example "$env_file"
 fi
+settings=$("$node_bin" -e '
+  const { loadEnv, config } = require("./server/config");
+  loadEnv(process.argv[1]);
+  const settings = config();
+  console.log(settings.databaseFile);
+  console.log(settings.port);
+' "$env_file")
+db_file=${settings%$'\n'*}
+port=${settings##*$'\n'}
+unit=image-outfit.service
+if ! systemctl is-active --quiet "$unit"; then
+  "$node_bin" -e '
+    const probe = require("node:net").createServer();
+    probe.on("error", error => { console.error(error.message); process.exit(1) });
+    probe.listen(Number(process.argv[1]), "127.0.0.1", () => probe.close());
+  ' "$port" || die "请检查端口 $port 是否已被旧服务占用。"
+fi
+data_dir=$(dirname -- "$db_file")
+if [[ ! -d $data_dir ]]; then
+  install -d -m 700 -o "$service_user" -- "$data_dir"
+elif [[ $data_dir == "$project/server/data" ]]; then
+  chown "$service_user" -- "$data_dir"
+fi
+for file in "$db_file" "$db_file-wal" "$db_file-shm" "$db_file-journal"; do
+  [[ -e $file ]] || continue
+  if [[ $data_dir == "$project/server/data" ]]; then chown "$service_user" -- "$file"; fi
+  runuser -u "$service_user" -- test -w "$file" || die "请授予 $service_user 写入 $file 的权限。"
+done
+runuser -u "$service_user" -- test -w "$data_dir" || die "请授予 $service_user 写入 $data_dir 的权限。"
+runuser -u "$service_user" -- test -r "$project/server/index.js" || die "请授予 $service_user 读取项目目录的权限。"
 
-if [[ -n $local_image ]]; then
-  platform=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' "$local_image") || die '请先用 docker load -i 导入离线镜像包。'
-  host_platform=$(docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
-  [[ $platform == "$host_platform" ]] || die "镜像适用 $platform，当前服务器是 $host_platform。"
-  export IMAGE_OUTFIT_IMAGE="$local_image"
-  printf '使用已导入的本机镜像 %s。\n' "$local_image"
-else
-  export IMAGE_OUTFIT_IMAGE=image-outfit-api:local
-  build_log=$(mktemp)
-  trap 'rm -f -- "$build_log"' EXIT
-  printf '正在构建服务镜像。首次运行会下载运行环境和抠图模型。\n'
-  if ! "${compose[@]}" build api 2>&1 | tee "$build_log"; then
-    if ! grep -Eiq '(failed to (resolve source metadata|load metadata)|registry-1\.docker\.io|auth\.docker\.io|error pulling image configuration|toomanyrequests:)' "$build_log"; then
-      die '镜像构建失败，请检查上面的具体错误。'
-    fi
-    printf 'Docker Hub 拉取失败，改用 Google 提供的 Docker Hub 缓存重试。\n'
-    "${compose[@]}" build --build-arg BASE_IMAGE_PREFIX=mirror.gcr.io/library/ api ||
-      die '备用构建也失败。若服务器无法访问镜像源，请按 README 使用离线镜像。'
+cat > "/etc/systemd/system/$unit" <<UNIT
+[Unit]
+Description=Image Outfit API
+After=network.target
+
+[Service]
+User=$service_user
+WorkingDirectory=$project
+LoadCredential=app.env:$env_file
+Environment="IMAGE_OUTFIT_ENV_FILE=%d/app.env"
+Environment="CUTOUT_PYTHON=$venv/bin/python"
+Environment="PATH=$venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment=HOST=127.0.0.1
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart="$node_bin" server/index.js
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+systemctl daemon-reload
+systemctl enable "$unit"
+systemctl restart "$unit"
+for (( attempt=0; attempt<30; attempt++ )); do
+  sleep 1
+  if systemctl is-active --quiet "$unit" &&
+     curl -fsS --max-time 2 "http://127.0.0.1:$port/api/capabilities" 2>/dev/null |
+       "$node_bin" -e 'try { const r = JSON.parse(require("fs").readFileSync(0)); process.exit(typeof r.ready === "boolean" ? 0 : 1) } catch { process.exit(1) }'; then
+    printf '服务已启动：http://127.0.0.1:%s/api\n配置文件：%s\nSQLite：%s\n' "$port" "$env_file" "$db_file"
+    exit 0
   fi
-fi
-up_args=(--no-build -d)
-if [[ -n $local_image ]] && [[ $("${compose[@]}" up --help) == *--pull* ]]; then
-  up_args+=(--pull never)
-fi
-"${compose[@]}" up "${up_args[@]}" api
-container=$("${compose[@]}" ps -q api)
-if [[ -n $container ]]; then
-  for ((attempt=0; attempt<30; attempt++)); do
-    state=$(docker inspect --format '{{.State.Status}} {{if .State.Health}}{{.State.Health.Status}}{{end}}' "$container")
-    case "$state" in
-      'running healthy')
-        "${compose[@]}" exec -T api node -e "
-          const url = 'http://127.0.0.1:' + (process.env.PORT || 4173) + '/api/capabilities';
-          fetch(url).then(async response => {
-            if (!response.ok) throw Error('HTTP ' + response.status);
-            const info = await response.json();
-            console.log('服务已启动：' + url);
-            console.log('AI 密钥配置：' + (info.ready ? '已填写' : '未配齐') + '；人脸检测模式：' + info.faceMode);
-          }).catch(error => { console.error(error.message); process.exit(1); });
-        "
-        printf '配置文件：%s\nSQLite：%s/%s\n' "$env_file" "$data_dir" "$IMAGE_OUTFIT_DB_NAME"
-        exit 0 ;;
-      'running unhealthy'|exited*|dead*|restarting*) break ;;
-    esac
-    sleep 2
-  done
-fi
-"${compose[@]}" logs --tail=30 api >&2
-die '接口健康检查失败。请检查上面的日志、端口占用和数据库目录权限。'
+done
+journalctl -u "$unit" -n 20 --no-pager >&2
+die '健康检查失败，请检查上面的日志和端口占用。'
