@@ -1,0 +1,10 @@
+@import "styles/common.wxss";
+@import "styles/home.wxss";
+@import "styles/closet.wxss";
+@import "styles/upload.wxss";
+@import "styles/profile.wxss";
+@import "styles/outfits.wxss";
+@import "styles/settings.wxss";
+@import "reference.wxss";
+@import "styles/upload-editor.wxss";
+@import "styles/icons.wxss";

@@ -1,0 +1,9 @@
+{
+  "description": "AI 穿搭分析 · 录屏参考实现",
+  "miniprogramRoot": "miniprogram/",
+  "compileType": "miniprogram",
+  "appid": "touristappid",
+  "projectname": "AI穿搭分析",
+  "setting": {"es6": true, "enhance": true, "minified": true, "urlCheck": false},
+  "libVersion": "3.7.0"
+}

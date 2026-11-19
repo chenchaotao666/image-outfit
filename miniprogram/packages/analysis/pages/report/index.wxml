@@ -1,0 +1,41 @@
+<view wx:if="{{missing}}" class="empty"><view class="section-title">报告不存在或已删除</view><button class="primary" bindtap="start">重新体验检测</button></view>
+<view wx:if="{{report}}" class="report-page">
+ <scroll-view scroll-x class="report-tabs" enable-flex><view class="tabs-track"><view wx:for="{{tabs}}" wx:key="*this" class="report-tab {{active === index ? 'active' : ''}}" data-index="{{index}}" bindtap="tab">{{item}}</view></view></scroll-view>
+
+ <view wx:if="{{report.mode === 'ai'}}">
+  <view class="report-disclaimer"><text class="demo-label">DeepSeek AI 分析</text><text>穿搭参考 · 非精确测量</text></view>
+  <view class="report-card"><view class="card-banner">{{sections[active].title}}</view><view class="report-inner">
+   <view class="ai-summary">{{sections[active].summary}}</view>
+   <view wx:for="{{sections[active].palette}}" wx:key="hex" class="ai-palette"><view class="ai-swatch" style="background:{{item.hex}}"></view><view><view class="section-title">{{item.name}}</view><view class="notice">{{item.usage}}</view></view></view>
+   <view wx:for="{{sections[active].blocks}}" wx:key="title" class="ai-block"><view class="report-heading">{{item.title}}</view><view wx:for="{{item.lines}}" wx:for-item="line" wx:key="*this" class="ai-line">{{line}}</view></view>
+   <view class="ai-limits"><view class="section-title">参考说明</view><view wx:for="{{report.analysis.warnings}}" wx:key="*this" class="notice">{{item}}</view><view class="muted">年龄 {{report.profile.age}} 岁 · 身高 {{report.profile.height}} cm · 体重 {{report.profile.weight}} kg（用户填写）</view></view>
+  </view></view>
+ </view>
+ <view wx:if="{{report.mode !== 'ai'}}" class="report-disclaimer"><text class="demo-label">示例报告</text><text>数据仅展示报告样式，不代表真实检测结果</text></view>
+ <view wx:if="{{report.mode !== 'ai' && active === 0}}" class="report-card">
+  <view class="card-banner">你的面部及体型数据</view>
+  <view class="report-inner"><view class="report-heading">你的脸型类型为「{{report.face}}」</view><view class="report-subtitle">拍照光线角度对结果有一定影响</view>
+   <view class="face-chart"><view class="chart-grid"></view><image class="face-image" src="/assets/face.jpg" mode="aspectFit"/><view class="face-tag age">年龄：{{report.profile.age}}</view><view class="face-tag gender-tag">性别：{{report.profile.gender}}</view><view class="face-tag weight">体重：{{report.profile.weight}}kg</view><view class="face-tag height">身高：{{report.profile.height}}cm</view></view>
+   <view class="insight"><view class="muted">你的脸型类型为「{{report.face}}」</view><view>整体给人一种智秀感，有一定的亲和力。</view></view>
+   <view class="report-heading space-heading">你的面部数据</view><view class="report-subtitle">拍照光线角度对结果有一定影响</view>
+   <view class="metric-intro">AI检测您的「三庭」结果如下 <text class="tiny-demo">示例</text></view>
+   <view class="proportion"><view>上庭<text>0.34</text></view><view>中庭<text>0.35</text></view><view>下庭<text>0.31</text></view></view>
+   <view wx:for="{{facial}}" wx:key="name" class="metric-row"><text>{{item.name}}</text><text>{{item.value}}</text></view>
+   <view class="metric-intro">AI检测您的「颧骨、颌骨」结果如下</view><view class="metric-highlight"><image src="/assets/face.jpg" mode="aspectFit"/><view>右颧外侧角度<text>
+</text>内眼角间距<text>
+</text>左颧外侧角度</view></view>
+   <view wx:for="{{bones}}" wx:key="name" class="metric-row"><text>{{item.name}}</text><text>{{item.value}}</text></view>
+   <view class="metric-intro">AI检测您的「黄金三角」结果如下</view><view class="angle-card"><text class="triangle">△</text><text>58.69°</text></view>
+   <view class="report-heading space-heading">你属于「{{report.body}}」身材</view><view class="report-subtitle">你的身形线条与穿搭建议</view><view class="body-diagram"><view class="human-head"></view><view class="human-torso"><view></view><view></view><view></view></view><view class="human-legs"></view><text class="body-measure">肩 · 腰 · 臀<text>均衡比例</text></text></view>
+   <view class="insight">选择合身且具有自然垂坠感的服装，保持肩部与腰部线条清晰，利用上下装比例让整体更利落。</view>
+  </view>
+ </view>
+ <view wx:if="{{report.mode !== 'ai' && active === 1}}" class="report-card"><view class="card-banner">你的个人风格DNA</view><view class="report-inner"><view class="report-heading">你的风格关键词</view><view class="report-subtitle">找到与你相契合的穿搭语言</view><view class="style-label">{{report.style}}</view><view class="style-chart"><view class="style-orbit"></view><text>自然</text><text>利落</text><text>舒适</text><text>质感</text></view><view class="insight">{{report.summary}}</view><view class="report-heading space-heading">适合你的服饰轮廓</view><view class="tag">简洁线条</view><view class="tag">适度宽松</view><view class="tag">自然面料</view><image class="editorial-image" src="/assets/outfits.jpg" mode="widthFix"/><view class="report-copy">优先选择棉、亚麻和柔软针织等面料。用一件挺括外套搭配舒适内搭，兼顾日常松弛感与整洁度。</view></view></view>
+ <view wx:if="{{report.mode !== 'ai' && active === 2}}" class="report-card"><view class="card-banner">你的专属色彩DNA</view><view class="report-inner"><view class="report-heading">你的季节色彩为「{{report.season}}」</view><view class="report-subtitle">低饱和度 · 柔和 · 温暖</view><view class="color-wheel"><view wx:for="{{colors}}" wx:key="*this" style="background:{{item}}"></view></view><view class="palette"><view wx:for="{{colors}}" wx:key="*this"><view class="swatch" style="background:{{item}}"></view><text>{{item}}</text></view></view><view class="insight">以柔和的大地色为基调，使用奶油白、浅卡其、鼠尾草绿和暖棕色建立协调的色彩关系。</view><view class="report-heading space-heading">配色比例建议</view><view class="color-ratio"><view>主色 60%</view><view>辅助色 30%</view><view>点缀 10%</view></view><view class="report-copy">靠近面部的上装建议选择明度适中的颜色；配饰以小面积点缀，避免过多高饱和颜色同时出现。</view></view></view>
+ <view wx:if="{{report.mode !== 'ai' && active === 3}}" class="report-card"><view class="card-banner">你的季节色系穿搭心理分析</view><view class="report-inner"><view class="report-heading">你的季节色系穿搭心理分析</view><view class="report-subtitle">适合你的自然色彩与日常风格</view><image class="editorial-image" src="/assets/outfits.jpg" mode="widthFix"/><view class="insight">自然、亲和、轻松。把相近色放在一起，利用面料肌理和深浅变化丰富整体层次。</view><view class="report-heading space-heading">四季穿搭思路</view><view class="season-row"><text>春 SPRING</text><view>浅色衬衫 + 卡其长裤 + 乐福鞋</view></view><view class="season-row"><text>夏 SUMMER</text><view>透气棉麻 + 直线剪裁 + 轻盈配饰</view></view><view class="season-row"><text>秋 AUTUMN</text><view>针织衫 + 薄夹克 + 暖调同色系</view></view><view class="season-row"><text>冬 WINTER</text><view>羊毛大衣 + 细针织 + 深浅叠穿</view></view></view></view>
+ <view wx:if="{{report.mode !== 'ai' && active === 4}}" class="report-card"><view class="card-banner">你的专属衣橱规划</view><view class="report-inner"><view class="report-heading">从基础款开始，建立你的衣橱</view><view class="report-subtitle">让每一件单品都更好搭配</view><view wx:for="{{wardrobe}}" wx:key="name" class="wardrobe-row"><view class="wardrobe-icon">{{item.name}}</view><view class="wardrobe-text"><view>{{item.text}}</view><text class="muted">建议数量 {{item.count}}</text></view></view><view class="insight">先整理常穿单品，再补充缺少的基础款。以常用场合和实际穿着频率为依据，减少重复购买。</view></view></view>
+ <view wx:if="{{report.mode !== 'ai' && active === 5}}" class="report-card"><view class="card-banner">TPO综合形象</view><view class="report-inner"><view class="report-heading">在不同场合，穿出恰当的自己</view><view class="report-subtitle">Time · Place · Occasion</view><image src="/assets/occasion.jpg" mode="widthFix" class="editorial-image"/><view class="season-row"><text>商务职场</text><view>结构清晰的西装与衬衫，使用低调、协调的中性色。</view></view><view class="season-row"><text>都市休闲</text><view>简洁针织、直筒裤和干净鞋履，表达舒适自在。</view></view><view class="season-row"><text>旅行度假</text><view>透气面料与轻量叠穿，兼顾活动便利及环境适应。</view></view><view class="season-row"><text>精致社交</text><view>用一件质感单品作为重点，其余保持简洁。</view></view></view></view>
+ <view wx:if="{{report.mode !== 'ai' && active === 6}}" class="report-card"><view class="card-banner">你的最佳发型风格分析</view><view class="report-inner"><view class="report-heading">发型，让整体形象更完整</view><view class="report-subtitle">参考脸型、发质与日常打理习惯</view><image src="/assets/hair.jpg" mode="widthFix" class="editorial-image"/><view class="insight">保持两侧线条整洁，在顶部保留自然蓬松度。发色可从自然黑、深棕等低调色系开始尝试。</view><view class="report-copy">示例图片仅作为造型参考。实际发型请结合个人发量、发质与造型师建议选择。</view></view></view>
+ <view class="report-footer"><view class="eyebrow">YOUR IMAGE, YOUR STYLE</view><view>认识自己，是美好形象的开始。</view><button class="primary" bindtap="start">重新体验检测</button><button class="link" bindtap="package">查看报告套餐介绍 →</button></view>
+ <button class="consult" bindtap="consult"><text>报告</text><text>说明</text></button>
+</view>

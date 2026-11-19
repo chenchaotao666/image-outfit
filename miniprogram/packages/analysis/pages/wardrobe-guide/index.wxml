@@ -1,0 +1,12 @@
+<view wx:if="{{guide}}" class="wardrobe-guide">
+ <image class="wardrobe-cover" src="{{guide.cover}}" mode="widthFix"/>
+ <view class="wardrobe-introduction"><view class="binder"><view></view><view></view></view><view class="wardrobe-kicker"># 风格衣橱 GET #</view><view class="wardrobe-english">{{guide.english}}</view><view class="wardrobe-title">{{guide.title}}</view><view class="wardrobe-intro-copy">{{guide.intro}}<view class="wardrobe-emphasis">{{guide.emphasis}}</view></view></view>
+ <view class="wardrobe-overview"><view>{{guide.heading}}</view><text>{{guide.summary}}</text></view>
+ <view class="wardrobe-group" wx:for="{{guide.groups}}" wx:key="id"><view class="wardrobe-group-heading"><view>{{item.title}}</view><text>/ I T E M</text></view><view class="wardrobe-group-intro">{{item.intro}}</view>
+  <view class="wardrobe-product" wx:for="{{item.items}}" wx:for-item="product" wx:key="id"><image class="wardrobe-product-image" src="{{product.src}}" mode="widthFix" data-src="{{product.src}}" bindtap="openPhoto"/><view class="wardrobe-product-advice"><text>搭配建议：</text>{{product.advice}}</view></view>
+  <view wx:if="{{!item.items.length}}" class="wardrobe-group-intro">先按上述方向整理已有单品，选择合身、常穿的款式。</view>
+ </view>
+ <view class="wardrobe-note">图中单品为款式示范，编号仅表示展示顺序。</view><view class="wardrobe-footer">YOCHUR</view>
+</view>
+<view wx:if="{{missing}}" class="wardrobe-note">未找到报告，请返回重新打开。</view>
+<view wx:if="{{photo}}" class="wardrobe-photo-overlay" bindtap="closePhoto"><image src="{{photo}}" mode="aspectFit"/></view>

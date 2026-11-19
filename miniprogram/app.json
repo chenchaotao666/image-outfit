@@ -1,0 +1,77 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/reports/index",
+    "pages/intro/index",
+    "pages/mine/index",
+    "pages/guide/index"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "AI穿搭分析",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f6f6"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#00b9c2",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "assets/home.png",
+        "selectedIconPath": "assets/home-active.png"
+      },
+      {
+        "pagePath": "pages/reports/index",
+        "text": "报告",
+        "iconPath": "assets/report.png",
+        "selectedIconPath": "assets/report-active.png"
+      },
+      {
+        "pagePath": "pages/intro/index",
+        "text": "介绍",
+        "iconPath": "assets/intro.png",
+        "selectedIconPath": "assets/intro-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "assets/user.png",
+        "selectedIconPath": "assets/user-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "subPackages": [
+    {
+      "root": "packages/analysis",
+      "pages": [
+        "pages/detect/index",
+        "pages/report/index",
+        "pages/report-v2/index",
+        "pages/package/index",
+        "pages/color-guide/index",
+        "pages/season-guide/index",
+        "pages/wardrobe-guide/index",
+        "pages/style-guide/index"
+      ]
+    },
+    {
+      "root": "packages/wardrobe",
+      "pages": [
+        "pages/manager/index"
+      ]
+    },
+    {
+      "root": "packages/bangda",
+      "pages": [
+        "pages/bangda/index"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+<view class="inspiration-view content-pad" wx:if="{{!screen && tab === 'inspiration'}}">
+  <view class="inspiration-heading">
+    <view class="inline-tabs">
+      <button bindtap="inspirationTabChange" data-name="收藏" class="{{inspirationTab === '收藏' ? 'active' : ''}}">收藏</button>
+      <button bindtap="inspirationTabChange" data-name="灵感" class="{{inspirationTab === '灵感' ? 'active' : ''}}">灵感</button>
+    </view>
+    <view class="inline-icons">
+      <button bindtap="manageAlbums" aria-label="管理分类">
+        <image src="{{asset}}settings-dark.png"  mode="aspectFit" />
+      </button>
+      <button bindtap="toggleGrid" aria-label="切换布局">
+        <image src="{{asset}}grid-dark.png"  mode="aspectFit" />
+      </button>
+    </view>
+  </view>
+  <view wx:if="{{inspirationTab === '收藏'}}">
+    <view wx:for="{{state.favoriteAlbums}}" wx:for-item="favoriteAlbum" wx:key="*this" class="inspiration-album">
+    <view class="album-heading">
+      {{favoriteAlbum}}
+      <button bindtap="albumMenu" data-name="{{favoriteAlbum}}" aria-label="分类菜单">···</button>
+    </view>
+    <view class="look-grid {{!viewGrid ? 'list-layout' : ''}}">
+      <view wx:for="{{savedLooks}}" wx:key="id" wx:if="{{(item.album || '默认分类') === favoriteAlbum}}" class="look-preview" bindtap="openLook" data-id="{{item.id}}">
+        <view class="mini-look" style="background:{{item.background}}">
+          <image
+            wx:for="{{item.layers}}"
+            wx:for-item="layer"
+            wx:key="id"
+            src="{{layer.image}}"
+            mode="aspectFit"
+            style="left:{{layer.x}}%;top:{{layer.y}}%;width:{{layer.width}}%;height:50%"
+          />
+        </view>
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+    </view>
+    <view class="closet-empty" wx:if="{{!savedLooks.length}}">
+      <image class="empty-icon" src="{{asset}}star-light.png"  mode="aspectFit" />
+      <view>把喜欢的搭配收藏起来</view>
+      <text>在搭配详情中点击收藏，随时重温穿搭灵感</text>
+      <button class="outline-button" bindtap="startOutfit">创建我的搭配</button>
+    </view>
+  </view>
+  <view wx:if="{{inspirationTab === '灵感'}}">
+    <view wx:for="{{state.albums}}" wx:key="*this" wx:for-item="albumName" class="inspiration-album">
+      <view class="album-heading">
+        {{albumName}}
+        <button bindtap="uploadInspiration" data-album="{{albumName}}" aria-label="上传灵感">＋</button>
+      </view>
+      <view class="look-grid {{!viewGrid ? 'list-layout' : ''}}">
+        <view
+          wx:for="{{inspirationItems}}"
+          wx:key="id"
+          wx:if="{{item.album === albumName}}"
+          class="inspiration-image"
+          bindtap="previewInspiration"
+          data-id="{{item.id}}"
+        >
+          <image src="{{item.image}}" mode="aspectFill" />
+        </view>
+      </view>
+    </view>
+    <view class="closet-empty" wx:if="{{!inspirationItems.length}}">
+      <image class="empty-illustration" src="{{asset}}empty-inspiration.jpg" mode="aspectFit" />
+      <view>日常心动的穿搭图</view>
+      <text>快快上传保存吧</text>
+    </view>
+  </view>
+  <view wx:if="{{inspirationTab === '收藏' && otherLooks.length}}">
+    <view class="album-heading">
+      未收藏搭配
+      <text>{{otherLooks.length}} 套</text>
+    </view>
+    <view class="look-grid">
+      <view wx:for="{{otherLooks}}" wx:key="id" class="look-preview" bindtap="openLook" data-id="{{item.id}}">
+        <view class="mini-look" style="background:{{item.background}}">
+          <image
+            wx:for="{{item.layers}}"
+            wx:for-item="layer"
+            wx:key="id"
+            src="{{layer.image}}"
+            mode="aspectFit"
+            style="left:{{layer.x}}%;top:{{layer.y}}%;width:{{layer.width}}%;height:50%"
+          />
+        </view>
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="content-pad categories-view" wx:if="{{screen === 'albums'}}"><view class="category-group" wx:for="{{inspirationTab === '收藏' ? state.favoriteAlbums : state.albums}}" wx:key="*this"><view class="list-row"><text>{{item}}</text><button class="more-button" bindtap="albumMenu" data-name="{{item}}">···</button></view></view><button class="floating-add" bindtap="addAlbum" aria-label="新增分类">＋</button></view>
+<view class="content-pad photo-detail" wx:if="{{screen === 'photo'}}">
+  <image class="item-full" src="{{photo.image}}" mode="aspectFit" />
+  <view class="subtle">{{photo.album}}</view>
+  <button class="black-button" bindtap="deleteInspiration">删除灵感</button>
+</view>

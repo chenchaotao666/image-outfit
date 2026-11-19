@@ -1,0 +1,243 @@
+/* Home: the reference's quiet grey stage, sculptural camera, offset pill actions. */
+.closet-app.on-home {
+  background: #b3b4b2;
+}
+.closet-home {
+  position: relative;
+  min-height: calc(100vh - 100rpx);
+  padding-top: 1rpx;
+  overflow: hidden;
+  background: #b3b4b2;
+}
+.home-texture {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 10%, #fff1, transparent 60%),
+    linear-gradient(135deg, #fff0, #33333305);
+  pointer-events: none;
+}
+.weather-shortcut {
+  position: absolute;
+  left: 62rpx;
+  display: flex;
+  align-items: center;
+  gap: 22rpx;
+  color: white;
+  font-size: 26rpx;
+  line-height: 1.3;
+  text-align: left;
+  z-index: 1;
+}
+.weather-city {
+  display: block;
+  font-size: 25rpx;
+  margin-top: 5rpx;
+}
+.cloud {
+  position: relative;
+  width: 112rpx;
+  height: 54rpx;
+  border-radius: 70% 55% 50% 40%;
+  background: linear-gradient(135deg, #fff, #d9dcd9);
+  box-shadow:
+    inset -8rpx -8rpx 13rpx #b9bebb55,
+    4rpx 8rpx 15rpx #7c817e18;
+  margin: 30rpx 0;
+}
+.cloud:before {
+  content: "";
+  position: absolute;
+  left: 25rpx;
+  bottom: 12rpx;
+  width: 60rpx;
+  height: 62rpx;
+  background: linear-gradient(120deg, #fff, #dce0dd);
+  border-radius: 50%;
+}
+.small-cloud {
+  transform: scale(0.6);
+  transform-origin: left center;
+  margin: 0 -40rpx 0 0;
+}
+.greeting {
+  position: relative;
+  padding: 290rpx 68rpx 0;
+  text-align: center;
+  color: #fff;
+}
+.home-avatar {
+  position: relative;
+  width: 88rpx;
+  height: 88rpx;
+  margin: 0 auto 24rpx;
+  border: 2rpx solid #eeeeeb;
+  border-radius: 50%;
+}
+.home-avatar > image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.avatar-switch {
+  position: absolute;
+  right: -10rpx;
+  top: -8rpx;
+  border: 2rpx solid #fff;
+  border-radius: 50%;
+  background: #fae08d;
+  color: #f4ab3a;
+  font-size: 28rpx;
+  width: 38rpx;
+  height: 38rpx;
+  line-height: 32rpx;
+}
+.greeting-title {
+  font-size: 61rpx;
+  font-weight: 700;
+  letter-spacing: -2rpx;
+  text-shadow: 0 4rpx 6rpx #5555;
+}
+.greeting-copy {
+  font-size: 27rpx;
+  line-height: 1.75;
+  margin-top: 42rpx;
+  text-shadow: 0 2rpx 4rpx #4444;
+}
+.home-quick-actions {
+  margin: 96rpx 0 80rpx 34%;
+  display: flex;
+  flex-direction: column;
+  gap: 84rpx;
+}
+.home-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 100rpx 0 0 100rpx;
+  background: #f3f3f3;
+  min-height: 155rpx;
+  padding: 28rpx 15rpx 28rpx 74rpx;
+  text-align: left;
+  color: #111;
+  overflow: visible;
+  box-shadow: 0 3rpx 12rpx #6d716f04;
+}
+.pill-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 650;
+  letter-spacing: -1rpx;
+}
+.pill-copy {
+  display: block;
+  font-size: 23rpx;
+  color: #7e8483;
+  white-space: nowrap;
+}
+.camera-3d {
+  position: absolute;
+  right: 30rpx;
+  top: -44rpx;
+  width: 116rpx;
+  height: 96rpx;
+  background: linear-gradient(140deg, #fcfcf9, #d5d7d5);
+  border-radius: 19rpx;
+  transform: rotate(-9deg);
+  box-shadow:
+    inset 8rpx 5rpx 9rpx #fff,
+    7rpx 9rpx 15rpx #6662;
+}
+.camera-flash {
+  position: absolute;
+  top: -14rpx;
+  left: 25rpx;
+  width: 60rpx;
+  height: 22rpx;
+  background: linear-gradient(#ff9a66, #ec6b43);
+  border-radius: 10rpx 10rpx 0 0;
+  z-index: -1;
+}
+.camera-ring {
+  width: 75rpx;
+  height: 75rpx;
+  background: linear-gradient(130deg, #ffdf77, #edbb47);
+  border-radius: 50%;
+  position: absolute;
+  right: 3rpx;
+  top: 11rpx;
+  padding: 10rpx;
+  box-shadow: 4rpx 4rpx 6rpx #b2a998;
+}
+.camera-ring > view {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    #9a9e98 2%,
+    #40433f 14%,
+    #171b1b 34%,
+    #585a51 46%,
+    #252724 60%
+  );
+  border: 4rpx solid #7b7665;
+}
+.inspiration-3d {
+  position: absolute;
+  right: 36rpx;
+  top: -48rpx;
+  width: 100rpx;
+  height: 120rpx;
+  transform: rotate(-16deg);
+}
+.glass-cup {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 82rpx;
+  height: 88rpx;
+  border-radius: 15rpx 15rpx 25rpx 25rpx;
+  background: linear-gradient(100deg, #ffffffe8, #d2d4d28c);
+  box-shadow:
+    inset 8rpx 3rpx 10rpx #fff,
+    4rpx 7rpx 12rpx #72767322;
+  backdrop-filter: blur(4px);
+}
+.glass-cup:after {
+  content: "";
+  position: absolute;
+  width: 32rpx;
+  height: 32rpx;
+  top: 24rpx;
+  left: 22rpx;
+  background: #e6a18a;
+  border-radius: 50%;
+  filter: blur(6rpx);
+}
+.orb {
+  position: absolute;
+  width: 42rpx;
+  height: 42rpx;
+  border-radius: 50%;
+  background: linear-gradient(125deg, #fce29b, #f1c052);
+}
+.orb.one {
+  right: 4rpx;
+  top: 10rpx;
+}
+.orb.two {
+  left: -15rpx;
+  top: 5rpx;
+  background: linear-gradient(125deg, #8a82e5, #4b3a9f);
+  border-radius: 10rpx;
+  width: 34rpx;
+  height: 34rpx;
+}
+.orb.three {
+  right: 18rpx;
+  top: -21rpx;
+  width: 20rpx;
+  height: 20rpx;
+  background: linear-gradient(125deg, #ffbb7c, #e97744);
+}

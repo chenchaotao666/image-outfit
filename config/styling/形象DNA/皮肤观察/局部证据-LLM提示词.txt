@@ -1,0 +1,17 @@
+【局部证据检查】
+检测来源：{{photo.provider}}
+脸部分类：{{face.classifications}}
+已有指标：{{face.metrics}}
+分组可用性：{{face.groups}}
+皮肤区域可用性：{{skin.regions}}
+步骤：逐项对应实际提供的区域和指标，核对id、可用状态、清晰度和来源；只在对应部位有足够证据时给肯定或否定观察，其他保留uncertain并写明原因。不要用别的区域代替当前缺失部位。以下输出合同与项目数量必须遵守。
+
+必须返回skinConcerns（位于details中）:{"version":"skin-concerns-1","items":[{"id":"eyeBags","status":"present","severity":"slight","regionIds":["leftEye","rightEye"],"evidence":"具体位置、看到了什么及混淆因素，最多50字","advice":"一条日常护理或复核建议，最多30字，不推荐药物疗程"}]}。
+items严格13项依次：eyeBags眼袋、darkCircles黑眼圈、foreheadLines抬头纹、crowFeet鱼尾纹、glabellaLines眉间纹、nasolabialFolds法令纹、foreheadPores额头毛孔明显、leftCheekPores画面左颊毛孔明显、rightCheekPores画面右颊毛孔明显、chinPores下巴毛孔明显、blackheads黑头、acne痘痘外观、spots色斑外观。
+status三选一：present照片可见，severity=slight轻微/moderate较明显/marked明显；not_observed清晰且未见明显表现，severity=none；uncertain无法判断，severity=unknown。不能把照片不清楚写成not_observed，也不能为规避具体结论把所有可见表现写成“反光/纹理”；允许明确说“可见黑眼圈外观/眼袋/法令纹/毛孔明显/黑头样点状外观/痘痘外观/色素斑外观”，但不诊断病因、疾病类型、年龄或好坏总分。禁止编造计数、医学准确率、病灶边框。
+对眼袋判断下睑隆起轮廓，区分泪沟；对黑眼圈比较眼下与邻近皮肤色差和分布，排除单纯投影；皱纹观察连续线条并说明表情影响；毛孔和黑头必须查看足够清晰的局部图，不将胡茬、噪声、皮脂丝直接判黑头。已传局部图与整脸图是同一人同一张照片，需结合检查，不按示例预设结论。
+regionIds只引用实际提供的区域：眼袋/黑眼圈/鱼尾纹用leftEye,rightEye；抬头纹/眉间纹/额头毛孔用forehead；法令纹用mouthChin,leftCheek,rightCheek；左右颊毛孔分别leftCheek,rightCheek；下巴毛孔用mouthChin；黑头用nose；痘痘/色斑用forehead,leftCheek,rightCheek,nose,mouthChin。粗粒度项目无局部图时可引用wholeFace，但毛孔/黑头不可。geometry.skinRegions中usable=false不能作肯定或否定判断；毛孔/黑头还须detailUsable=true。只有被实际观察的区域才能引用，缺对应图时用[]并给uncertain。等级是模型视觉估计，不是经验证的临床分级。其他皮肤摘要必须与这13项一致。
+另返回details.skinReport:{"summary":"一句话总结本次可见皮肤外观及最主要拍摄影响，最多60字","regions":[{"id":"forehead","status":"visible","conclusion":"简短可见结论，最多12字","evidence":"具体可见位置与外观及光线/清晰度限制","advice":"日常整理或拍摄复核建议，不推荐药物、疗程"}]}。regions恰好6项，id依次forehead额头/underEyes眼下/eyeCorners眼尾/cheeks双颊/nose鼻部/mouth鼻唇周围。逐部位判断，不能为了填满而声称看清。眼下可描述暗影或浮肿观感，额头和眼尾可描述可见线条，鼻唇区可描述阴影或折线，鼻颊可描述反光和纹理；可结合整脸和局部图判断黑眼圈、眼袋、毛孔明显、黑头及痘痘色斑的可见外观；需排除灯光阴影、胡茬、皮脂丝及压缩噪声等混淆，不能仅凭暗影或黑点确定结论，不诊断病因或斑点类型。不可见时status=uncertain、conclusion=待复核并说明原因；未明显看到不等于确认没有。禁止从单张照片判油性、干性、混合性肤质，不输出肌肤好坏总分。与skinObservations和features中的皮肤结论保持一致。
+眼型、鼻型、唇型、下巴的features.label只写一个简短、直观的主结论，优先4至8字，例如“细长眼型”“鼻翼适中”“上薄下厚唇”“下巴偏圆”；详细特征写observation，不把眼距放在眼型主结论中。不为模仿其他报告强判大眼、标准鼻、标准唇或尖下巴，也不用未经验证的固定阈值分类。geometry.groups的photoOnly表示保留了当前表情的照片轮廓尺寸，不等于看不清；应结合实际照片判断可见特点，只有确实不可见或不足以判断时写“暂待判断”，并说明具体原因。
+另返回details.scaleEvidence对象，恰好包含volume/curvature/dynamics/lightness/chroma/temperature六个字符串，每项写明可见依据及限制。量感和直曲感依据五官及轮廓；动静依据实际可用的轮廓、五官和造型分析；明度按本次色彩观察记录，纯度与冷暖的输出服从面部色彩属性配置。不能把背景或衣服的深浅当面部明度，不能只按肤色深浅决定配色纯度。无法可靠判断的数值用null、冷暖用unknown，并说明原因，不能习惯性填2。
+features每项额外返回metricIds数组，只能引用geometry.metrics中当前available且source=geometry的同组id，皮肤为[]；没有对应有效指标时为[]。例如鼻部可引用noseWidth/noseLength/noseEye。文字说明照片观察，精确数值由程序展示，不在文字中另写或舍入测量数字。

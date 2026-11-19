@@ -1,0 +1,19 @@
+<view wx:if="{{guide}}" class="season-page">
+ <image wx:if="{{guide.cover}}" class="season-cover" src="{{guide.cover}}" mode="widthFix"/>
+ <view wx:else class="season-cover-placeholder"><view>季节色系示范</view><text>Four seasons</text></view>
+ <view class="season-introduction"><view>{{guide.intro}}</view><view class="intro-emphasis">{{guide.introEmphasis}}</view></view>
+ <view class="season-overview"><view>{{guide.sectionTitle}}</view><text>结合「{{guide.colorLabel}}」安排四季穿搭</text></view>
+ <view class="season-paper">
+  <view class="season-section" wx:for="{{guide.seasons}}" wx:key="id">
+   <view class="season-heading">{{item.name}} <text>× {{item.english}}</text></view>
+   <view class="season-keywords">{{item.keywords}}</view><view class="season-arrow"></view>
+   <view class="season-lead"><view>{{item.intro}}</view><view>{{item.colorAdvice}}</view></view>
+   <view class="season-outfit" wx:for="{{item.first}}" wx:for-item="look" wx:key="id"><image src="{{look.src}}" mode="widthFix" data-src="{{look.src}}" bindtap="openPhoto"/><view class="season-palette"><view wx:for="{{look.colors}}" wx:for-item="color" wx:key="index" style="background:{{color}}"></view></view></view>
+   <view class="season-advice"><view>{{item.advice}}</view><text>图片为{{item.name}}搭配示范，可按自己的衣橱替换单品。</text></view>
+   <view class="season-outfit" wx:for="{{item.second}}" wx:for-item="look" wx:key="id"><image src="{{look.src}}" mode="widthFix" data-src="{{look.src}}" bindtap="openPhoto"/><view class="season-palette"><view wx:for="{{look.colors}}" wx:for-item="color" wx:key="index" style="background:{{color}}"></view></view></view>
+  </view>
+ </view>
+ <view class="season-footer">YOCHUR</view>
+</view>
+<view wx:if="{{missing}}" class="season-missing">未找到报告，请返回重新打开。</view>
+<view wx:if="{{photo}}" class="season-photo-overlay" bindtap="closePhoto"><image src="{{photo}}" mode="aspectFit"/></view>

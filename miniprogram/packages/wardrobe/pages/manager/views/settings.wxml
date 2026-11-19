@@ -1,0 +1,151 @@
+<view class="settings-view content-pad" wx:if="{{screen === 'settings'}}">
+  <view class="settings-profile">
+    <view>
+      <view class="detail-title" bindtap="openSheet" data-sheet="switch-closet">
+        {{state.settings.name}}
+        <view class="dropdown-triangle"></view>
+      </view>
+      <text class="subtle">我的衣橱　|　已收纳 {{state.items.length}} 件服饰</text>
+    </view>
+    <image src="{{avatarImage}}" mode="aspectFill" />
+  </view>
+  <view class="list-card">
+    <button class="list-row" bindtap="open" data-screen="skins" data-title="衣橱换肤">
+      <text>衣橱皮肤</text>
+      <view class="ui-chevron"></view>
+    </button>
+    <button class="list-row" bindtap="open" data-screen="weather" data-title="天气">
+      <text>天气设置</text>
+      <view class="ui-chevron"></view>
+    </button>
+    <button class="list-row" bindtap="renameWardrobe">
+      <text>衣橱名称</text>
+      <view class="ui-chevron"></view>
+    </button>
+    <button class="list-row" bindtap="open" data-screen="seasons" data-title="季节衣橱">
+      <text>季节衣橱</text>
+      <view class="ui-chevron"></view>
+    </button>
+    <button class="list-row" bindtap="unavailable" data-feature="邀友帮搭">
+      <text>添加成员</text>
+      <view class="ui-chevron"></view>
+    </button>
+    <button class="list-row" bindtap="clearWardrobe">
+      <text>清空衣橱</text>
+      <view class="ui-chevron"></view>
+    </button>
+  </view>
+  <view class="list-card">
+    <button class="list-row" bindtap="open" data-screen="categories" data-title="管理分类">
+      <text>服饰分类</text>
+      <view class="ui-chevron"></view>
+    </button>
+    <button class="list-row" bindtap="open" data-screen="tag-groups" data-title="标签分类">
+      <text>标签分类</text>
+      <view class="ui-chevron"></view>
+    </button>
+  </view>
+</view>
+<view class="content-pad categories-view" wx:if="{{screen === 'tag-groups'}}"><view class="category-group" wx:for="{{tagGroups}}" wx:key="name"><view class="list-row"><text>{{item.name}}</text><button class="more-button" bindtap="deleteTagGroup" data-name="{{item.name}}" aria-label="删除标签分类"><image class="tag-delete-icon" src="{{asset}}trash-dark.png" mode="aspectFit" /></button></view><view class="tag-group-values"><text wx:for="{{item.values}}" wx:for-item="tag" wx:key="*this">{{tag}}</text></view></view><button class="floating-add" bindtap="addTagGroup" aria-label="新增标签分类">＋</button></view>
+<view class="invites-view" wx:if="{{screen === 'invites'}}">
+  <image src="{{asset}}empty-invites.jpg" mode="aspectFit" />
+  <view>暂时没人需要你帮忙搭配</view>
+  <text>告诉身边人你是个热心肠哦</text>
+</view>
+<view class="skins-view content-pad" wx:if="{{screen === 'skins'}}">
+  <image class="skin-decoration" src="{{asset}}skin-branch.png" mode="aspectFit" />
+  <swiper class="skin-carousel" previous-margin="60rpx" next-margin="60rpx" bindchange="skinChange" current="{{skinIndex}}">
+    <swiper-item wx:for="{{skins}}" wx:key="id" class="skin-slide">
+      <image src="{{asset}}skin-{{item.id}}.jpg" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
+  <view class="skin-name">{{skins[skinIndex].name}}</view>
+  <view class="skin-indicators"><button wx:for="{{skins}}" wx:key="id" class="{{skinIndex === index ? 'current' : ''}}" bindtap="pickSkin" data-index="{{index}}" aria-label="{{item.name}}"><view></view></button></view>
+  <button class="black-button skin-apply" disabled="{{state.settings.skin === skins[skinIndex].id}}" bindtap="selectSkin" data-id="{{skins[skinIndex].id}}">{{state.settings.skin === skins[skinIndex].id ? '当前使用' : '使用这款皮肤'}}</button>
+</view>
+<view class="content-pad seasons-view" wx:if="{{screen === 'seasons'}}">
+  <view class="list-card">
+    <button class="list-row" wx:for="{{seasons}}" wx:key="*this" bindtap="setSeason" data-value="{{item}}">
+      <text>{{item}}衣橱</text>
+      <text class="season-radio {{state.settings.season === item ? 'checked' : ''}}"></text>
+    </button>
+  </view>
+  <view class="subtle">选择季节后，衣橱将优先展示该季节和四季通用的服饰。</view>
+</view>
+<view class="weather-view content-pad" wx:if="{{screen === 'weather'}}">
+  <view class="weather-heading">
+    <text>此时天气</text>
+    <button bindtap="openCity">
+      {{state.settings.city}}
+      <image src="{{asset}}pin-dark.png"  mode="aspectFit" />
+    </button>
+  </view>
+  <view class="weather-card">
+    <view>
+      <view class="cloud"></view>
+      <text class="weather-temperature">--°C</text>
+      <text>暂无天气数据</text>
+    </view>
+    <view class="weather-metrics">
+      <text>体感温度：--</text>
+      <text>湿度：--</text>
+      <text>降雨概率：--</text>
+      <text>风向：--</text>
+    </view>
+  </view>
+  <view class="weather-note">实时天气服务尚未接入，城市偏好可先保存。</view>
+  <view class="field-label">今日穿搭指数</view>
+  <view class="weather-indices">
+    <view wx:for="{{['穿衣','防晒','太阳镜','逛街','过敏','干燥','美发','化妆']}}" wx:key="*this">
+      <image src="{{asset}}weather-index-{{index}}.png" mode="aspectFit" />
+      <text>
+        {{item}}
+        <text class="subtle">--</text>
+      </text>
+    </view>
+  </view>
+</view>
+<view class="help-view content-pad" wx:if="{{screen === 'help' || screen === 'about'}}">
+  <view class="help-banner">
+    <text>欢迎来到帮助中心</text>
+    <text>整理衣橱，让穿搭更轻松</text>
+    <image src="{{asset}}help-hand.png" mode="aspectFit" />
+    <button class="mint-button" bindtap="open" data-screen="feedback" data-title="用户反馈">用户反馈</button>
+  </view>
+  <view class="help-card"><view class="help-card-title">常见问题</view>
+  <view wx:for="{{help}}" wx:key="title" class="help-section">
+    <view>{{item.title}}</view>
+    <text>{{item.text}}</text>
+  </view>
+  </view>
+</view>
+<view class="feedback-view" wx:if="{{screen === 'feedback'}}">
+  <view class="field-label">问题和意见 <text class="required">*</text></view>
+  <textarea class="feedback-input" placeholder="请填写你的问题和意见，以便我们更好地帮助你" value="{{feedbackText}}" maxlength="500" bindinput="input" data-field="feedbackText"></textarea>
+  <view class="field-label">图片</view>
+  <view class="feedback-photos"><image wx:for="{{feedbackImages}}" wx:key="*this" src="{{item}}" mode="aspectFill" /><button wx:if="{{feedbackImages.length < 4}}" bindtap="chooseFeedbackPhoto">＋</button></view>
+  <view class="field-label">联系方式</view>
+  <input class="feedback-contact" placeholder="请留下你的联系方式，方便我们联系你" value="{{feedbackContact}}" bindinput="input" data-field="feedbackContact" />
+  <view class="subtle feedback-note">反馈随账号保存，当前不会发送给客服。</view>
+  <view class="feedback-submit"><button class="black-button" bindtap="sendFeedback">保存反馈</button></view>
+</view>
+<view class="help-view content-pad" wx:if="{{screen === 'privacy'}}">
+  <view class="help-section">
+    <view>账号数据与照片</view>
+    <text>
+      单品、搭配、灵感和日历随账号保存。自行添加的照片文件保存在当前设备，更换设备后请重新选择照片。
+    </text>
+  </view>
+  <view class="help-section">
+    <view>相册和相机权限</view>
+    <text>仅在你点击上传并选择相册或拍照后请求相应权限。取消授权不影响浏览已保存的衣橱。</text>
+  </view>
+  <view class="help-section">
+    <view>数据管理</view>
+    <text>你可以逐项删除服饰、搭配、灵感和日历记录。衣橱设置中的清空功能会移除相关业务记录，操作前会再次确认。</text>
+  </view>
+  <view class="help-section">
+    <view>服务范围</view>
+    <text>当前为本地衣橱版本。会员支付、实时天气、账号同步和好友协作尚未接入。自动抠图会将所选照片交给配置的图片处理服务，处理结果在确认后保存。本模块不会自动调用 AI 穿搭分析服务。</text>
+  </view>
+</view>

@@ -1,0 +1,242 @@
+/* Wardrobe */
+.wardrobe-hero {
+  position: relative;
+  overflow: hidden;
+  background: #1a1e24;
+  padding-bottom: 28rpx;
+}
+.wardrobe-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.62;
+}
+.wardrobe-toolbar {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15rpx;
+  padding: 0 30rpx;
+}
+.icon-box {
+  background: #ececebe8;
+  width: 74rpx;
+  height: 74rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-box image {
+  width: 36rpx;
+  height: 36rpx;
+}
+.match-button {
+  gap: 12rpx;
+  font-size: 28rpx;
+  padding: 0 20rpx;
+}
+.match-button image {
+  width: 36rpx;
+  height: 36rpx;
+}
+.wardrobe-body {
+  display: flex;
+  min-height: calc(100vh - 360rpx);
+}
+.category-rail {
+  width: 120rpx;
+  flex-shrink: 0;
+  background: #dedede;
+  padding-top: 42rpx;
+}
+.category {
+  font-size: 27rpx;
+  color: #999c9b;
+  height: 108rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.category.chosen {
+  background: #fff;
+  color: #565a58;
+  font-weight: 600;
+}
+.category.chosen:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 7rpx;
+  background: #303332;
+}
+.wardrobe-products {
+  min-width: 0;
+  flex: 1;
+  padding: 30rpx;
+  background: #f6f6f6;
+  border-top-right-radius: 34rpx;
+}
+.category-cover {
+  position: relative;
+  height: 156rpx;
+  margin-bottom: 36rpx;
+  overflow: hidden;
+}
+.category-cover > image {
+  width: 100%;
+  height: 100%;
+}
+.category-cover > view {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 9rpx;
+  color: #fff;
+  background: #0002;
+  text-shadow: 0 2rpx 5rpx #2225;
+  font-size: 38rpx;
+  line-height: 1.2;
+}
+.category-en {
+  font-size: 24rpx;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28rpx;
+}
+.product-tile {
+  position: relative;
+  padding: 12rpx;
+  background: #fff;
+  border-radius: 15rpx;
+  box-shadow: 0 24rpx 30rpx #232b2c16;
+  min-width: 0;
+}
+.product-tile > image {
+  width: 100%;
+  height: 226rpx;
+}
+.product-name {
+  display: block;
+  font-size: 21rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #7e8281;
+  margin-top: 10rpx;
+}
+.three-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18rpx;
+}
+.three-columns .product-tile > image {
+  height: 170rpx;
+}
+.catalog-filters {
+  display: flex;
+  justify-content: space-between;
+  padding: 22rpx 24rpx;
+  background: #24282b;
+  color: #fff;
+}
+.catalog-filters button {
+  font-size: 23rpx;
+}
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 12rpx 16rpx;
+  background: #fff;
+  margin-bottom: 28rpx;
+}
+.search-field image {
+  width: 28rpx;
+  height: 28rpx;
+}
+.search-field input {
+  flex: 1;
+  font-size: 23rpx;
+  height: 45rpx;
+  min-width: 0;
+}
+.filter-hint {
+  display: flex;
+  justify-content: space-between;
+  font-size: 23rpx;
+  color: #699b8d;
+  margin-bottom: 22rpx;
+}
+.filter-hint button {
+  font-size: 22rpx;
+}
+.selection-mark {
+  position: absolute;
+  right: 9rpx;
+  top: 9rpx;
+  border: 1rpx solid #d9ddda;
+  background: #fff;
+  width: 30rpx;
+  height: 30rpx;
+  font-size: 24rpx;
+  line-height: 28rpx;
+  text-align: center;
+}
+.selection-mark.checked {
+  background: #343a37;
+  color: white;
+  border-color: #343a37;
+}
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx 32rpx calc(24rpx + env(safe-area-inset-bottom));
+  display: flex;
+  gap: 24rpx;
+  background: #fff;
+  z-index: 30;
+}
+.bottom-actions > button {
+  flex: 1;
+}
+.category-group {
+  background: white;
+  margin-bottom: 24rpx;
+  padding: 0 24rpx;
+}
+.subcategory-list {
+  padding: 6rpx 12rpx 22rpx;
+  color: #999;
+  font-size: 25rpx;
+}
+.subcategory-list > view {
+  padding: 17rpx 0;
+}
+.item-full {
+  width: 100%;
+  height: 640rpx;
+  background: white;
+  margin-bottom: 30rpx;
+}
+.detail-tags {
+  display: flex;
+  gap: 14rpx;
+  margin: 20rpx 0 36rpx;
+}
+.detail-tags > text {
+  background: #e9efec;
+  color: #799589;
+  padding: 6rpx 19rpx;
+  font-size: 23rpx;
+}

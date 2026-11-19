@@ -1,0 +1,1 @@
+module.exports={view:require('./report-v2').browRecommendationView};

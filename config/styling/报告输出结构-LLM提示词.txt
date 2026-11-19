@@ -1,0 +1,18 @@
+【报告顶层输出结构】
+
+## 字段合同
+以下展示字段与类型；示例文本不是本次结论，按实际数据填写。
+{
+ "quality":{"usable":true,"faceVisible":true,"bodyVisible":false,"issues":[]},
+ "summary":"总体建议",
+ "face":{"label":"脸型视觉估计或无法判断","observations":["可见依据"],"confidence":"low","limitations":["限制"]},
+ "body":{"label":"未评估身形","recommendations":["建议"],"confidence":"unknown"},
+ "style":{"keywords":["风格关键词"],"summary":"建议风格和理由","tips":["具体建议"]},
+ "color":{"label":"建议色系","summary":"建议及光线限制","confidence":"low","palette":[{"name":"颜色名","hex":"#AABBCC","usage":"用途"}]},
+ "seasonal":[{"season":"春","recommendation":"春季具体搭配"},{"season":"夏","recommendation":"夏季搭配"},{"season":"秋","recommendation":"秋季搭配"},{"season":"冬","recommendation":"冬季搭配"}],
+ "wardrobe":[{"category":"上装","items":"建议的具体单品","reason":"选择理由"}],
+ "occasions":[{"occasion":"商务职场","recommendation":"搭配建议"}],
+ "hair":{"summary":"造型建议及依据","styles":["发型"],"colors":["发色"],"limitations":["限制"]},
+ "warnings":["必要说明"]
+}
+palette需3至8项；wardrobe需3至8类；occasions需3至6个场合。不要返回个人标识、图片URL或base64。

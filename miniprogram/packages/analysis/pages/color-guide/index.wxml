@@ -1,0 +1,10 @@
+  <view wx:if="{{guide}}" class="color-guide">
+   <view class="color-guide-banner"><text>{{guide.pageCopy.englishTitle}}</text><view>{{guide.pageCopy.title}}</view><text>{{guide.pageCopy.subtitle}}</text></view>
+   <view class="story-subheading">{{guide.pageCopy.paletteHeading}}</view><view class="caption">{{guide.pageCopy.paletteCaption}}</view>
+   <view class="color-plan" wx:for="{{guide.palettes}}" wx:key="id"><view class="color-plan-title">{{item.title}}</view><view class="color-plan-swatches"><view wx:for="{{item.colors}}" wx:for-item="swatch" wx:key="hex" class="guide-swatch"><view style="background:{{swatch.hex}}"></view><text>{{swatch.name}}</text><text class="swatch-code">{{swatch.hex}}</text></view></view></view>
+   <view class="story-subheading">{{guide.pageCopy.basicsHeading}}</view><view class="guide-basics"><view wx:for="{{guide.basics}}" wx:key="hex" class="guide-swatch"><view style="background:{{item.hex}}"></view><text>{{item.name}}</text></view></view><view class="body-copy">{{guide.pageCopy.basicsAdvice}}</view>
+   <view class="guide-chapter" wx:for="{{guide.sections}}" wx:key="id"><view class="guide-number">{{item.number}}</view><view class="guide-chapter-title">{{item.title}}</view><view class="body-copy">{{item.intro}}</view><view class="guide-photos"><view wx:for="{{item.images}}" wx:for-item="photo" wx:key="id"><image src="{{photo.src}}" mode="widthFix" bindload="positions" data-src="{{photo.src}}" bindtap="colorPhoto"/><view>{{photo.alt}}</view></view></view><view class="body-copy">{{item.tip}}</view></view>
+   <view class="caption guide-footer">{{guide.pageCopy.footer}}</view>
+  </view>
+
+<view wx:if="{{missing}}" class="missing-guide">未找到这份报告，请返回重新打开。</view><view wx:if="{{photo}}" class="guide-photo-overlay" bindtap="closePhoto"><image src="{{photo}}" mode="aspectFit"/></view>

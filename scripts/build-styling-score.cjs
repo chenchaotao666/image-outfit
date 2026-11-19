@@ -1,0 +1,15 @@
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const c=JSON.parse(fs.readFileSync(path.join(root,'config/styling/形象DNA/造型评分/造型评分-评分规则.json'),'utf8'));
+if(!c.version||c.dimensions.map(d=>d.id).join(',')!=='fit,color,style,occasion,detail'||c.dimensions.some(d=>!d.name||!Number.isInteger(d.weight)||d.weight<=0||typeof d.requiresBody!=='boolean')||c.dimensions.reduce((s,d)=>s+d.weight,0)!==100)throw Error('评分维度或权重无效，权重合计必须为100');
+if(c.levels.map(l=>l.value).join(',')!=='0,1,2,3,4'||c.levels.some(l=>!l.description))throw Error('评分档位必须为0至4');
+let next=0;for(const b of c.bands){if(!Number.isInteger(b.min)||!Number.isInteger(b.max)||b.min!==next||b.max<b.min||!b.label)throw Error('分数段必须连续且不重叠');next=b.max+1;}if(next!==101)throw Error('分数段必须覆盖0至100');
+if(c.calculation.method!=='round_each_then_sum'||c.calculation.requireAll!==true||c.calculation.requiresUsableFace!==true)throw Error('不支持的评分计算方式');
+for(const value of [...Object.values(c.copy),c.scope,c.evidence,c.instructions,c.detailInstruction])if(typeof value!=='string'||!value.trim())throw Error('评分说明不能为空');
+c.explanation=`各项先按 ${c.levels[0].value}–${c.levels.at(-1).value} 档观察，再按 ${c.dimensions.map(d=>d.weight).join('/')} 权重换算，单项四舍五入后求和，全部项目齐全才生成总分。`;
+c.levelExplanation=c.levels.map(l=>`${l.value} 档：${l.description}`).join('；')+'。';
+c.prompt=`另在 details 内返回 stylingScore，version 为 ${c.version}，items 恰好 ${c.dimensions.length} 项，依次为 ${c.dimensions.map(d=>d.id+' '+d.name).join('/')}。每项包含 id、level、evidence、advice。level 为 ${c.levels.map(l=>l.value).join('/')} 的整数或 null。${c.levelExplanation}${c.instructions}必须有可用正脸照；${c.dimensions.filter(d=>d.requiresBody).map(d=>d.id).join('/')} 还必须有可用全身照，证据不足时为 null。不要返回总分。${c.explanation}${c.detailInstruction}`;
+const out='// Generated from config/styling/形象DNA/造型评分/造型评分-评分规则.json. Do not edit.\nmodule.exports='+JSON.stringify(c,null,2)+';\n';
+const target=path.join(root,'miniprogram/packages/analysis/utils/styling-score-data.js');
+if(process.argv.includes('--check')){if(!fs.existsSync(target)||fs.readFileSync(target,'utf8')!==out)throw Error('请运行 npm run build:styling 同步评分规则');}else fs.writeFileSync(target,out);
+console.log('Styling score configuration validated.');

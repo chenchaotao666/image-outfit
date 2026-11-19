@@ -1,0 +1,48 @@
+{
+  "version": "1.1.0",
+  "modules": {
+    "wardrobe": {
+      "name": "衣橱规划",
+      "output": "wardrobe",
+      "instruction": "先推荐容易重复搭配的基础单品，再补少量风格单品；不凭照片推断已有衣物数量。",
+      "evidenceStatus": "有已核对理论，具体应用见规则",
+      "outputMode": "fixed_rule"
+    }
+  },
+  "rules": [
+    {
+      "id": "wardrobe-simple",
+      "module": "wardrobe",
+      "enabled": true,
+      "priority": 10,
+      "sourceIds": [
+        "ut-wardrobe"
+      ],
+      "when": {
+        "all": [
+          {
+            "field": "style",
+            "op": "eq",
+            "value": "简洁耐看"
+          }
+        ]
+      },
+      "reason": "衣物质量与修整再利用是衣橱规划的一部分。",
+      "advice": [
+        "先检查已有衣物的接缝、下摆和纽扣；可修整再穿的衣物优先保留。"
+      ],
+      "set": {},
+      "evidence": [
+        {
+          "sourceId": "ut-wardrobe",
+          "locator": "Activity 1, pp. 4–6; Activity 5, pp. 39–41",
+          "principle": "衣物质量与修整再利用是衣橱规划的一部分。",
+          "application": "先检查已有衣物，再决定补购。",
+          "limits": "不臆测用户衣橱数量，不设固定购买比例。",
+          "verifiedAt": "2026-11-15",
+          "verification": "原文支持已核对；应用为产品转化，不等于临床或个体效果验证"
+        }
+      ]
+    }
+  ]
+}

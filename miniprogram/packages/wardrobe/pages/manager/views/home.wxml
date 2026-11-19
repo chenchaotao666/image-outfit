@@ -1,0 +1,42 @@
+<view class="closet-home" wx:if="{{!screen && tab === 'home'}}">
+  <view class="home-texture"></view>
+  <button class="weather-shortcut" bindtap="open" data-screen="weather" data-title="天气" style="top:{{top + 76}}px">
+    <view class="cloud small-cloud"></view>
+    <view>
+      <text>天气</text>
+      <text class="weather-city">{{state.settings.city}}　›</text>
+    </view>
+  </button>
+  <view class="greeting">
+    <button class="home-avatar" bindtap="openSheet" data-sheet="switch-closet">
+      <image src="{{avatarImage}}" mode="aspectFill" />
+      <text class="avatar-switch">⇆</text>
+    </button>
+    <view class="greeting-title">HI,{{state.profile.name}}</view>
+    <view class="greeting-copy">颜选衣架除了功能要求外，最重要的是统一。颜色统一、样式统一、材质统一，才会让衣橱里的服饰更有秩序感</view>
+  </view>
+  <view class="home-quick-actions">
+    <button class="home-pill" bindtap="open" data-screen="tutorial" data-title="上传服饰">
+      <view>
+        <text class="pill-title">服饰上传</text>
+        <text class="pill-copy">在线管理衣橱，让衣橱不再杂乱</text>
+      </view>
+      <view class="camera-3d">
+        <view class="camera-flash"></view>
+        <view class="camera-ring"><view></view></view>
+      </view>
+    </button>
+    <button class="home-pill" bindtap="open" data-screen="invites" data-title="邀我帮搭">
+      <view>
+        <text class="pill-title">邀友帮搭</text>
+        <text class="pill-copy">微信发起邀请，让帮搭不再复杂</text>
+      </view>
+      <view class="inspiration-3d">
+        <view class="orb one"></view>
+        <view class="orb two"></view>
+        <view class="orb three"></view>
+        <view class="glass-cup"></view>
+      </view>
+    </button>
+  </view>
+</view>

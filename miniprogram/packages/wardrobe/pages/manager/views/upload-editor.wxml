@@ -1,0 +1,74 @@
+<view wx:if="{{screen === 'photo-editor'}}" class="upload-photo-editor">
+  <view class="photo-editor-stage">
+    <view class="photo-editor-heading"><button bindtap="back" aria-label="取消编辑">×</button><view><button bindtap="photoAI" data-kind="white" disabled="{{busy}}">一键生成白底图<text>AI</text></button><button bindtap="photoAI" data-kind="cutout" disabled="{{busy}}">{{photoProcessing ? '处理中…' : '自动抠图'}}</button></view></view>
+    <view class="photo-editor-board checkerboard" catchtouchstart="imageDragStart" catchtouchmove="imageDragMove" catchtouchend="imageDragEnd">
+      <image src="{{editorImage}}" mode="aspectFit" style="transform:translate({{imageX}}%,{{imageY}}%) rotate({{imageRotation}}deg) scale({{imageScale * imageFlipX}},{{imageScale * imageFlipY}})" />
+    </view>
+    <view class="photo-editor-hint">请拖动图片至合适位置<text>请确保使用的图片已获得授权或为原创，以免产生侵权风险</text></view>
+  </view>
+  <view class="photo-editor-footer">
+    <view class="photo-transform-tools">
+      <button bindtap="transformPhoto" data-action="larger"><image src="{{asset}}editor-larger.png" mode="aspectFit" /><text>放大</text></button>
+      <button bindtap="transformPhoto" data-action="smaller"><image src="{{asset}}editor-smaller.png" mode="aspectFit" /><text>缩小</text></button>
+      <button bindtap="transformPhoto" data-action="horizontal"><image src="{{asset}}editor-horizontal.png" mode="aspectFit" /><text>水平翻转</text></button>
+      <button bindtap="transformPhoto" data-action="vertical"><image src="{{asset}}editor-vertical.png" mode="aspectFit" /><text>垂直翻转</text></button>
+      <button bindtap="transformPhoto" data-action="left"><image src="{{asset}}editor-left.png" mode="aspectFit" /><text>向左旋转</text></button>
+      <button bindtap="transformPhoto" data-action="right"><image src="{{asset}}editor-right.png" mode="aspectFit" /><text>向右旋转</text></button>
+    </view>
+    <button class="photo-confirm" bindtap="confirmPhoto" disabled="{{busy}}">{{busy ? '处理中…' : '确定'}}</button>
+  </view>
+  <canvas canvas-id="upload-export" class="upload-export-canvas" style="width:1000px;height:1000px"></canvas>
+</view>
+<view class="upload-form" wx:if="{{screen === 'upload'}}">
+  <view class="garment-photo checkerboard"><image class="upload-preview" src="{{draft.image}}" mode="aspectFit" /><button class="photo-edit-trigger" bindtap="toggleImageMenu" aria-label="图片操作"><view class="magic-wand"></view><text class="magic-star">✦</text></button>
+    <view wx:if="{{imageMenu}}" class="photo-edit-menu"><button bindtap="openPhotoEditor"><image src="{{asset}}edit-dark.png" mode="aspectFit" /><text>编辑图片</text></button><button bindtap="replaceUploadPhoto"><image src="{{asset}}swap-dark.png" mode="aspectFit" /><text>更换图片</text></button></view>
+  </view>
+  <view class="upload-section-heading"><text>编辑分类</text><text>EDIT CATEGORY</text></view>
+  <view class="upload-fields">
+    <button class="upload-field" bindtap="editUploadField" data-field="category"><text>分类*</text><text>{{draft.category}}{{draft.subcategory ? '/' + draft.subcategory : ''}}</text></button>
+    <button class="upload-field" bindtap="editUploadField" data-field="color"><text>颜色*</text><view><text class="upload-color-dot" style="background:{{uploadColorValue}}"></text><text>{{draft.color === '米色' ? '裸色' : draft.color === '粉色' ? '玫红' : draft.color}}系</text></view></button>
+    <button class="upload-field" bindtap="editUploadField" data-field="rating"><text>喜好*</text><view><text wx:for="{{ratingHearts}}" wx:key="index" wx:if="{{item}}" class="gem-heart">♥</text></view></button>
+    <button class="upload-field" bindtap="editUploadField" data-field="seasons"><text>季节*</text><text>{{uploadSeasonText}}</text></button>
+    <view wx:if="{{uploadMore}}">
+      <button class="upload-field" bindtap="editUploadField" data-field="price"><text>价格</text><text>{{draft.price || '请输入'}}</text></button>
+      <button class="upload-field" bindtap="editUploadField" data-field="purchaseDate"><text>购入时间</text><text>{{draft.purchaseDate || '请选择'}}</text></button>
+      <button class="upload-field" bindtap="editUploadField" data-field="brand"><text>品牌</text><text>{{draft.brand || '请选择'}}</text></button>
+      <button class="upload-field" bindtap="editUploadField" data-field="fabric"><text>面料</text><text>{{draft.fabric || '请选择'}}</text></button>
+      <button class="upload-field" bindtap="editUploadField" data-field="size"><text>尺码</text><text>{{draft.size || '请选择'}}</text></button>
+      <button class="upload-field" bindtap="editUploadField" data-field="tags"><text>标签</text><text>{{draft.tags || '请选择'}}</text></button>
+      <button class="upload-field" bindtap="editUploadField" data-field="location"><text>收纳位置</text><text>{{draft.location || '请选择'}}</text></button>
+      <button class="upload-field" bindtap="editUploadField" data-field="notes"><text>备注</text><text>{{draft.notes || '请输入'}}</text></button>
+    </view>
+    <button class="upload-more" bindtap="toggleUploadMore"><text>{{uploadMore ? '收起' : '填写更多'}}</text><view class="ui-chevron {{uploadMore ? 'up' : 'down'}}"></view></button>
+  </view>
+  <view class="upload-save-actions"><button bindtap="discardUpload" aria-label="删除当前图片"><image src="{{asset}}trash-white.png"  mode="aspectFit" /></button><button bindtap="saveItem">完成</button></view>
+</view>
+<view class="upload-field-overlay" wx:if="{{sheet === 'upload-field'}}" bindtap="closeSheet">
+  <view class="upload-property-sheet property-{{uploadField}}" catchtap="noop">
+    <view class="upload-property-title"><text>{{uploadSheetTitle}}</text><button wx:if="{{uploadField === 'category'}}" bindtap="open" data-screen="categories" data-title="管理分类"><image src="{{asset}}settings-dark.png" mode="aspectFit" /></button></view>
+    <scroll-view scroll-y="{{true}}" class="upload-category-list" wx:if="{{uploadField === 'category'}}">
+      <view wx:for="{{categories}}" wx:key="id"><view class="upload-category-parent"><button bindtap="expandUploadCategory" data-name="{{item.name}}"><text>{{item.name}}</text><view class="ui-chevron {{uploadExpandedCategory === item.name ? 'down' : ''}}"></view></button><button class="category-radio-hit" bindtap="chooseUploadCategory" data-category="{{item.name}}"><text class="property-radio {{uploadCategory === item.name && !uploadSubcategory ? 'selected' : ''}}"></text></button></view><view wx:if="{{uploadExpandedCategory === item.name}}"><button wx:for="{{item.children}}" wx:for-item="child" wx:key="*this" class="upload-category-child" bindtap="chooseUploadCategory" data-category="{{item.name}}" data-value="{{child}}"><text>{{child}}</text><text class="property-radio {{uploadCategory === item.name && uploadSubcategory === child ? 'selected' : ''}}"></text></button></view></view>
+    </scroll-view>
+    <view class="upload-color-grid" wx:if="{{uploadField === 'color'}}"><button wx:for="{{colors}}" wx:key="name" bindtap="chooseUploadOption" data-value="{{item.name}}"><view style="background:{{item.value}}"><text wx:if="{{uploadValue === item.name}}">✓</text></view><text>{{item.name === '米色' ? '裸色' : item.name === '粉色' ? '玫红' : item.name}}系</text></button></view>
+    <view class="upload-rating" wx:if="{{uploadField === 'rating'}}"><view><button wx:for="{{[1,2,3,4,5]}}" wx:key="*this" class="gem-heart {{uploadValue >= item ? '' : 'heart-muted'}}" bindtap="chooseUploadOption" data-value="{{item}}">♥</button></view><text>{{uploadValue >= 5 ? '非常喜欢' : uploadValue >= 4 ? '喜欢' : uploadValue >= 3 ? '还行' : '一般'}}</text></view>
+    <view class="upload-season-options" wx:if="{{uploadField === 'seasons'}}"><button wx:for="{{uploadSeasons}}" wx:key="name" bindtap="toggleUploadSeason" data-value="{{item.name}}" class="{{item.selected ? 'selected' : ''}}">{{item.label}}</button></view>
+    <input wx:if="{{uploadField === 'price' || uploadField === 'notes'}}" class="upload-property-input" placeholder="{{uploadField === 'price' ? '请输入价格' : '请输入备注'}}" value="{{uploadValue}}" bindinput="input" data-field="uploadValue" type="{{uploadField === 'price' ? 'digit' : 'text'}}" />
+    <view wx:if="{{uploadField === 'purchaseDate'}}">
+      <button class="purchase-date-value" bindtap="openPurchaseCalendar"><image src="{{asset}}calendar-dark.png" mode="aspectFit" /><text>{{uploadValue || '请选择日期'}}</text></button>
+      <view class="purchase-calendar" wx:if="{{purchaseCalendarOpen}}">
+        <view class="purchase-calendar-nav"><button bindtap="changePurchaseMonth" data-delta="-12" aria-label="上一年"><view class="ui-chevron left"></view><view class="ui-chevron left"></view></button><button bindtap="changePurchaseMonth" data-delta="-1" aria-label="上个月"><view class="ui-chevron left"></view></button><text>{{purchaseYear}} 年 {{purchaseMonth}} 月</text><button bindtap="changePurchaseMonth" data-delta="1" aria-label="下个月"><view class="ui-chevron"></view></button><button bindtap="changePurchaseMonth" data-delta="12" aria-label="下一年"><view class="ui-chevron"></view><view class="ui-chevron"></view></button></view>
+        <view class="purchase-calendar-grid"><text wx:for="{{['日','一','二','三','四','五','六']}}" wx:key="*this">{{item}}</text><button wx:for="{{purchaseDays}}" wx:key="key" bindtap="selectPurchaseDay" data-date="{{item.date}}" class="{{item.date === uploadValue ? 'selected' : ''}}" disabled="{{!item.date}}">{{item.day}}</button></view>
+      </view>
+    </view>
+    <view wx:if="{{uploadField === 'brand' || uploadField === 'fabric' || uploadField === 'size' || uploadField === 'tags' || uploadField === 'location'}}">
+      <view class="upload-option-input"><input data-field="uploadSearch" value="{{uploadSearch}}" bindinput="searchUploadOptions" placeholder="{{uploadField === 'brand' ? '搜索品牌名称' : uploadField === 'fabric' ? '请输入面料' : uploadField === 'size' ? '请输入尺码' : uploadField === 'tags' ? '请新建标签分组' : '请新建收纳位置'}}" /><button wx:if="{{uploadField !== 'brand'}}" bindtap="addUploadOption">＋</button></view>
+      <view wx:if="{{uploadField !== 'tags' && uploadField !== 'location'}}" class="upload-options-label">{{uploadField === 'tags' ? '我建的标签' : uploadField === 'location' ? '收纳位置' : '近期添加'}}</view>
+      <view wx:if="{{uploadField !== 'tags' && uploadField !== 'location'}}" class="upload-option-chips"><button wx:for="{{uploadRecent}}" wx:key="*this" data-value="{{item}}" bindtap="chooseUploadOption" class="{{uploadValue === item ? 'selected' : ''}}">{{item}}</button><button wx:if="{{uploadField === 'tags' || uploadField === 'location'}}" bindtap="openTagInput">＋</button></view>
+      <view wx:if="{{uploadField === 'tags' || uploadField === 'location'}}"><view wx:for="{{uploadGroups}}" wx:key="name" wx:for-item="group"><view class="upload-options-label">{{group.name}}</view><view class="upload-option-chips"><button wx:for="{{group.values}}" wx:key="*this" data-value="{{item}}" bindtap="chooseUploadOption" class="{{uploadValue === item ? 'selected' : ''}}">{{item}}</button><button bindtap="openTagInput" data-index="{{index}}">+</button></view></view></view>
+      <view wx:if="{{uploadField !== 'tags' && uploadField !== 'location'}}" class="upload-options-label">{{uploadField === 'brand' ? '热门' : '常用'}}</view>
+      <view class="upload-option-chips"><button wx:for="{{uploadChoices}}" wx:key="*this" data-value="{{item}}" bindtap="chooseUploadOption" class="{{uploadValue === item ? 'selected' : ''}}">{{item}}</button></view>
+    </view>
+    <button wx:if="{{uploadField !== 'category'}}" class="black-button upload-property-confirm" bindtap="confirmUploadField">确定</button>
+  </view>
+</view>
+<view class="upload-tag-overlay" wx:if="{{tagInputOpen}}"><view><text>输入标签内容</text><textarea placeholder="请输入名称" value="{{tagInput}}" bindinput="input" data-field="tagInput" maxlength="40"></textarea><view><button bindtap="closeTagInput">取消</button><button bindtap="saveTagInput">确认</button></view></view></view>

@@ -1,0 +1,58 @@
+{
+  "version": "1.1.0",
+  "modules": {
+    "brows": {
+      "name": "眉型",
+      "output": "details.browRecommendation",
+      "instruction": "说明推荐眉型、理由和三步整理方法，不重新判断眉毛检测结果。 此模块尚无已核对专业规则；不得把模型候选建议说成专业理论、最佳答案或脸型必然搭配。",
+      "evidenceStatus": "待补专业来源",
+      "outputMode": "fixed_rule"
+    }
+  },
+  "rules": [
+    {
+      "id": "brows-natural",
+      "module": "brows",
+      "enabled": false,
+      "priority": 20,
+      "sourceIds": [
+        "editorial"
+      ],
+      "when": {
+        "all": [
+          {
+            "field": "maintenance",
+            "op": "eq",
+            "value": "轻松打理"
+          },
+          {
+            "field": "brows",
+            "op": "in",
+            "value": [
+              "粗眉",
+              "平眉",
+              "标准眉"
+            ]
+          }
+        ]
+      },
+      "reason": "保留已有眉形，减少每天补画与修整。",
+      "advice": [
+        "优先整理杂毛，不为了脸型名称大幅改变眉形。"
+      ],
+      "set": {
+        "details.browRecommendation": {
+          "name": "自然眉",
+          "reason": "保留原有眉形，日常更好打理",
+          "steps": [
+            "梳顺眉毛，清理眉间杂毛",
+            "保留眉峰，不大幅削薄眉身",
+            "眉尾顺着原有方向收整"
+          ]
+        }
+      },
+      "disabledReason": "未取得直接支持这条具体推荐的专业资料，暂不参与知识匹配。",
+      "evidence": []
+    }
+  ]
+}

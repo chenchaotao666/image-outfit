@@ -1,0 +1,175 @@
+<view class="editor content-pad" wx:if="{{screen === 'editor'}}">
+  <view class="editor-top">
+    <button bindtap="openSheet" data-sheet="background">
+      <text class="palette-dot" style="background:{{background}}"></text>
+      背景颜色
+    </button>
+    <button class="black-button compact" bindtap="outfitNext">下一步</button>
+  </view>
+  <view class="look-canvas" style="background:{{background}}">
+    <view class="canvas-placeholder" wx:if="{{!layers.length}}">请选择下列单品开始搭配</view>
+    <view
+      wx:for="{{layers}}"
+      wx:key="id"
+      class="canvas-layer {{index === activeLayer ? 'active-layer' : ''}}"
+      style="left:{{item.x}}%;top:{{item.y}}%;width:{{item.width}}%;height:50%"
+      bindtap="selectLayer"
+      data-index="{{index}}"
+    >
+      <image src="{{item.image}}" mode="aspectFit" />
+      <view
+        class="drag-surface"
+        wx:if="{{index === activeLayer}}"
+        catchtouchstart="dragStart"
+        catchtouchmove="dragMove"
+        catchtouchend="dragEnd"
+      ></view>
+      <view class="layer-controls" wx:if="{{index === activeLayer}}">
+        <button class="layer-delete" catchtap="layerAction" data-action="delete">×</button>
+        <button class="layer-shrink" catchtap="layerAction" data-action="smaller">−</button>
+        <button class="layer-grow" catchtap="layerAction" data-action="larger">＋</button>
+      </view>
+    </view>
+    <text class="canvas-caption">{{caption}}</text>
+  </view>
+  <view class="editor-tools">
+    <button bindtap="layerAction" data-action="back">
+      <image src="{{asset}}editor-back.png" mode="aspectFit" />
+      置底
+    </button>
+    <button bindtap="layerAction" data-action="front">
+      <image src="{{asset}}editor-front.png" mode="aspectFit" />
+      置顶
+    </button>
+    <button bindtap="layerAction" data-action="down">
+      <image src="{{asset}}editor-down.png" mode="aspectFit" />
+      下移
+    </button>
+    <button bindtap="layerAction" data-action="up">
+      <image src="{{asset}}editor-up.png" mode="aspectFit" />
+      上移
+    </button>
+    <button bindtap="openSheet" data-sheet="caption">
+      <image src="{{asset}}editor-caption.png" mode="aspectFit" />
+      文字
+    </button>
+
+  </view>
+  <scroll-view class="editor-tray" scroll-x="{{true}}">
+    <button wx:for="{{outfitSelection}}" wx:key="id" bindtap="addLayer" data-id="{{item.id}}">
+      <image src="{{item.image}}" mode="aspectFit" />
+    </button>
+  </scroll-view>
+  <view class="editor-note">轻点单品添加 · 选中后拖动调整位置</view>
+</view>
+<view class="look-detail content-pad" wx:if="{{screen === 'look'}}">
+  <view class="look-paper">
+    <view class="look-author">
+      <view><image src="{{avatarImage}}" mode="aspectFill" /><text>{{state.profile.name}}</text></view>
+      <text>{{lookDate}}</text>
+      <button bindtap="deleteLook" aria-label="删除搭配">···</button>
+    </view>
+    <view class="saved-look-canvas" style="background:{{look.background}}">
+      <image
+        wx:for="{{look.layers}}"
+        wx:key="id"
+        src="{{item.image}}"
+        mode="aspectFit"
+        style="left:{{item.x}}%;top:{{item.y}}%;width:{{item.width}}%;height:50%"
+      />
+      <text class="canvas-caption">{{look.caption}}</text>
+    </view>
+    <view class="look-footer">
+      <text>{{look.name}}</text>
+      <text>推荐场合：{{look.occasion}}</text>
+    </view>
+  </view>
+  <view class="look-actions">
+    <button bindtap="remakeLook">
+      <image src="{{asset}}swap-dark.png" mode="aspectFit" />
+      重搭
+    </button>
+    <button bindtap="favoriteLook" aria-label="{{look.favorite ? '取消收藏' : '收藏'}}">
+      <image src="{{asset}}star-{{look.favorite ? 'mint' : 'dark'}}.png"  mode="aspectFit" />
+      {{look.favorite ? '已保存' : '保存'}}
+    </button>
+    <button bindtap="scheduleLook">
+      <image src="{{asset}}calendar-dark.png"  mode="aspectFit" />
+      行程
+    </button>
+  </view>
+</view>
+<view class="calendar-view content-pad {{calendarList ? 'calendar-list' : ''}}" wx:if="{{screen === 'calendar'}}">
+  <view class="calendar-controls" wx:if="{{!calendarList}}">
+    <button class="calendar-today" bindtap="initCalendar">今日</button>
+    <button bindtap="monthChange" data-delta="-1" aria-label="上个月"><view class="ui-chevron left"></view></button>
+    <picker mode="date" fields="month" value="{{year}}-{{month}}" bindchange="pickMonth"><view><text>{{year}}-{{month}}</text><view class="dropdown-triangle"></view></view></picker>
+    <button bindtap="monthChange" data-delta="1" aria-label="下个月"><view class="ui-chevron"></view></button>
+    <button bindtap="toggleCalendar" class="calendar-layout">
+      <image src="{{asset}}grid-dark.png"  mode="aspectFit" />
+    </button>
+  </view>
+  <view wx:if="{{!calendarList}}">
+    <view class="calendar-week">
+      <text>日</text>
+      <text>一</text>
+      <text>二</text>
+      <text>三</text>
+      <text>四</text>
+      <text>五</text>
+      <text>六</text>
+    </view>
+    <view class="calendar-grid">
+      <button
+        wx:for="{{days}}"
+        wx:key="key"
+        class="calendar-day {{item.date === selectedDate ? 'selected' : ''}}"
+        bindtap="selectDate"
+        data-date="{{item.date}}"
+      >
+        <text>{{item.day}}</text>
+        <view class="calendar-day-look" wx:if="{{item.look}}" style="background:{{item.look.background}}"><image wx:for="{{item.look.layers}}" wx:for-item="layer" wx:key="id" src="{{layer.image}}" mode="aspectFit" style="left:{{layer.x}}%;top:{{layer.y}}%;width:{{layer.width}}%;height:50%" /></view>
+      </button>
+    </view>
+  </view>
+  <view class="album-heading" wx:if="{{!calendarList}}">
+    <text>{{selectedDate}}</text>
+    <view class="calendar-actions"><button wx:if="{{!calendarEditing}}" class="calendar-add" bindtap="calendarAdd" aria-label="添加穿搭">＋</button><button bindtap="editCalendar" aria-label="{{calendarEditing ? '完成编辑' : '编辑穿搭记录'}}">{{calendarEditing ? '✓' : '···'}}</button></view>
+  </view>
+  <view wx:for="{{calendarEntries}}" wx:key="id" class="calendar-record">
+  <view wx:if="{{calendarList}}" class="calendar-record-date">{{item.date}}</view>
+  <view class="calendar-entry">
+    <view bindtap="openLook" data-id="{{item.lookId}}">
+      <view class="calendar-look" style="background:{{item.look.background}}"><image wx:for="{{item.look.layers}}" wx:for-item="layer" wx:key="id" src="{{layer.image}}" mode="aspectFit" style="left:{{layer.x}}%;top:{{layer.y}}%;width:{{layer.width}}%;height:50%" /></view>
+      <view class="calendar-entry-details">
+        <text>{{item.look.name}}</text>
+        <text class="subtle">{{item.date}} · {{item.look.occasion}}</text>
+      </view>
+    </view>
+    <button wx:if="{{calendarEditing}}" bindtap="removeCalendarEntry" data-id="{{item.id}}" aria-label="移除穿搭记录"><image src="{{asset}}trash-dark.png" mode="aspectFit" /></button>
+  </view>
+  </view>
+  <view wx:if="{{calendarList}}" class="calendar-list-tools"><button bindtap="toggleCalendar" aria-label="返回月历"><image src="{{asset}}calendar-dark.png" mode="aspectFit" /></button><button bindtap="openSheet" data-sheet="calendar-range" aria-label="筛选日期"><view class="filter-funnel"></view></button></view>
+  <view class="closet-empty short-empty" wx:if="{{!calendarEntries.length}}">
+    <image class="empty-icon" src="{{asset}}calendar-light.png"  mode="aspectFit" />
+    <view>为这一天，安排一套喜欢的穿搭</view>
+    <button class="outline-button" bindtap="calendarAdd">＋ 添加穿搭</button>
+  </view>
+</view>
+<view class="statistics content-pad" wx:if="{{screen === 'statistics'}}">
+  <view class="inline-tabs centered">
+    <button class="{{statsTab === '单品' ? 'active' : ''}}" bindtap="chooseFilter" data-field="statsTab" data-value="单品">单品</button>
+    <button class="{{statsTab === '搭配' ? 'active' : ''}}" bindtap="chooseFilter" data-field="statsTab" data-value="搭配">搭配</button>
+  </view>
+  <view class="statistics-card">
+    <view class="statistics-title">{{statsTab === '单品' ? '分类' : '场合'}}</view>
+    <view class="stats-chart"><view class="stats-ring" style="background:{{statsTab === '单品' ? itemGradient : occasionGradient}}"><view></view></view><view wx:for="{{statsTab === '单品' ? itemLabels : occasionLabels}}" wx:key="name" class="stats-percent {{item.right ? 'right' : 'left'}}" style="left:{{item.x}}%;top:{{item.y}}%;border-color:{{item.color}}">{{item.percent}}%</view></view>
+    <view class="stats-legend"><view wx:for="{{statsTab === '单品' ? itemLegend : occasionLegend}}" wx:key="name"><text class="legend-dot" style="background:{{item.color}}"></text><text>{{item.name}}</text></view></view>
+    <view wx:if="{{statsTab === '单品' ? !state.items.length : !state.looks.length}}" class="statistics-empty">暂无统计数据</view>
+  </view>
+  <view wx:if="{{statsTab === '单品'}}">
+    <view class="statistics-card"><view class="statistics-title">单品 TOP10</view><view class="stat-bar-row" wx:for="{{subcategoryRanking}}" wx:key="name"><text>{{item.name}}</text><view class="stat-bar-track"><view style="width:{{item.percent}}%;background:{{item.color}}"></view></view><text>{{item.count}} ({{item.percent}}%)</text></view></view>
+    <view class="statistics-card"><view class="statistics-title">单品颜色 TOP10</view><view class="stat-bar-row" wx:for="{{colorRanking}}" wx:key="name"><text>{{item.name}}</text><view class="stat-bar-track"><view style="width:{{item.percent}}%;background:{{item.color}}"></view></view><text>{{item.count}} ({{item.percent}}%)</text></view></view>
+    <view class="statistics-card"><view class="statistics-title">季节</view><view class="stat-bar-row" wx:for="{{seasonRanking}}" wx:key="name"><text>{{item.name}}</text><view class="stat-bar-track"><view style="width:{{item.percent}}%;background:{{item.color}}"></view></view><text>{{item.count}} ({{item.percent}}%)</text></view></view>
+  </view>
+</view>

@@ -1,0 +1,8 @@
+
+【格式修复】
+
+## 任务
+上次返回未通过JSON或结构校验。请重新输出一个完整JSON对象，不要Markdown代码块、解释前缀或外层report/data包装。quality、summary、face、body、style、color、seasonal、wardrobe、occasions、hair、warnings以及V2的details必须位于顶层；所有字符串正确转义，保持字段完整，说明简洁。
+
+## 内容保留
+只修复格式、缺失字段和类型错误。保留可追溯事实与有效结论，不为凑齐字段虚构依据。数值索引与解释必须一致。

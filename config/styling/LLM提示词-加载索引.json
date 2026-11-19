@@ -1,0 +1,56 @@
+{
+  "version": "report-prompts-6",
+  "description": "按顺序加载提示词。{{文件名.json}}及{{文件名.json.字段路径}}直接读取配置原文；用户、检测和运行结果变量见LLM提示词-变量定义.json。",
+  "system": "报告总则-LLM提示词.txt",
+  "output": "报告输出结构-LLM提示词.txt",
+  "providerSystem": "形象DNA/检测基础/Face++检测模式-LLM提示词.txt",
+  "details": [
+    "用户资料-LLM提示词.txt",
+    "报告分项结构-LLM提示词.txt",
+    "形象DNA/眉型推荐/眉型推荐-LLM提示词.txt",
+    "形象DNA/身材搭配/身材搭配-LLM提示词.txt",
+    "风格DNA/面部量感与曲直感/面部量感-LLM提示词.txt",
+    "风格DNA/面部量感与曲直感/曲直感-LLM提示词.txt",
+    "风格DNA/造型动静/造型动静-LLM提示词.txt",
+    "风格DNA/个人风格/个人风格-LLM提示词.txt",
+    "风格DNA/风格着装建议/风格着装建议-LLM提示词.txt",
+    "色彩DNA/面部色彩属性/面部色彩属性-LLM提示词.txt",
+    "色彩DNA/色彩搭配/配色推荐-LLM提示词.txt",
+    "形象DNA/眼镜推荐/眼镜推荐-LLM提示词.txt",
+    "发型/发型推荐/发型推荐-LLM提示词.txt",
+    "季节搭配/四季搭配/四季搭配-LLM提示词.txt",
+    "TPO场合形象/场合穿搭/场合穿搭-LLM提示词.txt",
+    "衣橱规划/衣橱分析/衣橱推荐-LLM提示词.txt",
+    "形象DNA/造型评分/造型评分-LLM提示词.txt",
+    "报告分项输出限制-LLM提示词.txt"
+  ],
+  "photoEvidence": [
+    "形象DNA/皮肤观察/皮肤观察-LLM提示词.txt",
+    "形象DNA/皮肤观察/局部证据-LLM提示词.txt"
+  ],
+  "providerDetails": "形象DNA/检测基础/Face++分项约束-LLM提示词.txt",
+  "repair": "报告格式修复-LLM提示词.txt",
+  "repairUser": "报告重试要求-LLM提示词.txt",
+  "task": "生成完整穿搭分析JSON报告",
+  "cropTemplate": "皮肤局部参考图：{{name}}；regionId={{id}}。与正脸图属于同一照片，非另一个人。清晰度信息见geometry.skinRegions。",
+  "parameters": {
+    "temperature": 0.3,
+    "repairTemperature": 0,
+    "maxTokens": 6000,
+    "v2MaxTokens": 10000
+  },
+  "judgmentInstruction": "volume、curvature按配置outputMode=llm_guided及levels进行造型参考判断，输出0至4档位和具体事实依据；只有相关信息不足时输出null，不能无条件留空。dynamics按检测特征与配置档位生成造型建议，不按偏好匹配。不得编造检测事实、权重、测量阈值或人格推论。",
+  "knowledgeInstruction": "这是项目编辑的搭配建议，不是检测标准。按适用条件使用，文案简短。不得改写检测分类、估算数值或编造科学来源。",
+  "designReferences": [
+    {
+      "title": "Anthropic — Prompting best practices",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+      "application": "清晰角色、明确输入边界、分节指令、输出合同及可验证检查。"
+    },
+    {
+      "title": "Google — Prompt design strategies",
+      "url": "https://ai.google.dev/gemini-api/docs/prompting-strategies",
+      "application": "任务、上下文、约束与响应格式分离；按实际任务测试迭代。"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "scope": "编辑制定的配色推荐，不是个人色彩诊断。色调只选择试穿方向，不推导性格、纯度或四季类型。",
+  "sourceIds": [
+    "usu-elements",
+    "usu-principles"
+  ],
+  "sourceScope": "文献支持颜色、视觉重点与协调原则；具体色板和色调对应方案为项目编辑规则，未经过个人色彩效果验证。",
+  "rules": [
+    {
+      "id": "hue-cool",
+      "hue": 2,
+      "palette": "cool",
+      "reason": "Face++ 返回照片肤色色调偏红，按产品参考映射推荐偏冷的配色试穿方案。",
+      "contentId": "hue-cool"
+    },
+    {
+      "id": "hue-warm",
+      "hue": 0,
+      "palette": "warm",
+      "reason": "Face++ 返回照片肤色色调偏黄，按产品参考映射推荐偏暖的配色试穿方案。",
+      "contentId": "hue-warm"
+    },
+    {
+      "id": "hue-neutral",
+      "hue": 1,
+      "palette": "neutral",
+      "reason": "Face++ 返回照片肤色色调中性，推荐冷暖均可尝试的基础配色方案。",
+      "contentId": "hue-neutral"
+    }
+  ],
+  "fallback": {
+    "id": "general-color",
+    "palette": "neutral",
+    "reason": "缺少可用的照片色调，展示通用搭配方案，不补造个人色彩类型。",
+    "contentId": "general-color"
+  }
+}

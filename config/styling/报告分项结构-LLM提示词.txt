@@ -1,0 +1,20 @@
+【报告分项输出结构】
+
+## 字段合同
+额外必须返回 details 对象，内容与前述报告一致；不编造或改写测量数字；已有数值可用于分析，界面测量值由程序直接显示。结构如下：
+{"features":[{"id":"brows","label":"眉部可见特点","observation":"照片依据","advice":"具体修饰建议"}],
+"volume":null,"curvature":null,"dynamics":null,"lightness":null,"chroma":null,"temperature":"unknown","styleIndex":null,
+"scaleEvidence":{"volume":"量感依据或缺失原因","curvature":"曲直依据或缺失原因","dynamics":"造型动静依据或缺失原因","lightness":"明度依据或缺失原因","chroma":"纯度依据或缺失原因","temperature":"冷暖依据或缺失原因"},
+"styleReason":"推荐该风格的检测特征与基础资料依据；不是人格判断",
+"glasses":[{"name":"镜框款式","reason":"适合原因","tier":"推荐"}],
+"browAdvice":"适合的眉型和整理方法",
+"browRecommendation":{"name":"具体推荐眉型名称","reason":"结合可见眉形、面部轮廓及已提供资料的推荐理由","steps":["眉头整理方法","眉峰整理方法","眉尾整理方法"]},
+"outfits":[{"season":"春","title":"套装名字","top":"上装","bottom":"下装","layer":"外套或无需外套","shoes":"鞋履","accessory":"配饰","reason":"为什么适合","colors":["#AABBCC","#DDEEFF"]}],
+"hairOptions":[{"name":"发型名","reason":"与脸型的关系","maintenance":"打理方法和适用条件"}]}
+features必须6项，id依次为brows,eyes,nose,lips,chin,skin。每项包含label、observation、advice，可选metricIds数组。
+Face++模式：label和observation遵循接口分项约束，不重新分类；皮肤结果由服务端填入，不要求模型另造skinConcerns。
+普通照片模式：label写简短的可见结论，不照抄占位名称；observation写可见依据及拍摄限制。皮肤按后续照片观察模块输出，不推断肤质或疾病病因。
+scaleEvidence六项都须提供非空文字，缺失时写具体缺失原因。stylingScore及普通照片模式专用皮肤字段的完整结构见对应模块，不得遗漏。
+
+## 占位值说明
+以上null与示例文字用于展示字段结构，不是要求所有结果为空。实际值由对应模块规则和本次数据决定，不照抄占位文案。

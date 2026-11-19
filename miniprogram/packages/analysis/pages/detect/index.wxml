@@ -1,0 +1,52 @@
+<view class="detect {{stage === 'analyzing' ? 'scanning' : ''}}">
+  <view wx:if="{{stage === 'bodyCapture'}}" class="body-camera-screen">
+    <camera wx:if="{{!cameraError}}" class="body-live-camera" device-position="{{cameraPosition}}" flash="off" resolution="high" bindinitdone="bodyCameraReady" binderror="bodyCameraError" bindstop="bodyCameraError"></camera>
+    <cover-image class="body-camera-guide" src="/assets/body-camera-outline.png"></cover-image>
+    <cover-view class="body-camera-back" bindtap="cancelBodyPhoto">‹</cover-view>
+    <cover-view class="body-camera-hint">头顶和双脚入镜，双臂略离身体</cover-view>
+    <cover-view wx:if="{{cameraError}}" class="body-camera-message">{{cameraError}}</cover-view>
+    <cover-view class="body-camera-controls">
+      <cover-view class="body-camera-option" bindtap="bodyAlbum"><cover-image class="body-camera-icon" src="/assets/body-camera-album.png"></cover-image><cover-view class="body-camera-label">相册</cover-view></cover-view>
+      <cover-view class="body-shutter" bindtap="takeBodyPhoto"><cover-image class="body-shutter-icon" src="/assets/body-camera-camera.png"></cover-image></cover-view>
+      <cover-view class="body-camera-option" bindtap="switchBodyCamera"><cover-image class="body-camera-icon" src="/assets/body-camera-switch.png"></cover-image><cover-view class="body-camera-label">切换</cover-view></cover-view>
+    </cover-view>
+  </view>
+  <view wx:if="{{stage === 'bodyConfirm'}}" class="body-confirm-screen"><image class="body-confirm-image" src="{{bodyCandidate}}" mode="aspectFit"/><view class="body-confirm-actions"><view>请确认头顶、双脚完整入镜</view><view class="row"><button class="secondary" bindtap="body">重新拍摄</button><button class="primary" bindtap="acceptBodyPhoto">使用照片</button></view><button class="back-link" bindtap="cancelBodyPhoto">返回</button></view></view>
+  <image wx:if="{{photo}}" class="photo-backdrop" src="{{photo}}" mode="aspectFill" />
+  <view wx:if="{{stage === 'photo'}}" class="capture-stage">
+    <view class="capture-hint">「请将您的脸部放在圆圈中，远一点效果更好哦」</view>
+    <view class="scan-ring"><view class="ring-middle"><view class="ring-inner"><view class="face-outline"></view></view></view></view>
+    <view class="capture-description">正脸 · 自然光 · 无遮挡</view>
+    <button class="primary choose-button" bindtap="choose" disabled="{{busy}}">{{busy ? '正在打开相册…' : '拍照 / 从相册选择'}}</button>
+    <view class="local-note">选择照片不会上传；照片检测前会征求授权</view>
+  </view>
+  <view wx:if="{{stage === 'confirm'}}" class="confirm-panel">
+    <view class="photo-tip">请确保面部完整、光线均匀，未使用美颜滤镜</view>
+    <view class="row"><button class="secondary" bindtap="choose">重拍</button><button class="primary" bindtap="confirmPhoto">确认照片</button></view>
+  </view>
+  <view wx:if="{{stage === 'profile'}}" class="profile-mask">
+    <view class="profile-sheet">
+      <view class="sheet-head"><view class="section-title">请输入并核对信息便于AI算法优化</view><view class="muted">请填写真实资料，让穿搭建议更适合你</view></view>
+      <view class="form-title">基本信息</view>
+      <view class="field"><text>性别</text><view class="gender"><button class="gender-option {{profile.gender === '男' ? 'selected' : ''}}" data-value="男" bindtap="gender"><text class="radio-dot"></text>男</button><button class="gender-option {{profile.gender === '女' ? 'selected' : ''}}" data-value="女" bindtap="gender"><text class="radio-dot"></text>女</button></view></view>
+      <view class="field face-age-field"><text>面部呈现年龄</text><text wx:if="{{ageStatus === 'done'}}" class="face-age-value">约 {{faceAge}} 岁</text><text wx:if="{{ageStatus === 'loading'}}" class="age-loading">识别中…</text><button wx:if="{{ageStatus !== 'done' && ageStatus !== 'loading'}}" class="age-retry" bindtap="detectFaceAge">{{ageStatus === 'failed' ? '重新识别' : '识别面部年龄'}}</button></view>
+      <view class="age-hint">{{ageStatus === 'failed' ? ageError : '照片估计结果受光线、角度影响，请另填实际年龄。'}}</view>
+      <view class="field"><text>实际年龄</text><input type="number" maxlength="3" placeholder="请输入年龄" value="{{profile.age}}" data-field="age" bindinput="input"/><text class="unit">岁</text></view>
+      <view class="field"><text>身高(cm)</text><input type="digit" maxlength="5" placeholder="请输入身高" value="{{profile.height}}" data-field="height" bindinput="input"/><text class="unit">cm</text></view>
+      <view class="field"><text>体重(斤)</text><input type="digit" maxlength="5" placeholder="请输入体重" value="{{profile.weight}}" data-field="weight" bindinput="input"/><text class="unit">斤</text></view>
+      <view class="error" wx:if="{{error}}">{{error}}</view>
+      <view class="profile-actions"><button class="secondary" bindtap="choose">重新上传</button><button class="primary" bindtap="submitProfile">下一步</button></view>
+    </view>
+  </view>
+  <view wx:if="{{stage === 'body'}}" class="body-modal">
+    <view class="body-card"><view class="muted">温馨提示</view><view class="section-title">提高检测准确度</view><view class="notice">单人正面站直，头顶和脚底完整入镜<text>
+</text>双臂略离身体，四周留白；不上传则按身高比例估算</view><image wx:if="{{bodyPhoto}}" src="{{bodyPhoto}}" mode="aspectFit" class="body-preview"/><view wx:else class="body-outline">♙</view><button class="primary" bindtap="body">{{bodyPhoto ? '重新选择全身照' : '上传（正面全身照）'}}</button><button class="primary start-analysis" bindtap="analyze">{{bodyPhoto ? '开始 AI 分析' : '跳过全身照，开始 AI 分析'}}</button><button class="back-link" bindtap="demo">仅体验示例报告（不上传）</button><view class="demo-disclosure">照片由 Face++ 检测面部、皮肤与人体关键点，DeepSeek 生成穿搭建议</view><button class="back-link" bindtap="back">修改基本信息</button></view>
+  </view>
+  <view wx:if="{{stage === 'analyzing'}}" class="analyzing-panel {{real && analysisStage === 'styling' ? 'color-phase' : ''}}">
+    <view class="scan-heading">YOCHUR AI形象分析<view class="eyebrow">IMAGE · STYLE · COLOR</view></view>
+    <view class="scan-line"></view><view class="scan-corners"></view>
+    <view class="scan-bottom"><view wx:if="{{!real}}" class="scan-percentage">{{progress}}<text>%</text></view><view>{{scanText}}</view><view wx:if="{{!real}}" class="progress-track"><view style="width:{{progress}}%"></view></view><button wx:if="{{real}}" class="cancel-analysis" bindtap="cancelAnalysis">取消分析</button><view class="demo-label">{{real ? '任务将在后台继续，可返回检测页查看' : '示例分析演示'}}</view></view>
+  </view>
+  <view wx:if="{{error && stage !== 'profile'}}" class="floating-error">{{error}}</view>
+  <view wx:if="{{notice}}" class="modal-shade" catchtouchmove="noop"><view class="sheet precautions"><view class="sheet-head"><view class="title">AI检测 注意事项</view><view class="subtitle">AI detection precautions</view></view><view class="precautions-copy">感谢您选择「AI个人形象穿搭检测」，为确保您高效准确地完成体验，请仔细阅读以下事项：</view><view class="precaution-item">1. 准备「正脸照」及「全身照」各一张；</view><view class="precaution-item">2. 建议即时拍摄，避免美颜、浓妆及滤镜；</view><view class="precaution-item">3. 选择光线良好的环境，保持自然站姿；</view><view class="precaution-item">4. 准确填写个人年龄、身高和体重。</view><view class="privacy-note">真实分析在授权后将正脸照和所选全身照发送给 Face++，照片和资料发送给 DeepSeek；示例体验不上传照片。真实分析报告保存在账号中，标注照片仅保存在本机。请仅选择你有权使用的照片。</view><button class="primary" bindtap="acknowledge">我已阅读，开始体验</button></view></view>
+</view>

@@ -1,0 +1,13 @@
+<view class="home">
+  <image class="hero" src="/assets/home-hero.jpg" mode="aspectFill" />
+  <view class="hero-shade"></view>
+  <view class="brand" style="top:{{top}}px"><text class="brand-mark">Y</text><text>AI 穿搭分析<text class="brand-en">IMAGE & STYLE</text></text></view>
+  <button class="wardrobe-entry" bindtap="wardrobe"><text class="entry-symbol">▥</text><view><text>My衣橱管家</text><text class="entry-subtitle">收纳衣橱 · 记录穿搭</text></view><text>›</text></button>
+  <view class="home-actions">
+  <button class="bangda-home-link" bindtap="bangda"><text>✧</text> 帮搭 · 发现穿搭灵感 <text>→</text></button>
+    <view class="ticker">发现适合你的风格，让穿搭更懂你</view>
+    <button class="camera-button" bindtap="start" aria-label="开始AI穿搭检测"><view class="camera-icon"><view class="camera-lens"></view></view></button>
+    <view class="home-caption">开启你的形象探索</view>
+    <button class="sample-link" bindtap="sample">查看示例报告 <text>→</text></button>
+  </view>
+</view>

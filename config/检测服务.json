@@ -1,0 +1,7 @@
+{
+  "faceMock": {
+    "enabled": true,
+    "dataFile": "mock/Face检测数据.json",
+    "description": "开启时回放已保存的Face++脸部及皮肤数据，面部年龄仅使用Mock文件中的faceAge；人体检测跳过，不请求任何Face++接口。关闭后恢复真实检测。LLM仍正常调用。修改开关后重启服务。"
+  }
+}

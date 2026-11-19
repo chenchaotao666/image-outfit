@@ -1,0 +1,194 @@
+/* Inspiration and profile */
+.inspiration-view {
+  min-height: calc(100vh - 260rpx);
+  background: linear-gradient(140deg, #fff, #f7f7f7);
+  padding-top: 38rpx;
+}
+.inspiration-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22rpx;
+}
+.album-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24rpx 0;
+  font-size: 25rpx;
+  font-weight: 600;
+}
+.album-heading > text {
+  font-size: 22rpx;
+  color: #999;
+  font-weight: 400;
+}
+.album-heading > button {
+  font-size: 34rpx;
+  color: #999;
+  min-width: 42rpx;
+}
+.look-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20rpx;
+}
+.look-grid.list-layout {
+  grid-template-columns: 1fr;
+}
+.mini-look {
+  position: relative;
+  height: 280rpx;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 9rpx 20rpx #0001;
+}
+.mini-look image,
+.saved-look-canvas > image {
+  position: absolute;
+}
+.look-preview > text {
+  display: block;
+  font-size: 23rpx;
+  color: #8d9491;
+  padding: 12rpx;
+}
+.inspiration-image image {
+  width: 100%;
+  height: 260rpx;
+  background: #fff;
+  box-shadow: 0 9rpx 20rpx #0001;
+}
+.profile-cover {
+  height: 450rpx;
+  position: relative;
+  overflow: hidden;
+}
+.profile-cover > image {
+  width: 100%;
+  height: 100%;
+  object-position: center 35%;
+}
+.profile-curve {
+  position: absolute;
+  width: 130%;
+  height: 180rpx;
+  bottom: -107rpx;
+  left: -10%;
+  border-radius: 50%;
+  background: #f6f6f6;
+  transform: rotate(-12deg);
+}
+.closet-profile {
+  position: relative;
+  margin: -88rpx 48rpx 0;
+  display: flex;
+  align-items: center;
+  gap: 36rpx;
+}
+.profile-avatar {
+  position: relative;
+  width: 150rpx;
+  height: 150rpx;
+  border: 3rpx solid #fff;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.profile-avatar > image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.profile-avatar > view {
+  position: absolute;
+  right: -2rpx;
+  bottom: 2rpx;
+  border-radius: 50%;
+  padding: 7rpx;
+  background: #fff;
+}
+.profile-avatar > view > image {
+  width: 24rpx;
+  height: 24rpx;
+}
+.profile-name {
+  font-size: 32rpx;
+  font-weight: 600 !important;
+  text-align: left;
+}
+.profile-meta {
+  display: flex;
+  gap: 17rpx;
+  font-size: 21rpx;
+  color: #a2a6a6;
+  margin-top: 12rpx;
+}
+.profile-meta > text:first-child {
+  background: #c9d0e0;
+  border-radius: 12rpx;
+  color: #7a8499;
+  padding: 0 10rpx;
+}
+.mine-body {
+  padding: 64rpx 36rpx 0;
+}
+.membership {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx 28rpx;
+  background: linear-gradient(110deg, #dce1ee, #a8b2cb);
+  color: #808da5;
+  border: 9rpx solid #c4ccdf;
+  border-bottom-left-radius: 50% 16rpx;
+  border-bottom-right-radius: 50% 16rpx;
+  font-size: 26rpx;
+}
+.membership button {
+  font-size: 23rpx;
+  padding: 4rpx 17rpx;
+  background: linear-gradient(120deg, #ffe7ae, #e9bd77);
+  color: #92703a;
+}
+.mine-shortcuts {
+  display: flex;
+  justify-content: space-between;
+  padding: 28rpx 6rpx;
+}
+.mine-shortcuts > button {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10rpx;
+  font-size: 22rpx;
+}
+.mine-shortcuts image {
+  width: 38rpx;
+  height: 38rpx;
+}
+.closet-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 22rpx 30rpx;
+  margin: 0 0 52rpx;
+  font-size: 26rpx;
+}
+.gold-number {
+  color: #f2aa44;
+  font-weight: 600;
+}
+.closet-summary button {
+  font-size: 24rpx;
+}
+.mine-body .list-row {
+  min-height: 110rpx;
+  font-size: 26rpx;
+}
+.version-label {
+  text-align: center;
+  color: #b6b9ba;
+  font-size: 22rpx;
+  padding: 16rpx 0 0;
+}

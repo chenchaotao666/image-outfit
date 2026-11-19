@@ -1,0 +1,107 @@
+.screen-upload { background:linear-gradient(115deg,#fff,#fafafa,#fff); padding-bottom:180rpx; }
+.screen-upload .closet-nav { background:#ffffffeb; }
+.upload-form { padding:0 40rpx; }
+.checkerboard { background-color:#fff; background-image:linear-gradient(45deg,#ddd 25%,transparent 25%),linear-gradient(-45deg,#ddd 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ddd 75%),linear-gradient(-45deg,transparent 75%,#ddd 75%);background-size:48rpx 48rpx;background-position:0 0,0 24rpx,24rpx -24rpx,-24rpx 0; }
+.garment-photo { position:relative; width:600rpx;height:600rpx;margin:145rpx auto 80rpx;box-shadow:0 30rpx 45rpx #0000000d; }
+.garment-photo .upload-preview { width:100%;height:100%;background:transparent;margin:0; }
+.photo-edit-trigger { position:absolute;right:0;top:0;width:100rpx;height:100rpx;background:linear-gradient(120deg,#6acbdf,#9bf1c6);display:flex;align-items:center;justify-content:center; }
+.photo-edit-trigger image {width:36rpx;height:36rpx;transform:rotate(-25deg);}
+.magic-wand {width:11rpx;height:42rpx;background:#132c32;transform:rotate(-42deg);position:relative;}
+.magic-wand:before {content:'';position:absolute;top:8rpx;left:0;right:0;height:5rpx;background:#8dded4;}
+.magic-wand:after {content:'✦';position:absolute;left:20rpx;top:-18rpx;font-size:24rpx;color:#132c32;}
+.photo-edit-trigger>.magic-star {position:absolute;left:26rpx;bottom:22rpx;font-size:20rpx;color:#132c32;}
+.photo-edit-menu {position:absolute;right:0;top:115rpx;z-index:10;background:white;padding:15rpx 20rpx;box-shadow:0 15rpx 30rpx #0002;}
+.photo-edit-menu button {font-size:26rpx;padding:15rpx 0;}
+.upload-section-heading {display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:36rpx;letter-spacing:5rpx;margin-bottom:60rpx;}
+.upload-section-heading text:last-child {font-size:33rpx;letter-spacing:3rpx;}
+.upload-field {display:flex;align-items:center;justify-content:space-between;width:100%;min-height:80rpx;font-size:28rpx;gap:30rpx;}
+.upload-field>text:first-child {color:#aaa;flex-shrink:0;}
+.upload-field>text:last-child {text-align:right;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap!important;}
+.upload-field>view {display:flex;align-items:center;gap:9rpx;}
+.upload-color-dot {display:inline-block;width:30rpx;height:30rpx;border-radius:50%;margin-right:12rpx;}
+.gem-heart {color:#85d7ce;font-size:35rpx;text-shadow:2rpx 2rpx #b6efea;}
+.upload-more {width:100%;display:flex;align-items:center;justify-content:center;gap:20rpx;font-size:27rpx;padding:20rpx 0;}
+.upload-more text {font-size:27rpx;line-height:1.4;}
+.upload-save-actions {position:fixed;bottom:0;left:0;right:0;display:flex;gap:25rpx;padding:25rpx 40rpx calc(76rpx + env(safe-area-inset-bottom));background:linear-gradient(#ffffffd9,#fff);z-index:35;}
+.upload-save-actions button {height:95rpx;background:#333;color:#fff;display:flex;align-items:center;justify-content:center;font-size:30rpx;font-weight:600;}
+.upload-save-actions button:first-child {width:95rpx;flex-shrink:0;}
+.upload-save-actions button:last-child {flex:1;}
+.upload-save-actions image {width:38rpx;height:38rpx;}
+.upload-field-overlay {position:fixed;inset:0;background:#0008;z-index:85;display:flex;align-items:flex-end;}
+.upload-property-sheet {width:100%;background:#fff;border-top:6rpx solid #94e1d3;padding:35rpx 40rpx calc(75rpx + env(safe-area-inset-bottom));max-height:85vh;overflow:auto;}
+.upload-property-title {display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:29rpx; margin-bottom:85rpx;}
+.upload-property-title button {font-size:38rpx;}
+.upload-property-confirm {margin-top:80rpx;min-height:95rpx;font-weight:600!important;font-size:30rpx;}
+.upload-property-input,.upload-option-input input {height:80rpx;background:#f5f5f5!important;padding:20rpx 25rpx;font-size:27rpx;box-sizing:border-box;}
+.upload-property-input {width:100%;}
+.upload-color-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:58rpx 20rpx;padding:0 25rpx 40rpx;}
+.upload-color-grid button {display:flex;flex-direction:column;align-items:center;gap:25rpx;color:#aaa;font-size:26rpx;}
+.upload-color-grid button>view {width:62rpx;height:62rpx;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;border:1rpx solid #eee;}
+.upload-color-grid button>view>text {font-size:35rpx;}
+.upload-rating {text-align:center;color:#aaa;}
+.upload-rating>view {display:flex;justify-content:center;gap:22rpx;margin-bottom:15rpx;}
+.upload-rating .gem-heart {font-size:64rpx;line-height:1;}
+.heart-muted {color:#ddd;text-shadow:none;}
+.upload-season-options {display:flex;gap:40rpx;}
+.upload-season-options button {background:#f5f5f5;flex:1;padding:12rpx 0;color:#aaa;font-size:28rpx;}
+.upload-season-options .selected,.upload-option-chips .selected {background:linear-gradient(110deg,#68c9df,#9debc9);color:#487e7e;}
+.property-rating .upload-property-title,.property-seasons .upload-property-title {margin-bottom:55rpx;}
+.property-category {padding-bottom:20rpx;}
+.property-category .upload-property-title {margin-bottom:30rpx;}
+.upload-category-list {height:calc(80vh - 140rpx);}
+.upload-category-parent {display:flex;align-items:center;justify-content:space-between;min-height:75rpx;}
+.upload-category-parent>button:first-child {flex:1;text-align:left;}
+.upload-category-child {width:100%;padding-left:25rpx;display:flex;justify-content:space-between;align-items:center;min-height:75rpx;color:#999;font-size:27rpx;}
+.property-radio {width:26rpx;height:26rpx;border:4rpx solid #e8e8e8;border-radius:50%;display:block;}
+.property-radio.selected {border:8rpx solid #333;}
+.upload-option-input {display:flex;gap:20rpx;}
+.upload-option-input input {flex:1;min-width:0;}
+.upload-option-input>button {width:80rpx;background:linear-gradient(120deg,#6dcce0,#9ce9c8);font-size:40rpx;}
+.upload-options-label {font-size:28rpx;margin:75rpx 0 45rpx;}
+.upload-option-chips {display:flex;flex-wrap:wrap;gap:25rpx;}
+.upload-option-chips button {background:#f5f5f5;color:#aaa;padding:10rpx 27rpx;font-size:26rpx;}
+.purchase-date-value {display:inline-block;background:#f5f5f5;padding:14rpx 20rpx;color:#999;font-size:27rpx;}
+.upload-tag-overlay {position:fixed;inset:0;z-index:95;background:#0003;display:flex;align-items:center;justify-content:center;}
+.upload-tag-overlay>view {background:linear-gradient(120deg,#fff 60%,#d9f7f2);width:640rpx;padding:35rpx 60rpx 0;text-align:center;}
+.upload-tag-overlay textarea {width:100%;height:180rpx;text-align:left;font-size:27rpx;background:#f5f5f5;padding:25rpx;margin:35rpx 0 80rpx;box-sizing:border-box;}
+.upload-tag-overlay>view>view {display:flex;background:white;margin:0 -60rpx;}
+.upload-tag-overlay button {width:50%;height:100rpx;font-size:28rpx;border:1rpx solid #f5f5f5;}
+.screen-photo-editor {background:#666;padding:0;min-height:100vh;}
+.screen-photo-editor .closet-nav,.screen-photo-editor .nav-spacer {display:none;}
+.upload-photo-editor {min-height:100vh;background:#666;color:white;}
+.photo-editor-stage {padding:250rpx 30rpx 340rpx;}
+.photo-editor-heading {display:flex;align-items:center;justify-content:space-between;margin-bottom:30rpx;}
+.photo-editor-heading>button {font-size:54rpx;font-weight:200;line-height:1;}
+.photo-editor-heading>view {display:flex;gap:15rpx;}
+.photo-editor-heading>view>button {background:#999;padding:12rpx 16rpx;font-size:27rpx;font-weight:600;border-radius:6rpx;position:relative;}
+.photo-editor-heading>view>button>text {position:absolute;right:-10rpx;top:-17rpx;font-size:17rpx;background:#233c3d;border-radius:50%;width:30rpx;height:30rpx;}
+.photo-editor-board {width:690rpx;height:690rpx;position:relative;overflow:hidden;touch-action:none;}
+.photo-editor-board>image {width:100%;height:100%;pointer-events:none;}
+.photo-editor-hint {text-align:center;font-size:28rpx;margin-top:20rpx;}
+.photo-editor-hint>text {display:block;font-size:20rpx;}
+.photo-editor-footer {position:fixed;bottom:0;left:0;right:0;background:#111;padding:30rpx 30rpx calc(70rpx + env(safe-area-inset-bottom));}
+.photo-transform-tools {display:flex;justify-content:space-between;margin-bottom:30rpx;}
+.photo-transform-tools>button {display:flex;flex:1;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:14rpx;font-size:23rpx;color:white;line-height:1.4;}
+.photo-transform-tools>button>image {display:block;width:48rpx;height:48rpx;flex-shrink:0;}
+.photo-transform-tools>button>text {white-space:nowrap;}
+.purchase-date-value {display:inline-flex;align-items:center;gap:18rpx;}
+.purchase-date-value>image {width:30rpx;height:30rpx;opacity:.5;}
+.purchase-calendar {margin:24rpx 0;background:#fafafa;padding:16rpx;}
+.purchase-calendar-nav {display:flex;align-items:center;justify-content:space-between;}
+.purchase-calendar-nav>button {width:64rpx;height:64rpx;font-size:36rpx;}
+.purchase-calendar-grid {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));text-align:center;}
+.purchase-calendar-grid>text,.purchase-calendar-grid>button {height:64rpx;line-height:64rpx;font-size:25rpx;}
+.purchase-calendar-grid>text {color:#999;}
+.purchase-calendar-grid>.selected {background:linear-gradient(110deg,#67cbe2,#9af0c5);}
+.tool-symbol {font-size:32rpx;line-height:40rpx;height:40rpx;}
+.tool-zoom {width:32rpx;height:32rpx;border:2rpx solid white;border-radius:50%;line-height:26rpx;font-size:26rpx;margin-bottom:8rpx;}
+.vertical-flip {transform:rotate(90deg);}
+.photo-confirm {width:100%;height:95rpx;color:white;background:#00bdd1;border-radius:8rpx;font-size:32rpx;font-weight:600!important;}
+.upload-export-canvas {position:fixed;left:-2000px;top:0;pointer-events:none;}
+.fast-upload-switch {display:flex;align-items:center;gap:12rpx;color:#aaa;font-size:23rpx;}
+.fast-upload-switch>view {width:72rpx;height:40rpx;background:#aaa;border-radius:25rpx;padding:3rpx;}
+.fast-upload-switch>view>view {width:34rpx;height:34rpx;border-radius:50%;background:white;}
+.fast-upload-switch>.enabled {background:#85dbcd;}
+.fast-upload-switch>.enabled>view {margin-left:32rpx;}
+.property-fabric .upload-option-chips,.property-size .upload-option-chips {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:25rpx;}
+.property-fabric .upload-option-chips button,.property-size .upload-option-chips button {padding:10rpx 5rpx;}

@@ -1,0 +1,13 @@
+.video-tools/
+/models/vision/*.onnx
+/models/vision/*.download
+__pycache__/
+node_modules/
+/server/data/
+project.private.config.json
+evaluation/
+current-wechat.png
+*.log
+.env
+.env.*
+!.env.example

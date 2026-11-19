@@ -1,0 +1,17 @@
+{
+  "source": "https://www.faceplusplus.com.cn/facial-features/#demo",
+  "bundle": "https://cdn.faceplusplus.com.cn/mc-official/demo/appv3.16666c2aea75d448d61b.js",
+  "date": "2026-11-15",
+  "assets": {
+    "thirds": 307,
+    "fiveEyes": 308,
+    "triangle": 309,
+    "outline": 310,
+    "chin": 311,
+    "brows": 312,
+    "eyes": 313,
+    "nose": 314,
+    "lips": 315
+  },
+  "method": "Original embedded PNG bytes, without resizing or redrawing"
+}

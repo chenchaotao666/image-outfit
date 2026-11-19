@@ -1,0 +1,134 @@
+{
+  "version": "2.0.0",
+  "description": "基于真实检测特征，由LLM按五档描述进行造型参考判断；档位属于产品造型经验规则，不是Face++测量结果或经科学验证的分类标准。",
+  "dimensions": [
+    {
+      "id": "volume",
+      "ruleId": "volume-evidence-required",
+      "sourceIds": [
+        "usu-principles",
+        "kaotype-official"
+      ],
+      "guidelineId": "volume-is-not-a-measured-standard",
+      "inputFields": [
+        "face",
+        "brows",
+        "eyes",
+        "nose",
+        "lips",
+        "chin"
+      ],
+      "logic": "结合脸部比例及眉、眼、鼻、唇等相对尺寸判断视觉分量。综合多项特征，说明主导特征与不同方向的特征；不把粗眉、大眼中任意单项直接作为整体档位。",
+      "classificationStatus": "styling_reference",
+      "reason": "现有信息还不足以形成量感倾向，请补充能显示五官相对比例的清晰正脸资料。",
+      "recommendation": "先比较合身与略宽松的外套，结合肩线、衣长和活动空间选择。",
+      "limits": "粗眉、大眼或宽鼻不单独等于大量感；面部量感不能决定衣服尺码和松量。",
+      "outputMode": "llm_guided",
+      "heading": "你的面部量感为",
+      "garmentTitle": "可以尝试的服装廓形",
+      "evidenceRequirement": "引用本次实际输入的特征或指标，解释它们如何支持档位；对于冲突特征说明取舍。可给出倾向判断，不得编造观察或阈值，也不得仅因规则不是科学测量标准而一律返回null。若缺少与本维度相关的信息或无法形成合理倾向，返回null并说明具体缺少什么。",
+      "levels": [
+        {
+          "value": 0,
+          "label": "大量感",
+          "criterion": "多个五官相对突出，整体视觉分量明显较强",
+          "garmentLabel": "大廓形",
+          "recommendation": "试穿肩线清晰、有结构感的外套，用一处较醒目的细节呼应视觉分量，尺码仍以合身为准。"
+        },
+        {
+          "value": 1,
+          "label": "中大量感",
+          "criterion": "突出特征多于轻盈特征，整体偏有分量",
+          "garmentLabel": "中大廓形",
+          "recommendation": "选择有一定结构、略有松量的外套，内搭保持简洁，重点比较肩线和衣长。"
+        },
+        {
+          "value": 2,
+          "label": "中量感",
+          "criterion": "大小与轻重特征有明确混合，整体分量适中；不得作为缺数据默认值",
+          "garmentLabel": "中廓形",
+          "recommendation": "从合身肩线、中等厚度面料开始，用适度细节保持整体协调。"
+        },
+        {
+          "value": 3,
+          "label": "中小量感",
+          "criterion": "细小或轻盈特征占主导，仍有部分突出特征",
+          "garmentLabel": "中小廓形",
+          "recommendation": "试穿轻结构外套与细腻面料，减少厚重堆叠，保留舒适活动空间。"
+        },
+        {
+          "value": 4,
+          "label": "小量感",
+          "criterion": "多个五官与轮廓特征共同呈现精细、轻盈观感",
+          "garmentLabel": "小廓形",
+          "recommendation": "选择轻盈面料和简洁轮廓，用精细配饰点缀，不必刻意穿紧身或小尺码。"
+        }
+      ],
+      "explanationTemplate": "结合本次检测特征，你的{dimension}偏向「{label}」。{evidence}"
+    },
+    {
+      "id": "curvature",
+      "ruleId": "curvature-evidence-required",
+      "sourceIds": [
+        "usu-elements",
+        "kaotype-official"
+      ],
+      "guidelineId": "separate-observation-from-advice",
+      "inputFields": [
+        "face",
+        "brows",
+        "eyes",
+        "nose",
+        "lips",
+        "chin"
+      ],
+      "logic": "结合脸部轮廓转折、下颌与下巴形态及可用的五官线条信息判断直曲。分类能支持的局部特征可以参与参考判断，但粗眉不等于直眉、大眼不等于圆眼；区分尺寸与形状。",
+      "classificationStatus": "styling_reference",
+      "reason": "现有信息还不足以形成曲直倾向，请补充能显示轮廓转折和五官线条的清晰正脸资料。",
+      "recommendation": "可以分别试穿清晰领口与柔和领口，结合实际效果和喜好选择。",
+      "limits": "公开形象咨询方法支持参考轮廓和五官，但没有验证本产品的五档阈值或权重。",
+      "outputMode": "llm_guided",
+      "heading": "你的面部曲直感为",
+      "garmentTitle": "可以尝试的服装线条",
+      "evidenceRequirement": "引用本次实际输入的特征或指标，解释它们如何支持档位；对于冲突特征说明取舍。可给出倾向判断，不得编造观察或阈值，也不得仅因规则不是科学测量标准而一律返回null。若缺少与本维度相关的信息或无法形成合理倾向，返回null并说明具体缺少什么。",
+      "levels": [
+        {
+          "value": 0,
+          "label": "直线感",
+          "criterion": "多处轮廓转折及五官线条以清晰直线、棱角为主",
+          "garmentLabel": "直线感",
+          "recommendation": "用清晰领口、直线门襟和利落剪裁建立轮廓，配柔软内搭平衡。"
+        },
+        {
+          "value": 1,
+          "label": "中偏直",
+          "criterion": "清晰转折和直向线条较多，兼有柔和过渡",
+          "garmentLabel": "中偏直",
+          "recommendation": "以衬衫领、简洁门襟为主，加入少量圆润配饰或柔软面料。"
+        },
+        {
+          "value": 2,
+          "label": "直曲居中",
+          "criterion": "明确存在直线与曲线特征并存，整体相对均衡；不得作为缺数据默认值",
+          "garmentLabel": "直曲居中",
+          "recommendation": "可以用清晰领口搭配柔软面料，或直线外套搭配圆领内搭。"
+        },
+        {
+          "value": 3,
+          "label": "中偏曲",
+          "criterion": "圆润弧线和柔和过渡较多，兼有清晰转折",
+          "garmentLabel": "中偏曲",
+          "recommendation": "优先尝试柔和领口、适度垂坠面料，保留简洁肩线与门襟。"
+        },
+        {
+          "value": 4,
+          "label": "曲线感",
+          "criterion": "多处轮廓与五官线条共同呈现圆润流畅观感",
+          "garmentLabel": "曲线感",
+          "recommendation": "试穿圆领、弧形细节和柔和垂坠面料，以合身肩线保持整体利落。"
+        }
+      ],
+      "explanationTemplate": "结合本次检测特征，你的{dimension}偏向「{label}」。{evidence}"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+<view class="upload-tutorial" wx:if="{{screen === 'tutorial'}}">
+  <view class="tutorial-capsule" bindtap="tutorialNext">
+    <image
+      class="tutorial-photo"
+      src="{{asset}}{{tutorialStep === 0 ? 'tutorial' : tutorialStep === 1 ? 'tutorial-flat' : 'tutorial-room'}}.jpg"
+      mode="aspectFit"
+    />
+    <text class="tutorial-number">{{tutorialStep + 1}}</text>
+    <view class="tutorial-copy">
+      {{tutorialStep === 0 ? '选择一处纯色平整（如床单）背景，颜色不要与衣服色相近，以免影响抠图效果' : tutorialStep === 1 ? '单件服饰去掉衣架，平铺在背景' : '尽可能正上方拍照'}}
+    </view>
+    <view class="tutorial-dots">
+      <text class="{{tutorialStep === 0 ? 'active' : ''}}"></text>
+      <text class="{{tutorialStep === 1 ? 'active' : ''}}"></text>
+      <text class="{{tutorialStep === 2 ? 'active' : ''}}"></text>
+    </view>
+  </view>
+  <view class="tutorial-en">Upload tutorial</view>
+  <button class="black-button" bindtap="upload">上传服饰</button>
+</view>
+<include src="upload-editor.wxml" />

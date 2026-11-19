@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "cover": {
+    "src": "/assets/style-guide/reference.png",
+    "width": 620,
+    "top": 520,
+    "height": 760,
+    "gender": "男",
+    "enabled": true,
+    "source": "小程序参考/推荐/风格解析.png",
+    "rights": "reference_only",
+    "region": true
+  },
+  "images": [
+    {
+      "id": "look-1",
+      "src": "/assets/style-guide/reference.png",
+      "width": 620,
+      "top": 2660,
+      "height": 530,
+      "gender": "男",
+      "enabled": true,
+      "source": "小程序参考/推荐/风格解析.png",
+      "rights": "reference_only",
+      "region": true
+    },
+    {
+      "id": "look-2",
+      "src": "/assets/style-guide/reference.png",
+      "width": 620,
+      "top": 3800,
+      "height": 550,
+      "gender": "男",
+      "enabled": true,
+      "source": "小程序参考/推荐/风格解析.png",
+      "rights": "reference_only",
+      "region": true
+    },
+    {
+      "id": "look-3",
+      "src": "/assets/style-guide/reference.png",
+      "width": 620,
+      "top": 4910,
+      "height": 530,
+      "gender": "男",
+      "enabled": true,
+      "source": "小程序参考/推荐/风格解析.png",
+      "rights": "reference_only",
+      "region": true
+    },
+    {
+      "id": "look-4",
+      "src": "/assets/style-guide/reference.png",
+      "width": 620,
+      "top": 6010,
+      "height": 530,
+      "gender": "男",
+      "enabled": true,
+      "source": "小程序参考/推荐/风格解析.png",
+      "rights": "reference_only",
+      "region": true
+    },
+    {
+      "id": "look-5",
+      "src": "/assets/style-guide/reference.png",
+      "width": 620,
+      "top": 7180,
+      "height": 540,
+      "gender": "男",
+      "enabled": true,
+      "source": "小程序参考/推荐/风格解析.png",
+      "rights": "reference_only",
+      "region": true
+    },
+    {
+      "id": "look-6",
+      "src": "/assets/style-guide/reference.png",
+      "width": 620,
+      "top": 8340,
+      "height": 530,
+      "gender": "男",
+      "enabled": true,
+      "source": "小程序参考/推荐/风格解析.png",
+      "rights": "reference_only",
+      "region": true
+    }
+  ],
+  "description": "已有素材以region方式显示用户参考图中的服装区域，不修改原图。新增独立图片时填写src、gender、enabled、source、rights即可，省略region及区域尺寸；展示规则通过imageId引用图片。"
+}

@@ -1,0 +1,79 @@
+<view class="closet-mine" wx:if="{{!screen && tab === 'mine'}}">
+  <view class="profile-cover">
+    <image src="{{skinImage}}" mode="aspectFill" />
+    <view class="profile-curve"></view>
+  </view>
+  <view class="closet-profile">
+    <button class="profile-avatar" bindtap="editProfile">
+      <image src="{{avatarImage}}" mode="aspectFill" />
+      <view><image src="{{asset}}edit-dark.png"  mode="aspectFit" /></view>
+    </button>
+    <view>
+      <button class="profile-name" bindtap="editProfile">{{state.profile.name}}</button>
+      <view class="profile-meta">
+        <text>◇ 普通会员</text>
+        <text>我的衣橱</text>
+      </view>
+    </view>
+  </view>
+  <view class="mine-body">
+    <view class="membership">
+      <text>♛　普通用户</text>
+      <button bindtap="unavailable" data-feature="会员服务">升级</button>
+    </view>
+    <view class="mine-shortcuts">
+      <button bindtap="open" data-screen="settings" data-title="衣橱设置">
+        <image src="{{asset}}closet-dark.png"  mode="aspectFit" />
+        <text>衣橱设置</text>
+      </button>
+      <button bindtap="open" data-screen="calendar" data-title="穿搭日历">
+        <image src="{{asset}}calendar-dark.png"  mode="aspectFit" />
+        <text>穿搭日历</text>
+      </button>
+      <button bindtap="open" data-screen="statistics" data-title="衣橱分析">
+        <image src="{{asset}}chart-dark.png"  mode="aspectFit" />
+        <text>衣橱分析</text>
+      </button>
+      <button bindtap="open" data-screen="invites" data-title="邀我帮搭">
+        <image src="{{asset}}user-dark.png"  mode="aspectFit" />
+        <text>邀我帮搭</text>
+      </button>
+    </view>
+    <view class="closet-summary">
+      <text>
+        已收纳
+        <text class="gold-number">{{state.items.length}}</text>
+        件服饰
+      </text>
+      <button class="mint-button" bindtap="open" data-screen="tutorial" data-title="上传服饰">添加</button>
+    </view>
+    <view class="field-label">其他设置</view>
+    <view class="list-card">
+      <button class="list-row" bindtap="unavailable" data-feature="联系客服">
+        <text>联系客服</text>
+        <view class="ui-chevron"></view>
+      </button>
+      <button class="list-row" bindtap="open" data-screen="help" data-title="常见问题">
+        <text>常见问题</text>
+        <view class="ui-chevron"></view>
+      </button>
+      <button class="list-row" bindtap="open" data-screen="about" data-title="功能介绍">
+        <text>功能介绍</text>
+        <view class="ui-chevron"></view>
+      </button>
+      <button class="list-row" bindtap="open" data-screen="feedback" data-title="用户反馈">
+        <text>用户反馈</text>
+        <view class="ui-chevron"></view>
+      </button>
+      <button class="list-row" bindtap="open" data-screen="privacy" data-title="使用协议与数据说明">
+        <text>使用协议</text>
+        <view class="ui-chevron"></view>
+      </button>
+      <button class="list-row" bindtap="unavailable" data-feature="账号安全">
+        <text>账号安全</text>
+        <view class="ui-chevron"></view>
+      </button>
+    </view>
+    <view class="version-label">My衣橱管家 · 本地版 v1.0.0</view>
+  </view>
+</view>

@@ -1,0 +1,19 @@
+{
+  "name": "yanchuang-style-miniapp",
+  "version": "0.1.0",
+  "private": true,
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "build:color-guide": "node scripts/build-color-guide.cjs",
+    "build:season-guide": "node scripts/build-season-guide.cjs",
+    "build:wardrobe-plan": "node scripts/build-wardrobe-plan.cjs",
+    "start": "node server/index.js",
+    "test": "node --test tests/*.test.js",
+    "check": "node scripts/check.js",
+    "build:styling": "node scripts/build-styling-score.cjs && node scripts/build-color-guide.cjs && node scripts/build-season-guide.cjs && node scripts/build-wardrobe-plan.cjs && node scripts/build-style-guide.cjs && node scripts/build-tpo-copy.cjs",
+    "build:styling-score": "node scripts/build-styling-score.cjs",
+    "inspect:prompts": "node scripts/inspect-styling-prompts.cjs",
+    "build:style-guide": "node scripts/build-style-guide.cjs",
+    "build:tpo-copy": "node scripts/build-tpo-copy.cjs"
+  }
+}

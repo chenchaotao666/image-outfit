@@ -1,0 +1,13 @@
+{
+  "version": "1.1.0",
+  "field": "geometry.raw.skin.skin_hue_ha.skin_hue",
+  "provider": "Face++",
+  "source": "https://www.faceplusplus.com.cn/document/guide_docs/skin_analyze_premier",
+  "mappingStatus": "沿用项目已有肤色色调枚举；本轮公开产品文档确认支持肤色色调，技术字段页动态加载未重新核验枚举。",
+  "labels": ["偏黄", "中性", "偏红"],
+  "invalidCode": 3,
+  "temperatureMapping": ["暖肤色倾向", "中性肤色倾向", "冷肤色倾向"],
+  "mappingMethod": "product_heuristic",
+  "logic": "0 偏黄对应暖肤色倾向，1 中性对应中性肤色倾向，2 偏红对应冷肤色倾向；仅作为试穿配色参考。3、缺失或其他无效值不选择档位。此对应关系是产品启发式规则，并非 Face++ 直接返回的冷暖分类，也未经过个人色彩测试验证。",
+  "limits": "肤色色调是本次照片结果，可能受光照和皮肤状态影响；不是最适合的服装色系，也不代表冷暖衣料测试结果。"
+}

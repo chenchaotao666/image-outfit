@@ -1,0 +1,141 @@
+<view wx:if="{{(!screen && tab === 'closet') || screen === 'catalog' || screen === 'outfit-select'}}" class="wardrobe-view">
+  <view class="wardrobe-hero" style="padding-top:{{screen ? 16 : top + 64}}px">
+    <image class="wardrobe-hero-image" src="{{asset}}closet-header.jpg" mode="aspectFill" />
+    <view class="wardrobe-toolbar" wx:if="{{screen !== 'catalog'}}">
+      <button class="icon-box" bindtap="openSheet" data-sheet="season" aria-label="选择季节">
+        <image src="{{asset}}swap-dark.png"  mode="aspectFit" />
+      </button>
+      <button wx:if="{{screen !== 'outfit-select'}}" class="icon-box" bindtap="open" data-screen="categories" data-title="管理分类" aria-label="管理分类">
+        <image src="{{asset}}settings-dark.png"  mode="aspectFit" />
+      </button>
+      <button wx:if="{{screen !== 'outfit-select'}}" class="icon-box" bindtap="showCatalog" aria-label="全部单品">
+        <image src="{{asset}}grid-dark.png"  mode="aspectFit" />
+      </button>
+      <button wx:if="{{screen !== 'outfit-select'}}" class="icon-box" bindtap="open" data-screen="tutorial" data-title="上传服饰" aria-label="上传服饰">
+        <image src="{{asset}}plus-dark.png"  mode="aspectFit" />
+      </button>
+      <button wx:if="{{screen !== 'outfit-select'}}" class="mint-button match-button" bindtap="startOutfit">
+        <image src="{{asset}}hanger-dark.png"  mode="aspectFit" />
+        随意搭
+      </button>
+    </view>
+  </view>
+  <view class="catalog-filters" wx:if="{{screen === 'catalog'}}">
+    <button bindtap="openSheet" data-sheet="sort">{{sort}}<view class="dropdown-triangle"></view></button>
+    <button bindtap="openSheet" data-sheet="category-filter">分类筛选<view class="dropdown-triangle"></view></button>
+    <button bindtap="openSheet" data-sheet="filter">综合筛选<view class="dropdown-triangle"></view></button>
+    <button class="mint-text" bindtap="toggleSelect">{{selecting ? '取消' : '选择'}}</button>
+  </view>
+  <view class="wardrobe-body">
+    <view class="category-rail" wx:if="{{screen !== 'catalog'}}">
+      <button class="category {{category === '全部' ? 'chosen' : ''}}" data-name="全部" bindtap="chooseCategory">全部</button>
+      <button
+        wx:for="{{visibleCategories}}"
+        wx:key="id"
+        class="category {{category === item.name ? 'chosen' : ''}}"
+        data-name="{{item.name}}"
+        bindtap="chooseCategory"
+      >
+        {{item.name}}
+      </button>
+    </view>
+    <view class="wardrobe-products">
+      <view class="category-cover" wx:if="{{screen !== 'catalog' && screen !== 'outfit-select'}}">
+        <image src="{{categoryCover}}" mode="aspectFill" />
+      </view>
+      <view class="subcategory-tabs" wx:if="{{categoryChildren.length && screen !== 'catalog'}}">
+        <button
+          wx:for="{{categoryChildren}}"
+          wx:key="*this"
+          wx:if="{{index < 4}}"
+          bindtap="subcategoryFilter"
+          data-name="{{item}}"
+          class="{{query === item ? 'active' : ''}}"
+        >
+          {{item}}
+        </button>
+        <button class="subcategory-more" bindtap="toggleSubcategoryMenu" aria-label="更多子分类"><view class="menu-lines"></view></button>
+        <view class="subcategory-popover" wx:if="{{subcategoryMenuOpen}}">
+          <button wx:for="{{categoryChildren}}" wx:key="*this" wx:if="{{index >= 4}}" class="{{query === item ? 'active' : ''}}" bindtap="subcategoryFilter" data-name="{{item}}">{{item}}</button>
+          <text wx:if="{{categoryChildren.length <= 4}}">暂无更多分类</text>
+        </view>
+      </view>
+      <view class="search-field" wx:if="{{screen === 'catalog'}}">
+        <image src="{{asset}}search-light.png"  mode="aspectFit" />
+        <input placeholder="输入名称/标签等进行搜索" value="{{query}}" bindinput="search" data-field="query" />
+      </view>
+      <view class="filter-hint" wx:if="{{season !== '四季' || color || query}}">
+        <text>{{season}} {{color}} {{query}}</text>
+        <button bindtap="resetFilter">重置</button>
+      </view>
+      <view class="product-grid {{screen === 'catalog' ? 'three-columns' : ''}}">
+        <view wx:for="{{visibleItems}}" wx:key="id" class="product-tile" bindtap="selectItem" data-id="{{item.id}}">
+          <image src="{{item.image}}" mode="aspectFit" />
+          <text class="selection-mark {{item.selected ? 'checked' : ''}}" wx:if="{{selecting}}">{{item.selected ? '✓' : ''}}</text>
+          
+        </view>
+      </view>
+      <view class="closet-empty" wx:if="{{!visibleItems.length}}">
+        <image class="empty-illustration" src="{{asset}}empty-wardrobe.jpg" mode="aspectFit" />
+        <view>{{state.items.length ? '没有符合条件的服饰' : '暂无单品数据哦'}}</view>
+        <text>{{state.items.length ? '试试其他分类或筛选条件' : '把喜欢的衣服收进来，让每天的穿搭更轻松'}}</text>
+        <button class="outline-button" bindtap="open" data-screen="tutorial" data-title="上传服饰" wx:if="{{!state.items.length}}">
+          ＋ 上传第一件服饰
+        </button>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{screen === 'outfit-select'}}" class="selected-items">
+      <image wx:for="{{outfitSelection}}" wx:key="id" src="{{item.image}}" mode="aspectFit" bindtap="selectItem" data-id="{{item.id}}" />
+      <button bindtap="open" data-screen="tutorial" data-title="上传服饰">＋</button>
+    </view>
+    <view wx:if="{{screen === 'outfit-select'}}" class="selection-footer"><button class="black-button" bindtap="beginSelectedOutfit">下一步</button></view>
+    <view class="bottom-actions" wx:if="{{selecting && screen !== 'outfit-select'}}">
+    <button class="outline-button" bindtap="openSheet" data-sheet="move-items">移动到</button>
+    <button class="black-button" bindtap="removeSelected">删除（{{selected.length}}）</button>
+  </view>
+</view>
+<view class="content-pad categories-view" wx:if="{{screen === 'categories' || screen === 'category-sort'}}">
+  <view class="category-group" wx:for="{{categories}}" wx:key="id">
+    <view class="list-row">
+      <button class="grow align-left" bindtap="expandCategory" data-id="{{item.id}}">
+        {{item.name}}
+        <view class="ui-chevron {{expandedCategory === item.id ? 'down' : ''}}"></view>
+      </button>
+      <view wx:if="{{screen === 'category-sort'}}" class="category-sort-controls"><button bindtap="reorderCategory" data-id="{{item.id}}" data-delta="-1" aria-label="上移分类"><image src="{{asset}}editor-up.png" mode="aspectFit" /></button><button bindtap="reorderCategory" data-id="{{item.id}}" data-delta="1" aria-label="下移分类"><image src="{{asset}}editor-down.png" mode="aspectFit" /></button></view>
+      <button wx:else class="more-button" bindtap="categoryMenu" data-id="{{item.id}}">{{item.hidden ? '已隐藏 ···' : '···'}}</button>
+    </view>
+    <view wx:if="{{expandedCategory === item.id}}" class="subcategory-list">
+      <view wx:for="{{item.children}}" wx:for-item="child" wx:key="*this" class="subcategory-row"><text>{{child}}</text><view wx:if="{{screen === 'category-sort'}}" class="category-sort-controls"><button bindtap="reorderCategory" data-id="{{item.id}}" data-child="{{child}}" data-delta="-1" aria-label="上移子分类"><image src="{{asset}}editor-up.png" mode="aspectFit" /></button><button bindtap="reorderCategory" data-id="{{item.id}}" data-child="{{child}}" data-delta="1" aria-label="下移子分类"><image src="{{asset}}editor-down.png" mode="aspectFit" /></button></view><button wx:else class="more-button" bindtap="childCategoryMenu" data-id="{{item.id}}" data-child="{{child}}">···</button></view>
+      <text wx:if="{{!item.children.length}}" class="subtle">暂无子分类</text>
+    </view>
+  </view>
+  <button wx:if="{{screen === 'categories'}}" class="floating-add" bindtap="addCategory" aria-label="新增分类">＋</button>
+</view>
+<view class="item-detail content-pad" wx:if="{{screen === 'item'}}">
+  <image class="item-full" src="{{detail.image}}" mode="aspectFit" />
+  <view class="detail-title">{{detail.name}}</view>
+  <view class="detail-tags">
+    <text>{{detail.category}}</text>
+    <text>{{detail.season}}</text>
+    <text>{{detail.color}}</text>
+  </view>
+  <view class="list-card">
+    <view class="list-row">
+      <text>品牌</text>
+      <text class="subtle">{{detail.brand || '未填写'}}</text>
+    </view>
+    <view class="list-row">
+      <text>价格</text>
+      <text class="subtle">{{detail.price ? '¥ ' + detail.price : '未填写'}}</text>
+    </view>
+    <view class="list-row">
+      <text>备注</text>
+      <text class="subtle">{{detail.notes || '未填写'}}</text>
+    </view>
+  </view>
+  <view class="button-pair">
+    <button class="outline-button" bindtap="deleteItem">删除服饰</button>
+    <button class="black-button" bindtap="editItem">编辑服饰</button>
+  </view>
+</view>

@@ -1,0 +1,363 @@
+{
+  "version": "1.0.0",
+  "cover": {
+    "src": "/assets/seasons/cover.jpg",
+    "source": "小程序参考/推荐/四季搭配.png",
+    "rights": "reference_only",
+    "gender": "男"
+  },
+  "images": [
+    {
+      "id": "spring-1",
+      "season": "spring",
+      "src": "/assets/seasons/spring-1.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 1,
+      "colors": [
+        "#B4BCC2",
+        "#F3F5FD",
+        "#77ABD6",
+        "#FFFEFF"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        2620,
+        574,
+        3307
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "spring-2",
+      "season": "spring",
+      "src": "/assets/seasons/spring-2.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 2,
+      "colors": [
+        "#EEEAF4",
+        "#4A6C4A",
+        "#FBF8F9",
+        "#090302"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        3472,
+        574,
+        4159
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "spring-3",
+      "season": "spring",
+      "src": "/assets/seasons/spring-3.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 3,
+      "colors": [
+        "#E1E4F2",
+        "#797CA3",
+        "#202330",
+        "#121016"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        4841,
+        574,
+        5528
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "spring-4",
+      "season": "spring",
+      "src": "/assets/seasons/spring-4.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 4,
+      "colors": [
+        "#A79B96",
+        "#C6D9FF",
+        "#C3C3C9",
+        "#EBF3FD"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        5692,
+        574,
+        6379
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "summer-1",
+      "season": "summer",
+      "src": "/assets/seasons/summer-1.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 1,
+      "colors": [
+        "#42424A",
+        "#965C59",
+        "#FDFEFF",
+        "#2C2427"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        7373,
+        574,
+        8060
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "summer-2",
+      "season": "summer",
+      "src": "/assets/seasons/summer-2.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 2,
+      "colors": [
+        "#151621",
+        "#D3B2B5",
+        "#2B2C39",
+        "#050408"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        8225,
+        574,
+        8912
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "summer-3",
+      "season": "summer",
+      "src": "/assets/seasons/summer-3.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 3,
+      "colors": [
+        "#0D111A",
+        "#F7F1F1",
+        "#584A4B",
+        "#29282D"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        9592,
+        574,
+        10279
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "summer-4",
+      "season": "summer",
+      "src": "/assets/seasons/summer-4.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 4,
+      "colors": [
+        "#EEF1FD",
+        "#5E5E5E",
+        "#A09A9B",
+        "#181B25"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        10443,
+        574,
+        11130
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "autumn-1",
+      "season": "autumn",
+      "src": "/assets/seasons/autumn-1.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 1,
+      "colors": [
+        "#CFBDB4",
+        "#383D63",
+        "#FEFEFE",
+        "#1D1A22"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        12125,
+        574,
+        12812
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "autumn-2",
+      "season": "autumn",
+      "src": "/assets/seasons/autumn-2.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 2,
+      "colors": [
+        "#0A0B0D",
+        "#812F27",
+        "#FBFBFC",
+        "#2D2D30"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        12976,
+        574,
+        13663
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "autumn-3",
+      "season": "autumn",
+      "src": "/assets/seasons/autumn-3.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 3,
+      "colors": [
+        "#3B3B43",
+        "#741223",
+        "#FCFCFC",
+        "#0F1110"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        14343,
+        574,
+        15030
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "autumn-4",
+      "season": "autumn",
+      "src": "/assets/seasons/autumn-4.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 4,
+      "colors": [
+        "#161923",
+        "#3A2329",
+        "#B4B0B2",
+        "#F7F9FC"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        15196,
+        574,
+        15883
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "winter-1",
+      "season": "winter",
+      "src": "/assets/seasons/winter-1.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 1,
+      "colors": [
+        "#D18A63",
+        "#1E2228",
+        "#0D0E0E",
+        "#545D63"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        16935,
+        574,
+        17622
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "winter-2",
+      "season": "winter",
+      "src": "/assets/seasons/winter-2.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 2,
+      "colors": [
+        "#535659",
+        "#0F0D0D",
+        "#FDF9FA",
+        "#D5D4D4"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        17787,
+        574,
+        18474
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "winter-3",
+      "season": "winter",
+      "src": "/assets/seasons/winter-3.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 3,
+      "colors": [
+        "#30151D",
+        "#191820",
+        "#424150",
+        "#090B10"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        19154,
+        574,
+        19841
+      ],
+      "rights": "reference_only"
+    },
+    {
+      "id": "winter-4",
+      "season": "winter",
+      "src": "/assets/seasons/winter-4.jpg",
+      "gender": "男",
+      "enabled": true,
+      "order": 4,
+      "colors": [
+        "#1F1F26",
+        "#8AA0BD",
+        "#37363B",
+        "#616163"
+      ],
+      "source": "小程序参考/推荐/四季搭配.png",
+      "crop": [
+        112,
+        20006,
+        574,
+        20693
+      ],
+      "rights": "reference_only"
+    }
+  ]
+}

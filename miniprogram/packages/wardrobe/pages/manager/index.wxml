@@ -1,0 +1,35 @@
+<view wx:if="{{!accountReady}}" class="account-status"><text>{{accountError || '正在读取账号数据…'}}</text><button wx:if="{{accountError}}" bindtap="loadAccount">重试</button></view>
+<view wx:else class="closet-app screen-{{screen}} tab-{{tab}} {{!screen && tab === 'home' ? 'on-home' : ''}}">
+  <view
+    class="closet-nav {{(!screen && tab === 'closet') || screen === 'outfit-select' ? 'nav-dark' : ''}} {{!screen && (tab === 'home' || tab === 'mine') ? 'nav-clear' : ''}}"
+    style="padding-top:{{top}}px"
+  >
+    <button wx:if="{{screen || tab !== 'home'}}" class="back-button" bindtap="back" aria-label="返回">
+      <image src="{{asset}}back-{{!screen && (tab === 'closet' || tab === 'home') || screen === 'outfit-select' || screen === 'catalog' ? 'white' : 'dark'}}.png" />
+    </button>
+    <text>{{screen === 'tutorial' ? '' : screen ? title : tab === 'closet' ? state.settings.name : tab === 'inspiration' ? '灵感' : ''}}</text>
+  </view>
+  <view
+    class="nav-spacer"
+    style="height:{{top + 44}}px"
+    wx:if="{{screen || (tab !== 'home' && tab !== 'mine' && tab !== 'closet')}}"
+  ></view>
+  <include src="views/home.wxml" />
+  <include src="views/closet.wxml" />
+  <include src="views/inspiration.wxml" />
+  <include src="views/mine.wxml" />
+  <include src="views/upload.wxml" />
+  <include src="views/outfits.wxml" />
+  <include src="views/settings.wxml" />
+  <include src="views/sheets.wxml" />
+  <view class="closet-tabs" wx:if="{{!screen}}">
+    <button wx:for="{{tabs}}" wx:key="id" class="tab {{tab === item.id ? 'active' : ''}}" bindtap="switchTab" data-tab="{{item.id}}">
+      <image src="{{asset}}tab-{{item.icon}}-{{tab === item.id ? 'dark' : 'light'}}.png" />
+      <text>{{item.name}}</text>
+    </button>
+  </view>
+  <view class="loading-mask" wx:if="{{busy}}">
+    <view class="loading-spinner"></view>
+    <text>正在保存照片…</text>
+  </view>
+</view>

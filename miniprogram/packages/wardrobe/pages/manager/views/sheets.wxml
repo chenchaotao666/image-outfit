@@ -1,0 +1,205 @@
+<view class="closet-overlay sheet-{{sheet}}" wx:if="{{sheet && sheet !== 'upload-field'}}" bindtap="closeSheet">
+  <view class="closet-sheet" style="{{sheet === 'category-menu' ? 'top:' + menuTop + 'px' : ''}}" catchtap="noop">
+    
+    <view class="sheet-heading">
+      <text>
+        {{sheet === 'season' ? '选择季节' : sheet === 'filter' ? '综合筛选' : sheet === 'upload' ? '上传方式' : sheet === 'rename' ? renameTitle : sheet === 'save-look' ? '保存这套搭配' : sheet === 'schedule' ? '选择行程日期' : sheet === 'city' ? '选择地区' : sheet === 'switch-closet' ? '衣橱切换' : sheet === 'category-menu' ? '管理分类' : sheet === 'background' ? '背景颜色' : sheet === 'caption' ? '添加文字' : sheet === 'sort' ? '排序方式' : sheet === 'move-items' ? '移动到分类' : sheet === 'calendar-looks' ? '选择搭配' : '选择分类'}}
+      </text>
+      <button wx:if="{{sheet === 'upload'}}" class="fast-upload-switch" bindtap="toggleFastUpload">极速上传<view class="{{fastUpload ? 'enabled' : ''}}"><view></view></view></button>
+      <button wx:else bindtap="closeSheet" aria-label="关闭">
+        <image src="{{asset}}close-dark.png"  mode="aspectFit" />
+      </button>
+    </view>
+    <view wx:if="{{sheet === 'upload'}}">
+      <button class="sheet-option" bindtap="choosePhoto" data-source="camera">
+        拍照上传
+      </button>
+      <button class="sheet-option" bindtap="choosePhoto" data-source="album" aria-label="相册上传">
+        批量上传
+      </button>
+      <button class="sheet-option" bindtap="unavailable" data-feature="品牌条形码上传">扫条形码<text class="subtle">（仅品牌客户有效）</text></button>
+      <button class="sheet-option" bindtap="unavailable" data-feature="授权上传码">授权上传码</button>
+      <view class="sheet-note">授权他人帮你上传服饰</view>
+    </view>
+    <view wx:if="{{sheet === 'season'}}">
+      <view class="chip-row season-options"><button wx:for="{{seasons}}" wx:key="*this" class="chip {{season === item ? 'selected' : ''}}" bindtap="chooseFilter" data-field="season" data-value="{{item}}">{{item}}</button></view>
+      <button class="black-button" bindtap="applyFilter">确定</button>
+    </view>
+    <view wx:if="{{sheet === 'filter'}}">
+      <view class="field-label">季节<button class="inline-reset" bindtap="chooseFilter" data-field="season" data-value="四季">不限</button></view>
+      <view class="chip-row filter-seasons">
+        <button
+          wx:for="{{seasons}}"
+          wx:key="*this"
+          wx:if="{{index > 0}}"
+          class="chip {{season === item ? 'selected' : ''}}"
+          bindtap="chooseFilter"
+          data-field="season"
+          data-value="{{item}}"
+        >
+          {{item === '春季' ? '春' : item === '夏季' ? '夏' : item === '秋季' ? '秋' : '冬'}}
+        </button>
+      </view>
+      <view class="field-label">
+        颜色
+        <button class="inline-reset" bindtap="chooseFilter" data-field="color" data-value="">不限</button>
+      </view>
+      <view class="color-options">
+        <button
+          wx:for="{{colors}}"
+          wx:key="name"
+          class="color-option {{color === item.name ? 'selected' : ''}}"
+          bindtap="chooseFilter"
+          data-field="color"
+          data-value="{{item.name}}"
+        >
+          <view style="background:{{item.value}}"></view>
+          <text>{{item.name}}系</text>
+        </button>
+      </view>
+      <button class="black-button" bindtap="applyFilter">确定</button>
+    </view>
+    <view wx:if="{{sheet === 'sort'}}">
+      <button
+        wx:for="{{['最新上传','最早上传','名称排序']}}"
+        wx:key="*this"
+        class="sheet-option {{sort === item ? 'mint-text' : ''}}"
+        bindtap="chooseFilter"
+        data-field="sort"
+        data-value="{{item}}"
+      >
+        {{item}}
+      </button>
+      <button class="black-button" bindtap="applyFilter">确定</button>
+    </view>
+    <view wx:if="{{sheet === 'category-filter'}}">
+      <view class="category-filter-list">
+        <button class="category-filter-row" bindtap="applyCategoryFilter" data-value="全部">
+          <text>全部</text><view class="filter-radio {{category === '全部' ? 'checked' : ''}}"></view>
+        </button>
+        <button
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="category-filter-row"
+          bindtap="applyCategoryFilter"
+          data-value="{{item.name}}"
+        >
+          <view class="disclosure-label">{{item.name}}<view class="ui-chevron"></view></view><view class="filter-radio {{category === item.name ? 'checked' : ''}}"></view>
+        </button>
+      </view>
+    </view>
+    <view wx:if="{{sheet === 'move-items'}}">
+      <button class="sheet-option" wx:for="{{categories}}" wx:key="id" bindtap="moveSelected" data-value="{{item.name}}">
+        {{item.name}}
+      </button>
+    </view>
+    <view wx:if="{{sheet === 'profile'}}" class="profile-permission">
+      <view class="profile-request">My衣橱管家　申请</view>
+      <view class="profile-request-title">获取您的昵称、头像</view>
+      <text class="subtle">展示个人资料，让衣橱更有归属感</text>
+      <button class="list-row" bindtap="chooseAvatar"><text>头像</text><image src="{{avatarImage}}" mode="aspectFill" /><view class="ui-chevron"></view></button>
+      <view class="list-row"><text>昵称</text><input type="nickname" value="{{renameValue}}" bindinput="input" data-field="renameValue" placeholder="请输入昵称" /></view>
+      <button class="black-button" bindtap="saveRename">保存</button>
+    </view>
+    <view wx:if="{{sheet === 'rename'}}">
+      <input
+        class="sheet-input"
+        placeholder="{{renameKind === 'subcategory' ? '请输入子分类名称' : renameKind === 'category' ? '请输入分类名称' : '请输入名称'}}"
+        maxlength="20"
+        value="{{renameValue}}"
+        bindinput="input"
+        data-field="renameValue"
+      />
+      <view class="dialog-actions"><button bindtap="closeSheet">取消</button><button bindtap="saveRename">确认</button></view>
+    </view>
+    <view wx:if="{{sheet === 'city'}}">
+      <input
+        class="sheet-input"
+        placeholder="输入城市，如：东莞"
+        maxlength="20"
+        value="{{cityDraft}}"
+        bindinput="input"
+        data-field="cityDraft"
+      />
+      <view class="sheet-note">城市将作为天气偏好保存</view>
+      <button class="black-button" bindtap="saveCity">确定</button>
+    </view>
+    <view wx:if="{{sheet === 'category-menu'}}">
+      <button class="sheet-option" bindtap="renameCategory">修改名称</button>
+      <button wx:if="{{!menuChild}}" class="sheet-option" bindtap="addSubcategory">新增子分类</button>
+      <button class="sheet-option" bindtap="sortCategories">排序</button>
+      <button wx:if="{{!menuChild}}" class="sheet-option" bindtap="toggleCategoryVisibility">显示 / 隐藏</button>
+      <button wx:if="{{!menuChild}}" class="sheet-option" bindtap="categoryHelp">分类说明</button>
+      <button class="sheet-option danger-text" bindtap="deleteCategory">删除分类</button>
+    </view>
+    <view wx:if="{{sheet === 'category-help'}}" class="sheet-note">默认分类可隐藏，不能删除或修改名称。隐藏后不会出现在衣橱分类栏中，已有服饰仍可在全部单品中查看。自建分类可以修改、排序或删除。</view>
+    <view wx:if="{{sheet === 'album-menu'}}"><button class="sheet-option" bindtap="renameAlbum">修改分类</button><button class="sheet-option" bindtap="deleteAlbum">删除分类</button></view>
+    <view wx:if="{{sheet === 'favorite-album'}}"><view class="field-label">保存到哪个分类？</view><button wx:for="{{state.favoriteAlbums}}" wx:key="*this" class="sheet-option" bindtap="saveFavoriteAlbum" data-name="{{item}}">{{item}}</button></view>
+    <view wx:if="{{sheet === 'calendar-range'}}"><view class="field-label">起止日期</view><view class="calendar-range"><picker mode="date" value="{{calendarFrom}}" bindchange="pickCalendarRange" data-field="calendarFrom"><view>{{calendarFrom || '开始日期'}}</view></picker><text>至</text><picker mode="date" value="{{calendarTo}}" bindchange="pickCalendarRange" data-field="calendarTo"><view>{{calendarTo || '结束日期'}}</view></picker></view><view class="button-pair"><button class="outline-button" bindtap="clearCalendarRange">重置</button><button class="black-button" bindtap="filterCalendarRange">确定</button></view></view>
+    <view wx:if="{{sheet === 'save-look'}}">
+      
+      <view class="field-label">推荐此搭配适宜着装场合</view>
+      <view class="occasion-grid">
+        <button
+          wx:for="{{occasions}}"
+          wx:key="*this"
+          class="{{occasion === item ? 'selected' : ''}}"
+          bindtap="chooseFilter"
+          data-field="occasion"
+          data-value="{{item}}"
+        >
+          <image src="{{asset}}occasion-{{index}}.jpg" mode="aspectFill" /><text class="occasion-check" wx:if="{{occasion === item}}">✓</text>
+        </button>
+      </view>
+      <button class="black-button" bindtap="saveOutfit">确定</button>
+    </view>
+    <view wx:if="{{sheet === 'background'}}">
+      <view class="color-options">
+        <button
+          wx:for="{{colors}}"
+          wx:key="name"
+          class="color-option {{background === item.value ? 'selected' : ''}}"
+          bindtap="chooseFilter"
+          data-field="background"
+          data-value="{{item.value}}"
+        >
+          <view style="background:{{item.value}}"></view>
+          <text>{{item.name}}</text>
+        </button>
+      </view>
+      <button class="black-button" bindtap="closeSheet">确定</button>
+    </view>
+    <view wx:if="{{sheet === 'caption'}}">
+      <input class="sheet-input" placeholder="为搭配添加一句话" maxlength="40" value="{{caption}}" bindinput="input" data-field="caption" />
+      <button class="black-button" bindtap="closeSheet">确定</button>
+    </view>
+    <view wx:if="{{sheet === 'schedule'}}">
+      <view class="schedule-month"><button bindtap="scheduleMonthChange" data-delta="-1" aria-label="上个月"><view class="ui-chevron left"></view></button><text>{{scheduleYear}} / {{scheduleMonth}}</text><button bindtap="scheduleMonthChange" data-delta="1" aria-label="下个月"><view class="ui-chevron"></view></button></view>
+      <view class="calendar-week"><text wx:for="{{['日','一','二','三','四','五','六']}}" wx:key="*this">{{item}}</text></view>
+      <view class="schedule-grid"><button wx:for="{{scheduleDays}}" wx:key="key" bindtap="pickScheduleDate" data-date="{{item.date}}" class="{{item.date === scheduleDate ? 'chosen' : ''}}">{{item.day}}</button></view>
+      <input
+        class="sheet-input schedule-date-input"
+        placeholder="YYYY-MM-DD，例如 2026-11-18"
+        value="{{scheduleDate}}"
+        bindinput="input"
+        data-field="scheduleDate"
+      />
+      <button class="black-button" bindtap="confirmSchedule">加入行程</button>
+    </view>
+    <view wx:if="{{sheet === 'calendar-looks'}}">
+      <button class="sheet-option" wx:for="{{state.looks}}" wx:key="id" bindtap="addCalendarLook" data-id="{{item.id}}">
+        {{item.name}}
+        <text class="subtle">{{item.occasion}}</text>
+      </button>
+    </view>
+    <view wx:if="{{sheet === 'switch-closet'}}">
+      <view class="switch-closet-card">
+        <image src="{{skinImage}}" mode="aspectFill" />
+        <view>{{state.settings.name}}</view>
+        <text class="mint-text">当前使用</text>
+      </view>
+      <button class="black-button" bindtap="open" data-screen="settings" data-title="衣橱设置">管理衣橱</button>
+    </view>
+    <button class="sheet-cancel" bindtap="closeSheet">取消</button>
+  </view>
+</view>

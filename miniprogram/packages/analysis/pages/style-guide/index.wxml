@@ -1,0 +1,10 @@
+<view wx:if="{{guide && !guide.unknown}}" class="style-guide">
+ <view class="style-masthead"><view class="style-eyebrow">{{guide.copy.eyebrow}}</view><view class="style-english">{{guide.copy.english}}</view><view class="style-name">{{guide.label}}</view><view class="style-tagline">{{guide.tagline}}</view></view>
+ <view wx:if="{{guide.cover}}" class="reference-panel style-cover {{guide.cover.region ? '' : 'standalone-panel'}}" style="{{guide.cover.boxStyle}}"><image src="{{guide.cover.src}}" mode="widthFix" style="{{guide.cover.imageStyle}}"/></view>
+ <view wx:else class="style-cover-plain"><view>{{guide.label}}</view><text>{{guide.tagline}}</text></view>
+ <view class="style-basis"><view class="style-basis-label">{{guide.copy.basisTitle}}</view>{{guide.basis}}</view>
+ <view class="style-principles"><view class="principle" wx:for="{{guide.principles}}" wx:key="title"><view>{{item.title}}</view><text>{{item.text}}</text></view><view class="fashion-word">{{guide.copy.fashion}}</view></view>
+ <view class="style-look" wx:for="{{guide.looks}}" wx:key="number"><view class="look-number">{{item.number}}</view><view class="look-english">{{guide.copy.lookEnglish}}</view><view wx:if="{{item.image}}" class="reference-panel look-image {{item.image.region ? '' : 'standalone-panel'}}" style="{{item.image.boxStyle}}"><image src="{{item.image.src}}" mode="widthFix" style="{{item.image.imageStyle}}"/></view><view wx:else class="look-placeholder">{{guide.copy.noImage}}</view><view class="look-title">{{item.title}}</view><view class="look-description"><text>{{guide.copy.lookLabel}}：</text>{{item.description}}</view></view>
+ <view class="style-image-note">{{guide.copy.imageNote}}</view><view class="style-footer">{{guide.copy.footer}}</view>
+</view>
+<view wx:if="{{guide.unknown}}" class="style-empty"><view>{{copy.unknownTitle}}</view><text>{{copy.unknownText}}</text></view><view wx:if="{{missing}}" class="style-empty">{{copy.missingReport}}</view>

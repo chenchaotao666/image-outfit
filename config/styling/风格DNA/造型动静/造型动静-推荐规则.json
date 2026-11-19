@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "dimension": "dynamics",
+  "heading": "你的造型动静建议为",
+  "garmentTitle": "可以尝试的服装款式",
+  "sourceIds": [
+    "usu-principles",
+    "usu-elements"
+  ],
+  "guidelineId": "proportion-and-focus",
+  "logic": "根据Face++检测特征及量感、曲直分析，推荐服装的视觉重点与细节丰富程度。综合突出特征与协调需求，不能用默认偏好映射结果。",
+  "limits": "这是基于检测特征提出的造型方案，不是面部动静测量或性格判断。",
+  "fallback": {
+    "result": null,
+    "explanation": "本次缺少支持造型动静建议的检测依据。",
+    "recommendation": "先比较简洁与局部细节两种搭配方案。"
+  },
+  "outputMode": "llm_guided",
+  "levels": [
+    {
+      "value": 0,
+      "label": "动态",
+      "criterion": "可用较强视觉重点呼应多项突出特征",
+      "recommendation": "用一件醒目图案或结构单品建立重点。"
+    },
+    {
+      "value": 1,
+      "label": "中偏动",
+      "criterion": "以一处突出细节呼应特征，其他部分克制",
+      "recommendation": "用局部纹理或配饰增加变化。"
+    },
+    {
+      "value": 2,
+      "label": "动静居中",
+      "criterion": "有明确混合特征，可兼顾简洁与局部变化",
+      "recommendation": "以基础款搭配一件纹理单品。"
+    },
+    {
+      "value": 3,
+      "label": "中偏静",
+      "criterion": "以简洁线条为主，少量细节呼应五官",
+      "recommendation": "以简洁线条为主，增加少量细纹。"
+    },
+    {
+      "value": 4,
+      "label": "静态",
+      "criterion": "轻盈细腻特征适合低对比、少装饰方向",
+      "recommendation": "选择纯色和细腻面料，以合身比例突出细节。"
+    }
+  ]
+}

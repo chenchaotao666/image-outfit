@@ -1,0 +1,1143 @@
+{
+  "version": "face-mock-1",
+  "source": {
+    "reportId": "faceplusplus-integration",
+    "createdAt": "2026-11-15T11:02:12.142Z",
+    "description": "复用项目已保存检测报告的geometry，保留检测值，排除照片、凭据、token与请求标识。"
+  },
+  "faceAge": null,
+  "geometry": {
+    "provider": "Face++",
+    "version": "faceplusplus-1",
+    "status": "available",
+    "metrics": [
+      {
+        "id": "outline.face.tempus_length",
+        "group": "outline",
+        "label": "额部宽度",
+        "value": 123.39,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.face.tempus_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "outline.face.zygoma_length",
+        "group": "outline",
+        "label": "颧骨宽度",
+        "value": 122.56,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.face.zygoma_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "outline.face.face_length",
+        "group": "outline",
+        "label": "脸部长度",
+        "value": 184.49,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.face.face_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "outline.face.mandible_length",
+        "group": "outline",
+        "label": "下颌角宽度",
+        "value": 102.71,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.face.mandible_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "outline.face.E",
+        "group": "outline",
+        "label": "下颌角度",
+        "value": 150.93,
+        "unit": "degree",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.face.E；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "triangle.golden_triangle",
+        "group": "triangle",
+        "label": "眼鼻三角角度",
+        "value": 60.34,
+        "unit": "degree",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.golden_triangle；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "brows.eyebrow.brow_width",
+        "group": "brows",
+        "label": "眉毛宽度",
+        "value": 40.41,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.eyebrow.brow_width；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "brows.eyebrow.brow_height",
+        "group": "brows",
+        "label": "眉毛高度",
+        "value": 13.63,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.eyebrow.brow_height；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "brows.eyebrow.brow_uptrend_angle",
+        "group": "brows",
+        "label": "眉毛挑度",
+        "value": 20.38,
+        "unit": "degree",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.eyebrow.brow_uptrend_angle；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "brows.eyebrow.brow_camber_angle",
+        "group": "brows",
+        "label": "眉毛弯度",
+        "value": 1.11,
+        "unit": "degree",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.eyebrow.brow_camber_angle；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "brows.eyebrow.brow_thick",
+        "group": "brows",
+        "label": "眉毛粗细",
+        "value": 9.72,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.eyebrow.brow_thick；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "eyes.eyes.eye_width",
+        "group": "eyes",
+        "label": "眼睛宽度",
+        "value": 24.39,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.eyes.eye_width；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "eyes.eyes.eye_height",
+        "group": "eyes",
+        "label": "眼睛高度",
+        "value": 8.49,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.eyes.eye_height；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "eyes.eyes.angulus_oculi_medialis",
+        "group": "eyes",
+        "label": "内眦角度",
+        "value": 65.3,
+        "unit": "degree",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.eyes.angulus_oculi_medialis；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "nose.nose.nose_width",
+        "group": "nose",
+        "label": "鼻翼宽度",
+        "value": 39.46,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.nose.nose_width；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "lips.mouth.mouth_height",
+        "group": "lips",
+        "label": "嘴巴高度",
+        "value": 15.18,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.mouth.mouth_height；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "lips.mouth.mouth_width",
+        "group": "lips",
+        "label": "嘴巴宽度",
+        "value": 44.96,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.mouth.mouth_width；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "lips.mouth.lip_thickness",
+        "group": "lips",
+        "label": "嘴唇厚度",
+        "value": 7.11,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.mouth.lip_thickness；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "lips.mouth.angulus_oris",
+        "group": "lips",
+        "label": "嘴角角度",
+        "value": 97.12,
+        "unit": "degree",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.mouth.angulus_oris；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "chin.jaw.jaw_width",
+        "group": "chin",
+        "label": "下巴宽度",
+        "value": 56.44,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.jaw.jaw_width；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "chin.jaw.jaw_length",
+        "group": "chin",
+        "label": "下巴长度",
+        "value": 18.53,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.jaw.jaw_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "chin.jaw.jaw_angle",
+        "group": "chin",
+        "label": "下巴角度",
+        "value": 142.23,
+        "unit": "degree",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.jaw.jaw_angle；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "thirds.three_parts.one_part.faceup_length",
+        "group": "thirds",
+        "label": "上庭长度",
+        "value": 65.16,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.three_parts.one_part.faceup_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "thirds.three_parts.one_part.faceup_ratio",
+        "group": "thirds",
+        "label": "上庭占比",
+        "value": 0.35,
+        "unit": "fraction",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.three_parts.one_part.faceup_ratio；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "thirds.three_parts.two_part.facemid_length",
+        "group": "thirds",
+        "label": "中庭长度",
+        "value": 66.48,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.three_parts.two_part.facemid_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "thirds.three_parts.two_part.facemid_ratio",
+        "group": "thirds",
+        "label": "中庭占比",
+        "value": 0.36,
+        "unit": "fraction",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.three_parts.two_part.facemid_ratio；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "thirds.three_parts.three_part.facedown_length",
+        "group": "thirds",
+        "label": "下庭长度",
+        "value": 52.85,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.three_parts.three_part.facedown_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "thirds.three_parts.three_part.facedown_ratio",
+        "group": "thirds",
+        "label": "下庭占比",
+        "value": 0.29,
+        "unit": "fraction",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.three_parts.three_part.facedown_ratio；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "fiveEyes.five_eyes.one_eye.righteye_empty_length",
+        "group": "fiveEyes",
+        "label": "右外眼角留白距离",
+        "value": 18.05,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.five_eyes.one_eye.righteye_empty_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "fiveEyes.five_eyes.one_eye.righteye_empty_ratio",
+        "group": "fiveEyes",
+        "label": "右外眼角留白占比",
+        "value": 0.74,
+        "unit": "ratio",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.five_eyes.one_eye.righteye_empty_ratio；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "fiveEyes.five_eyes.three_eye.eyein_length",
+        "group": "fiveEyes",
+        "label": "内眼角间距",
+        "value": 38.5,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.five_eyes.three_eye.eyein_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "fiveEyes.five_eyes.three_eye.eyein_ratio",
+        "group": "fiveEyes",
+        "label": "内眼角间距占比",
+        "value": 1.58,
+        "unit": "ratio",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.five_eyes.three_eye.eyein_ratio；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "fiveEyes.five_eyes.five_eye.lefteye_empty_length",
+        "group": "fiveEyes",
+        "label": "左外眼角留白距离",
+        "value": 17.1,
+        "unit": "provider_length",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.five_eyes.five_eye.lefteye_empty_length；直接展示接口值，未使用本地算法重算。"
+      },
+      {
+        "id": "fiveEyes.five_eyes.five_eye.lefteye_empty_ratio",
+        "group": "fiveEyes",
+        "label": "左外眼角留白占比",
+        "value": 0.7,
+        "unit": "ratio",
+        "source": "geometry",
+        "provider": "Face++",
+        "status": "available",
+        "formula": "Face++ 原始字段 result.five_eyes.five_eye.lefteye_empty_ratio；直接展示接口值，未使用本地算法重算。"
+      }
+    ],
+    "groups": {
+      "thirds": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      },
+      "fiveEyes": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      },
+      "outline": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      },
+      "triangle": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      },
+      "brows": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      },
+      "eyes": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      },
+      "nose": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      },
+      "lips": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      },
+      "chin": {
+        "status": "available",
+        "reason": "由 Face++ 面部特征分析 API 返回。长度保留接口原值；尚未核实单位口径，不冒充尺量毫米值。"
+      }
+    },
+    "classifications": {
+      "one_part": "上庭偏长",
+      "two_part": "中庭偏长",
+      "three_part": "下庭偏短",
+      "face": "瓜子脸",
+      "brows": "粗眉",
+      "eyes": "大眼",
+      "nose": "标准鼻",
+      "lips": "标准唇",
+      "chin": "尖下巴",
+      "thirds": [
+        "上庭偏长",
+        "中庭偏长",
+        "下庭偏短"
+      ],
+      "fiveEyes": [
+        "右眼外侧偏窄",
+        "内眼角间距偏宽",
+        "左眼外侧偏窄"
+      ]
+    },
+    "skin": {
+      "version": "skin-concerns-1",
+      "provider": "Face++",
+      "items": [
+        {
+          "id": "eyeBags",
+          "name": "眼袋",
+          "source": "Face++",
+          "field": "eye_pouch",
+          "rawValue": 0,
+          "confidence": 0.99999964,
+          "count": null,
+          "status": "not_observed",
+          "severity": "none",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：未检出明显眼袋。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "darkCircles",
+          "name": "黑眼圈",
+          "source": "Face++",
+          "field": "dark_circle",
+          "rawValue": 2,
+          "confidence": 0.98181456,
+          "count": null,
+          "status": "present",
+          "severity": "detected",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：检出黑眼圈。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "foreheadLines",
+          "name": "抬头纹",
+          "source": "Face++",
+          "field": "forehead_wrinkle",
+          "rawValue": 0,
+          "confidence": 0.8086398,
+          "count": null,
+          "status": "not_observed",
+          "severity": "none",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：未检出明显抬头纹。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "crowFeet",
+          "name": "鱼尾纹",
+          "source": "Face++",
+          "field": "crows_feet",
+          "rawValue": 0,
+          "confidence": 0.94810414,
+          "count": null,
+          "status": "not_observed",
+          "severity": "none",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：未检出明显鱼尾纹。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "glabellaLines",
+          "name": "眉间纹",
+          "source": "Face++",
+          "field": "glabella_wrinkle",
+          "rawValue": 0,
+          "confidence": 0.9828415,
+          "count": null,
+          "status": "not_observed",
+          "severity": "none",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：未检出明显眉间纹。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "nasolabialFolds",
+          "name": "法令纹",
+          "source": "Face++",
+          "field": "nasolabial_fold",
+          "rawValue": 1,
+          "confidence": 0.8152199,
+          "count": null,
+          "status": "present",
+          "severity": "detected",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：检出法令纹。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "foreheadPores",
+          "name": "额头毛孔",
+          "source": "Face++",
+          "field": "pores_forehead",
+          "rawValue": 1,
+          "confidence": 0.5676465,
+          "count": null,
+          "status": "present",
+          "severity": "detected",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：检出额头毛孔。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "leftCheekPores",
+          "name": "左脸颊毛孔",
+          "source": "Face++",
+          "field": "pores_left_cheek",
+          "rawValue": 1,
+          "confidence": 0.9996446,
+          "count": null,
+          "status": "present",
+          "severity": "detected",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：检出左脸颊毛孔。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "rightCheekPores",
+          "name": "右脸颊毛孔",
+          "source": "Face++",
+          "field": "pores_right_cheek",
+          "rawValue": 1,
+          "confidence": 0.9995591,
+          "count": null,
+          "status": "present",
+          "severity": "detected",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：检出右脸颊毛孔。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "chinPores",
+          "name": "下巴毛孔",
+          "source": "Face++",
+          "field": "pores_jaw",
+          "rawValue": 0,
+          "confidence": 0.9961159,
+          "count": null,
+          "status": "not_observed",
+          "severity": "none",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：未检出明显下巴毛孔。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "blackheads",
+          "name": "黑头",
+          "source": "Face++",
+          "field": "blackhead",
+          "rawValue": 2,
+          "confidence": 0.99668044,
+          "count": null,
+          "status": "present",
+          "severity": "detected",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：检出黑头。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "acne",
+          "name": "痘痘外观",
+          "source": "Face++",
+          "field": "acne",
+          "rawValue": null,
+          "confidence": null,
+          "count": 0,
+          "status": "not_observed",
+          "severity": "none",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：未检出明显痘痘外观，候选区域 0 处。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        },
+        {
+          "id": "spots",
+          "name": "色斑外观",
+          "source": "Face++",
+          "field": "skin_spot",
+          "rawValue": null,
+          "confidence": null,
+          "count": 11,
+          "status": "present",
+          "severity": "detected",
+          "regionIds": [],
+          "evidence": "Face++ 高阶版：检出色斑外观，候选区域 11 处。",
+          "advice": "在均匀光线下复核，日常温和清洁并注意防晒。"
+        }
+      ],
+      "skinTypeCode": 3,
+      "extra": {
+        "eyeFineLines": {
+          "value": 1,
+          "confidence": 0.58247846
+        },
+        "closedComedones": 2
+      }
+    },
+    "ratios": {
+      "fiveEyes": "0.74:1.05:1.58:1:0.7",
+      "outline": "1.01:1:0.84"
+    },
+    "raw": {
+      "features": {
+        "eyes": {
+          "angulus_oculi_medialis": 65.3,
+          "eyes_type": "big_eyes",
+          "eye_height": 8.49,
+          "eye_width": 24.39
+        },
+        "five_eyes": {
+          "eyes_ratio": "0.74:1.05:1.58:1:0.7",
+          "one_eye": {
+            "righteye_empty_result": "righteye_empty_short",
+            "righteye_empty_length": 18.05,
+            "righteye_empty_ratio": 0.74
+          },
+          "five_eye": {
+            "lefteye_empty_result": "lefteye_empty_short",
+            "lefteye_empty_length": 17.1,
+            "lefteye_empty_ratio": 0.7
+          },
+          "lefteye": 24.39,
+          "three_eye": {
+            "eyein_ratio": 1.58,
+            "eyein_result": "eyein_long",
+            "eyein_length": 38.5
+          },
+          "righteye": 25.71
+        },
+        "mouth": {
+          "mouth_height": 15.18,
+          "mouth_width": 44.96,
+          "lip_thickness": 7.11,
+          "mouth_type": "normal_lip",
+          "angulus_oris": 97.12
+        },
+        "golden_triangle": 60.34,
+        "face_rect": {
+          "forehead_rect": {
+            "width": 640,
+            "top": 761,
+            "height": 212,
+            "left": 598
+          },
+          "lip_middle_rect": {
+            "width": 34,
+            "top": 1675,
+            "height": 48,
+            "left": 904
+          },
+          "eye_socket_rect": {
+            "left_eye_socket_rect": {
+              "width": 48,
+              "top": 1092,
+              "height": 166,
+              "left": 779
+            },
+            "right_eye_socket_rect": {
+              "width": 30,
+              "top": 1106,
+              "height": 150,
+              "left": 1027
+            }
+          },
+          "low_jaw_rect": {
+            "width": 124,
+            "top": 1915,
+            "height": 12,
+            "left": 860
+          },
+          "lip_peak": [
+            {
+              "y": 1821,
+              "x": 849
+            },
+            {
+              "y": 1820,
+              "x": 860
+            },
+            {
+              "y": 1820,
+              "x": 872
+            },
+            {
+              "y": 1822,
+              "x": 884
+            },
+            {
+              "y": 1823,
+              "x": 895
+            },
+            {
+              "y": 1825,
+              "x": 907
+            },
+            {
+              "y": 1827,
+              "x": 919
+            },
+            {
+              "y": 1828,
+              "x": 930
+            },
+            {
+              "y": 1827,
+              "x": 942
+            },
+            {
+              "y": 1824,
+              "x": 953
+            },
+            {
+              "y": 1822,
+              "x": 965
+            },
+            {
+              "y": 1819,
+              "x": 977
+            }
+          ],
+          "nose_rect": {
+            "bridge_high": {
+              "width": 98,
+              "top": 1092,
+              "height": 249,
+              "left": 871
+            },
+            "nose": {
+              "width": 94,
+              "top": 1497,
+              "height": 96,
+              "left": 870
+            }
+          },
+          "jaw_rect": {
+            "width": 290,
+            "top": 1963,
+            "height": 97,
+            "left": 778
+          }
+        },
+        "outline": {
+          "face_outline": {
+            "right_face_outline": [
+              {
+                "y": 1750,
+                "x": 1286
+              },
+              {
+                "y": 694,
+                "x": 1286
+              }
+            ],
+            "eyebrow_face_outline": [
+              {
+                "y": 1099,
+                "x": 460
+              },
+              {
+                "y": 1103,
+                "x": 1370
+              }
+            ],
+            "left_face_outline": [
+              {
+                "y": 1744,
+                "x": 545
+              },
+              {
+                "y": 688,
+                "x": 545
+              }
+            ]
+          },
+          "eyebrow_outline": {
+            "left_eyebrow_tail": [
+              {
+                "y": 1629,
+                "x": 775
+              },
+              {
+                "y": 1216,
+                "x": 545
+              },
+              {
+                "y": 1099,
+                "x": 480
+              }
+            ],
+            "left_eyebrow": [
+              {
+                "y": 1629,
+                "x": 775
+              },
+              {
+                "y": 971,
+                "x": 545
+              }
+            ],
+            "right_eyebrow_tail": [
+              {
+                "y": 1630,
+                "x": 1066
+              },
+              {
+                "y": 1222,
+                "x": 1286
+              },
+              {
+                "y": 1102,
+                "x": 1350
+              }
+            ],
+            "left_brows": [
+              {
+                "y": 1629,
+                "x": 775
+              },
+              {
+                "y": 1101,
+                "x": 775
+              }
+            ],
+            "right_eyebrow": [
+              {
+                "y": 1630,
+                "x": 1066
+              },
+              {
+                "y": 995,
+                "x": 1286
+              }
+            ],
+            "right_brows": [
+              {
+                "y": 1630,
+                "x": 1066
+              },
+              {
+                "y": 1102,
+                "x": 1066
+              }
+            ]
+          }
+        },
+        "jaw": {
+          "jaw_type": "sharp_jaw",
+          "jaw_length": 18.53,
+          "jaw_width": 56.44,
+          "jaw_angle": 142.23
+        },
+        "three_parts": {
+          "one_part": {
+            "faceup_ratio": 0.35,
+            "faceup_result": "faceup_long",
+            "faceup_length": 65.16
+          },
+          "three_part": {
+            "facedown_length": 52.85,
+            "facedown_result": "facedown_short",
+            "facedown_ratio": 0.29
+          },
+          "two_part": {
+            "facemid_length": 66.48,
+            "facemid_ratio": 0.36,
+            "facemid_result": "facemid_long"
+          },
+          "parts_ratio": "0.35:0.36:0.29"
+        },
+        "eyebrow": {
+          "eyebrow_type": "bushy_eyebrows",
+          "brow_height": 13.63,
+          "brow_camber_angle": 1.11,
+          "brow_uptrend_angle": 20.38,
+          "brow_width": 40.41,
+          "brow_thick": 9.72
+        },
+        "face": {
+          "face_length": 184.49,
+          "E": 150.93,
+          "ABD_ratio": "1.01:1:0.84",
+          "mandible_length": 102.71,
+          "tempus_length": 123.39,
+          "face_type": "pointed_face",
+          "zygoma_length": 122.56
+        },
+        "nose": {
+          "nose_width": 39.46,
+          "nose_type": "normal_nose"
+        }
+      },
+      "skin": {
+        "skin_color": {
+          "value": 2,
+          "confidence": 0.57170826
+        },
+        "skin_age": {
+          "value": 34
+        },
+        "left_eyelids": {
+          "value": 2,
+          "confidence": 0.99999917
+        },
+        "right_eyelids": {
+          "value": 2,
+          "confidence": 1
+        },
+        "eye_pouch": {
+          "value": 0,
+          "confidence": 0.99999964
+        },
+        "dark_circle": {
+          "value": 2,
+          "confidence": 0.98181456
+        },
+        "forehead_wrinkle": {
+          "value": 0,
+          "confidence": 0.8086398
+        },
+        "crows_feet": {
+          "value": 0,
+          "confidence": 0.94810414
+        },
+        "eye_finelines": {
+          "value": 1,
+          "confidence": 0.58247846
+        },
+        "glabella_wrinkle": {
+          "value": 0,
+          "confidence": 0.9828415
+        },
+        "nasolabial_fold": {
+          "value": 1,
+          "confidence": 0.8152199
+        },
+        "nasolabial_fold_severity": {
+          "value": 0,
+          "confidence": 0.40682113
+        },
+        "skin_type": {
+          "skin_type": 3,
+          "details": {
+            "0": {
+              "value": 0,
+              "confidence": 0.025595533
+            },
+            "1": {
+              "value": 0,
+              "confidence": 0.00096589385
+            },
+            "2": {
+              "value": 0,
+              "confidence": 0.008351174
+            },
+            "3": {
+              "value": 1,
+              "confidence": 0.96508735
+            }
+          }
+        },
+        "pores_forehead": {
+          "value": 1,
+          "confidence": 0.5676465
+        },
+        "pores_left_cheek": {
+          "value": 1,
+          "confidence": 0.9996446
+        },
+        "pores_right_cheek": {
+          "value": 1,
+          "confidence": 0.9995591
+        },
+        "pores_jaw": {
+          "value": 0,
+          "confidence": 0.9961159
+        },
+        "blackhead": {
+          "value": 2,
+          "confidence": 0.99668044
+        },
+        "acne": {
+          "rectangle": []
+        },
+        "mole": {
+          "rectangle": [
+            {
+              "left": 766,
+              "top": 1307,
+              "width": 12,
+              "height": 14
+            },
+            {
+              "left": 420,
+              "top": 1236,
+              "width": 15,
+              "height": 27
+            }
+          ]
+        },
+        "skin_spot": {
+          "rectangle": [
+            {
+              "left": 681,
+              "top": 1917,
+              "width": 21,
+              "height": 24
+            },
+            {
+              "left": 1232,
+              "top": 1740,
+              "width": 9,
+              "height": 10
+            },
+            {
+              "left": 1157,
+              "top": 1927,
+              "width": 10,
+              "height": 10
+            },
+            {
+              "left": 585,
+              "top": 1728,
+              "width": 10,
+              "height": 12
+            },
+            {
+              "left": 970,
+              "top": 1442,
+              "width": 17,
+              "height": 23
+            },
+            {
+              "left": 871,
+              "top": 1102,
+              "width": 17,
+              "height": 19
+            },
+            {
+              "left": 857,
+              "top": 1524,
+              "width": 10,
+              "height": 12
+            },
+            {
+              "left": 1385,
+              "top": 1013,
+              "width": 10,
+              "height": 17
+            },
+            {
+              "left": 472,
+              "top": 1329,
+              "width": 13,
+              "height": 13
+            },
+            {
+              "left": 446,
+              "top": 1423,
+              "width": 12,
+              "height": 14
+            },
+            {
+              "left": 1304,
+              "top": 732,
+              "width": 9,
+              "height": 9
+            }
+          ]
+        },
+        "closed_comedones": {
+          "rectangle": [
+            {
+              "left": 860,
+              "top": 728,
+              "width": 14,
+              "height": 14
+            },
+            {
+              "left": 882,
+              "top": 1042,
+              "width": 16,
+              "height": 18
+            }
+          ]
+        },
+        "skintone_ita": {
+          "ITA": 34.123047,
+          "skintone": 3
+        },
+        "skin_hue_ha": {
+          "HA": 48.235844,
+          "skin_hue": 2
+        }
+      }
+    }
+  }
+}
