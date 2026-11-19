@@ -7,7 +7,7 @@ if(data.rules.seasons.map(s=>s.id).join(',')!=='spring,summer,autumn,winter')thr
 for(const id of data.rules.sourceIds)if(!refs.sources.some(s=>s.id===id))throw Error('未知来源 '+id);
 const ids=new Set();
 for(const x of [data.library.cover,...data.library.images]){
- if(!x.source||!x.rights||!x.src.startsWith('/assets/seasons/')||x.src.includes('..')||!fs.existsSync(path.join(root,'miniprogram',x.src)))throw Error('素材记录无效 '+x.src);
+ if(!x.source||!x.rights||!x.src.startsWith('/packages/analysis/assets/seasons/')||x.src.includes('..')||!fs.existsSync(path.join(root,'miniprogram',x.src)))throw Error('素材记录无效 '+x.src);
  if(x.id){if(ids.has(x.id)||!data.rules.seasons.some(s=>s.id===x.season)||!x.colors.every(c=>/^#[0-9a-f]{6}$/i.test(c)))throw Error('图片配置无效 '+x.id);ids.add(x.id);}
 }
 const output='// Generated from config/styling/季节搭配; do not edit.\nmodule.exports='+JSON.stringify(data,null,2)+';\n';

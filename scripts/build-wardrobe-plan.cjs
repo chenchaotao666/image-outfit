@@ -13,10 +13,10 @@ const itemRules=JSON.parse(fs.readFileSync(path.join(root,'config/styling/衣橱
 const itemLibrary=JSON.parse(fs.readFileSync(path.join(root,'config/styling/衣橱规划/衣橱单品/衣橱单品-图片库.json'),'utf8'));
 for(const g of itemRules.groups)if(!config.categories.some(c=>c.name===g.category))throw Error('未知衣橱分类 '+g.id);
 const imageIds=new Set();for(const x of [itemLibrary.cover,...itemLibrary.images]){
- if(!x.source||!x.rights||!x.src.startsWith('/assets/wardrobe/')||x.src.includes('..')||!fs.existsSync(path.join(root,'miniprogram',x.src)))throw Error('单品素材无效 '+x.src);
+ if(!x.source||!x.rights||!x.src.startsWith('/packages/wardrobe-guide/assets/')||x.src.includes('..')||!fs.existsSync(path.join(root,'miniprogram',x.src)))throw Error('单品素材无效 '+x.src);
  if(x.id){if(imageIds.has(x.id)||!itemRules.groups.some(g=>g.id===x.group)||!x.advice||!x.name||!Number.isInteger(x.order))throw Error('单品配置无效 '+x.id);imageIds.add(x.id);}
 }
 const out='// Generated from config/styling/衣橱规划.\nmodule.exports='+JSON.stringify({...config,itemRules,itemLibrary,sources:refs.sources.filter(s=>config.sourceIds.includes(s.id))},null,2)+';\n';
-const target=path.join(root,'miniprogram/packages/analysis/utils/wardrobe-plan-data.js');
+const target=path.join(root,'miniprogram/shared/guides/wardrobe-plan-data.js');
 if(process.argv.includes('--check')){if(!fs.existsSync(target)||fs.readFileSync(target,'utf8')!==out)throw Error('请运行 npm run build:wardrobe-plan');}else fs.writeFileSync(target,out);
 console.log('Wardrobe rules validated.');

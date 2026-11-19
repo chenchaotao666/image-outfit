@@ -35,8 +35,8 @@ function simpleEvidence(report,group){
  return {title:group.title+' · 怎么看',diagram:'/assets/report/diagram-'+group.id+'.png',evidence:evidenceView(report,group.id),paragraphs:['检测结果：'+(group.conclusions||[]).join('、'),'根据本次照片由 Face++ 检测。'],items};
 }
 Page({
- openStyleGuide(){const report=this.data.report;wx.navigateTo({url:'/packages/analysis/pages/style-guide/index'+(report.mode==='demo'?'':'?id='+encodeURIComponent(report.id))});},
- openWardrobeGuide(){const report=this.data.report;wx.navigateTo({url:'/packages/analysis/pages/wardrobe-guide/index'+(report.mode==='demo'?'':'?id='+encodeURIComponent(report.id))});},
+ openStyleGuide(){const report=this.data.report;wx.navigateTo({url:'/packages/style-guide/pages/detail/index'+(report.mode==='demo'?'':'?id='+encodeURIComponent(report.id))});},
+ openWardrobeGuide(){const report=this.data.report;wx.navigateTo({url:'/packages/wardrobe-guide/pages/detail/index'+(report.mode==='demo'?'':'?id='+encodeURIComponent(report.id))});},
  wardrobeBasis(){const p=this.data.vm.wardrobePlan;this.setData({dialog:{title:'衣橱规划 · 规则与依据',paragraphs:[p.evidence,p.unit,'单品占比由建议数量除以总数，再按小数余数从大到小分配剩余百分点，合计保持 100%。'],items:[...p.facts,...p.decisions.map(x=>({name:x.name+' · '+x.id,text:x.reason})),...p.sources.map(x=>({name:x.title,text:x.url}))]}});},
  openSeasonGuide(){const report=this.data.report;wx.navigateTo({url:'/packages/analysis/pages/season-guide/index'+(report.mode==='demo'?'':'?id='+encodeURIComponent(report.id))});},
  openColorGuide(){const report=this.data.report;wx.navigateTo({url:'/packages/analysis/pages/color-guide/index'+(report.mode==='demo'?'':'?id='+encodeURIComponent(report.id))});},

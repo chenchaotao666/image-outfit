@@ -363,7 +363,7 @@ module.exports={
   "library": {
     "version": "1.0.0",
     "cover": {
-      "src": "/assets/style-guide/reference.png",
+      "src": "/packages/style-guide/assets/reference.png",
       "width": 620,
       "top": 520,
       "height": 760,
@@ -376,7 +376,7 @@ module.exports={
     "images": [
       {
         "id": "look-1",
-        "src": "/assets/style-guide/reference.png",
+        "src": "/packages/style-guide/assets/reference.png",
         "width": 620,
         "top": 2660,
         "height": 530,
@@ -388,7 +388,7 @@ module.exports={
       },
       {
         "id": "look-2",
-        "src": "/assets/style-guide/reference.png",
+        "src": "/packages/style-guide/assets/reference.png",
         "width": 620,
         "top": 3800,
         "height": 550,
@@ -400,7 +400,7 @@ module.exports={
       },
       {
         "id": "look-3",
-        "src": "/assets/style-guide/reference.png",
+        "src": "/packages/style-guide/assets/reference.png",
         "width": 620,
         "top": 4910,
         "height": 530,
@@ -412,7 +412,7 @@ module.exports={
       },
       {
         "id": "look-4",
-        "src": "/assets/style-guide/reference.png",
+        "src": "/packages/style-guide/assets/reference.png",
         "width": 620,
         "top": 6010,
         "height": 530,
@@ -424,7 +424,7 @@ module.exports={
       },
       {
         "id": "look-5",
-        "src": "/assets/style-guide/reference.png",
+        "src": "/packages/style-guide/assets/reference.png",
         "width": 620,
         "top": 7180,
         "height": 540,
@@ -436,7 +436,7 @@ module.exports={
       },
       {
         "id": "look-6",
-        "src": "/assets/style-guide/reference.png",
+        "src": "/packages/style-guide/assets/reference.png",
         "width": 620,
         "top": 8340,
         "height": 530,

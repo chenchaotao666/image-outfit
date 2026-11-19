@@ -1,4 +1,4 @@
-const config=require('./wardrobe-plan-data'),planning=require('./wardrobe-plan');
+const config=require('../../shared/guides/wardrobe-plan-data'),planning=require('../../shared/guides/wardrobe-plan');
 function view(report){
  const plan=planning.view(report),gender=report.profile?.gender;
  return {...config.itemRules,cover:config.itemLibrary.cover.src,summary:plan.wardrobePlan.quantityText,

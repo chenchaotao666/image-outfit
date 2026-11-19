@@ -1,4 +1,4 @@
-const store=require('../../../../shared/report-store'),reports=require('../../utils/report-v2'),wardrobe=require('../../utils/wardrobe-guide');
+const store=require('../../../../shared/report-store'),reports=require('../../../../shared/sample-report'),wardrobe=require('../../wardrobe-guide');
 Page({
  data:{guide:null,missing:false,photo:null},
  onLoad(q){const report=q.id?store.get(q.id):reports.sample();if(!report)return this.setData({missing:true});this.setData({guide:wardrobe.view(report)});},

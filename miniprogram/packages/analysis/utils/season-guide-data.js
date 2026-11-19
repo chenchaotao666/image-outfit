@@ -50,7 +50,7 @@ module.exports={
   "library": {
     "version": "1.0.0",
     "cover": {
-      "src": "/assets/seasons/cover.jpg",
+      "src": "/packages/analysis/assets/seasons/cover.jpg",
       "source": "小程序参考/推荐/四季搭配.png",
       "rights": "reference_only",
       "gender": "男"
@@ -59,7 +59,7 @@ module.exports={
       {
         "id": "spring-1",
         "season": "spring",
-        "src": "/assets/seasons/spring-1.jpg",
+        "src": "/packages/analysis/assets/seasons/spring-1.jpg",
         "gender": "男",
         "enabled": true,
         "order": 1,
@@ -81,7 +81,7 @@ module.exports={
       {
         "id": "spring-2",
         "season": "spring",
-        "src": "/assets/seasons/spring-2.jpg",
+        "src": "/packages/analysis/assets/seasons/spring-2.jpg",
         "gender": "男",
         "enabled": true,
         "order": 2,
@@ -103,7 +103,7 @@ module.exports={
       {
         "id": "spring-3",
         "season": "spring",
-        "src": "/assets/seasons/spring-3.jpg",
+        "src": "/packages/analysis/assets/seasons/spring-3.jpg",
         "gender": "男",
         "enabled": true,
         "order": 3,
@@ -125,7 +125,7 @@ module.exports={
       {
         "id": "spring-4",
         "season": "spring",
-        "src": "/assets/seasons/spring-4.jpg",
+        "src": "/packages/analysis/assets/seasons/spring-4.jpg",
         "gender": "男",
         "enabled": true,
         "order": 4,
@@ -147,7 +147,7 @@ module.exports={
       {
         "id": "summer-1",
         "season": "summer",
-        "src": "/assets/seasons/summer-1.jpg",
+        "src": "/packages/analysis/assets/seasons/summer-1.jpg",
         "gender": "男",
         "enabled": true,
         "order": 1,
@@ -169,7 +169,7 @@ module.exports={
       {
         "id": "summer-2",
         "season": "summer",
-        "src": "/assets/seasons/summer-2.jpg",
+        "src": "/packages/analysis/assets/seasons/summer-2.jpg",
         "gender": "男",
         "enabled": true,
         "order": 2,
@@ -191,7 +191,7 @@ module.exports={
       {
         "id": "summer-3",
         "season": "summer",
-        "src": "/assets/seasons/summer-3.jpg",
+        "src": "/packages/analysis/assets/seasons/summer-3.jpg",
         "gender": "男",
         "enabled": true,
         "order": 3,
@@ -213,7 +213,7 @@ module.exports={
       {
         "id": "summer-4",
         "season": "summer",
-        "src": "/assets/seasons/summer-4.jpg",
+        "src": "/packages/analysis/assets/seasons/summer-4.jpg",
         "gender": "男",
         "enabled": true,
         "order": 4,
@@ -235,7 +235,7 @@ module.exports={
       {
         "id": "autumn-1",
         "season": "autumn",
-        "src": "/assets/seasons/autumn-1.jpg",
+        "src": "/packages/analysis/assets/seasons/autumn-1.jpg",
         "gender": "男",
         "enabled": true,
         "order": 1,
@@ -257,7 +257,7 @@ module.exports={
       {
         "id": "autumn-2",
         "season": "autumn",
-        "src": "/assets/seasons/autumn-2.jpg",
+        "src": "/packages/analysis/assets/seasons/autumn-2.jpg",
         "gender": "男",
         "enabled": true,
         "order": 2,
@@ -279,7 +279,7 @@ module.exports={
       {
         "id": "autumn-3",
         "season": "autumn",
-        "src": "/assets/seasons/autumn-3.jpg",
+        "src": "/packages/analysis/assets/seasons/autumn-3.jpg",
         "gender": "男",
         "enabled": true,
         "order": 3,
@@ -301,7 +301,7 @@ module.exports={
       {
         "id": "autumn-4",
         "season": "autumn",
-        "src": "/assets/seasons/autumn-4.jpg",
+        "src": "/packages/analysis/assets/seasons/autumn-4.jpg",
         "gender": "男",
         "enabled": true,
         "order": 4,
@@ -323,7 +323,7 @@ module.exports={
       {
         "id": "winter-1",
         "season": "winter",
-        "src": "/assets/seasons/winter-1.jpg",
+        "src": "/packages/analysis/assets/seasons/winter-1.jpg",
         "gender": "男",
         "enabled": true,
         "order": 1,
@@ -345,7 +345,7 @@ module.exports={
       {
         "id": "winter-2",
         "season": "winter",
-        "src": "/assets/seasons/winter-2.jpg",
+        "src": "/packages/analysis/assets/seasons/winter-2.jpg",
         "gender": "男",
         "enabled": true,
         "order": 2,
@@ -367,7 +367,7 @@ module.exports={
       {
         "id": "winter-3",
         "season": "winter",
-        "src": "/assets/seasons/winter-3.jpg",
+        "src": "/packages/analysis/assets/seasons/winter-3.jpg",
         "gender": "男",
         "enabled": true,
         "order": 3,
@@ -389,7 +389,7 @@ module.exports={
       {
         "id": "winter-4",
         "season": "winter",
-        "src": "/assets/seasons/winter-4.jpg",
+        "src": "/packages/analysis/assets/seasons/winter-4.jpg",
         "gender": "男",
         "enabled": true,
         "order": 4,
