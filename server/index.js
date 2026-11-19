@@ -2,7 +2,8 @@ const http = require('node:http');
 const { loadEnv, config } = require('./config');
 const { createApi } = require('./api');
 
-loadEnv(process.env.IMAGE_OUTFIT_ENV_FILE);
+// systemd opens the protected configuration before launching the service user.
+loadEnv(process.argv[2] === '--env-stdin' ? 0 : process.env.IMAGE_OUTFIT_ENV_FILE);
 const settings = config();
 const handleApi = createApi(settings);
 

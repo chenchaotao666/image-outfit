@@ -121,13 +121,12 @@ After=network.target
 [Service]
 User=$service_user
 WorkingDirectory=$project
-LoadCredential=app.env:$env_file
-Environment="IMAGE_OUTFIT_ENV_FILE=%d/app.env"
+StandardInput=file:$env_file
 Environment="CUTOUT_PYTHON=$venv/bin/python"
 Environment="PATH=$venv/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=HOST=127.0.0.1
 Environment=PYTHONDONTWRITEBYTECODE=1
-ExecStart="$node_bin" server/index.js
+ExecStart="$node_bin" server/index.js --env-stdin
 Restart=on-failure
 RestartSec=3
 UMask=0077
