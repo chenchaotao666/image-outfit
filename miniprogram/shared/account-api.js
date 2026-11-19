@@ -1,5 +1,13 @@
-// Set this to the registered HTTPS request domain for device builds.
-const BASE = 'http://127.0.0.1:4173/api';
+const endpoints = require('../config/api');
+const version = typeof wx !== 'undefined' && wx.getAccountInfoSync?.()?.miniProgram?.envVersion;
+const platform = typeof wx !== 'undefined' && wx.getDeviceInfo?.()?.platform;
+const deployed = version === 'trial' || version === 'release';
+function configuredBase() {
+  if (deployed) return endpoints.production;
+  if (platform && platform !== 'devtools') return endpoints.devicePreview;
+  return endpoints.simulator;
+}
+const BASE = (configuredBase() || '').trim().replace(/\/+$/, '');
 const local = /^http:\/\/(127\.0\.0\.1|localhost):/.test(BASE);
 const sessionKey = 'account.session.' + BASE;
 let loggingIn;
@@ -23,6 +31,9 @@ function request(path, method, data, token) {
 }
 
 function session(expiredToken) {
+  if (!BASE || (deployed && !/^https:\/\//i.test(BASE))) {
+    return Promise.reject(Object.assign(Error(deployed ? '请配置线上 HTTPS 接口地址' : '请在 config/api.js 中填写当前环境的接口地址'), { offline: true }));
+  }
   const saved = wx.getStorageSync(sessionKey) || {};
   if (saved.token && saved.token !== expiredToken && saved.expires > Date.now() + 30000) return Promise.resolve(saved);
   if (!loggingIn) loggingIn = (async () => {
