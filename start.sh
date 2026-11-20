@@ -82,22 +82,31 @@ if [[ ! -f $env_file ]]; then
   env_file="$project/.env"
   [[ -e $env_file ]] || install -m 600 .env.example "$env_file"
 fi
-settings=$("$node_bin" -e '
+settings=$(env -u HOST -u PORT -u SQLITE_PATH "$node_bin" -e '
   const { loadEnv, config } = require("./server/config");
   loadEnv(process.argv[1]);
   const settings = config();
   console.log(settings.databaseFile);
   console.log(settings.port);
+  console.log(settings.host);
 ' "$env_file")
-db_file=${settings%$'\n'*}
-port=${settings##*$'\n'}
+mapfile -t values <<< "$settings"
+db_file=${values[0]}
+port=${values[1]}
+host=${values[2]}
+case "$host" in
+  0.0.0.0) probe_host=127.0.0.1 ;;
+  ::) probe_host='[::1]' ;;
+  *:*) probe_host="[$host]" ;;
+  *) probe_host=$host ;;
+esac
 unit=image-outfit.service
 if ! systemctl is-active --quiet "$unit"; then
   "$node_bin" -e '
     const probe = require("node:net").createServer();
     probe.on("error", error => { console.error(error.message); process.exit(1) });
-    probe.listen(Number(process.argv[1]), "127.0.0.1", () => probe.close());
-  ' "$port" || die "请检查端口 $port 是否已被旧服务占用。"
+    probe.listen(Number(process.argv[1]), process.argv[2], () => probe.close());
+  ' "$port" "$host" || die "请检查监听地址 $host 和端口 $port。"
 fi
 data_dir=$(dirname -- "$db_file")
 if [[ ! -d $data_dir ]]; then
@@ -124,7 +133,6 @@ WorkingDirectory=$project
 StandardInput=file:$env_file
 Environment="CUTOUT_PYTHON=$venv/bin/python"
 Environment="PATH=$venv/bin:/usr/local/bin:/usr/bin:/bin"
-Environment=HOST=127.0.0.1
 Environment=PYTHONDONTWRITEBYTECODE=1
 ExecStart="$node_bin" server/index.js --env-stdin
 Restart=on-failure
@@ -142,9 +150,9 @@ systemctl restart "$unit"
 for (( attempt=0; attempt<30; attempt++ )); do
   sleep 1
   if systemctl is-active --quiet "$unit" &&
-     curl -fsS --max-time 2 "http://127.0.0.1:$port/api/capabilities" 2>/dev/null |
+     curl --noproxy '*' -fsS --max-time 2 "http://$probe_host:$port/api/capabilities" 2>/dev/null |
        "$node_bin" -e 'try { const r = JSON.parse(require("fs").readFileSync(0)); process.exit(typeof r.ready === "boolean" ? 0 : 1) } catch { process.exit(1) }'; then
-    printf '服务已启动：http://127.0.0.1:%s/api\n配置文件：%s\nSQLite：%s\n' "$port" "$env_file" "$db_file"
+    printf '服务已启动，监听地址 %s，端口 %s\n配置文件：%s\nSQLite：%s\n' "$host" "$port" "$env_file" "$db_file"
     exit 0
   fi
 done

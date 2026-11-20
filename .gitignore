@@ -11,3 +11,4 @@ current-wechat.png
 .env
 .env.*
 !.env.example
+/小程序参考/
