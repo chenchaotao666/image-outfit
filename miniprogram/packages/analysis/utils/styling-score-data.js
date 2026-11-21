@@ -1,4 +1,4 @@
-// Generated from config/styling/形象DNA/造型评分/造型评分-评分规则.json. Do not edit.
+// Generated from config/llm-prompt/形象DNA/造型评分/造型评分-评分规则.json. Do not edit.
 module.exports={
   "version": "styling-v1",
   "status": "editorial_pending_validation",

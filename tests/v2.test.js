@@ -1,5 +1,38 @@
 const {test}=require('node:test');const assert=require('node:assert/strict');
 const {sample,view}=require('../miniprogram/packages/analysis/utils/report-v2');const {validate}=require('../server/analysis/details');const {createJobs}=require('../server/analysis/jobs');
+test('saved reports match concrete frames by measured face without mutating stored advice',()=>{
+ const r=sample();r.mode='ai';r.geometry=structuredClone(require('../config/mock/Face检测数据.json').geometry);
+ const old=[{tier:'推荐',name:'略带圆角的方形框'},{tier:'可尝试',name:'合适宽度的镜框'},{tier:'谨慎选择',name:'夹脸或碰脸颊的框'}];
+ r.analysis.details.glasses=old;
+ const card=view(r).copy;
+ assert.deepEqual(card.glasses.map(g=>g.displayName),['椭圆框眼镜','方框眼镜','圆框眼镜','半框眼镜','倒梯形框眼镜']);
+ assert.deepEqual(card.glasses.map(g=>g.image),['oval.png','square.png','round.png','half-rim.png','trapezoid.png']
+  .map(file=>'/packages/analysis/assets/eyewear/'+file));
+ assert.deepEqual(card.eyewearRows.map(row=>row.frames.map(g=>g.shape)),[['square','round'],['half-rim','trapezoid']]);
+ assert.equal(r.analysis.details.glasses,old);
+ r.geometry.classifications.face='暂未识别分类';
+ assert.deepEqual(view(r).copy.glasses,[]);
+ assert.equal(view(r).copy.generalEyewear,true);
+});
+test('each face row produces the same five distinct illustrated recommendations in the report and the backend',()=>{
+ const rules=require('../config/llm-prompt/形象DNA/眼镜推荐/眼镜推荐-推荐规则.json');
+ const eyewear=require('../server/styling/eyewear');
+ for(const [face,row] of Object.entries(rules)){
+  const r=sample();r.geometry=structuredClone(require('../config/mock/Face检测数据.json').geometry);
+  r.geometry.classifications.face=face;
+  eyewear.apply(r.analysis,r.geometry);
+  const saved=validate(r.analysis.details).glasses;
+  assert.deepEqual(saved.map(g=>g.name).sort(),['椭圆框','方框','圆框','半框','倒梯形框'].sort());
+  assert.deepEqual(saved.map(g=>g.name),[row['最合适'],...row['一般'],...row['不推荐']]);
+  const card=view(r).copy;
+  assert.deepEqual(card.glasses.map(g=>g.name),saved.map(g=>g.name));
+  assert.ok(card.glasses.every(g=>g.shape&&g.image&&g.reason));
+  assert.deepEqual(card.eyewearRows.map(row=>row.frames.length),[2,2]);
+ }
+ const d=sample().analysis.details;
+ assert.throws(()=>validate({...d,glasses:d.glasses.slice(0,3)}),{code:'INVALID_MODEL_OUTPUT'});
+ assert.throws(()=>validate({...d,glasses:d.glasses.map(g=>({...g,name:'圆框'}))}),{code:'INVALID_MODEL_OUTPUT'});
+});
 test('V2 details enforce every feature, bounded scales and complete seasons',()=>{
  const d=sample().analysis.details;assert.equal(validate(d).features.length,6);
  assert.throws(()=>validate({...d,volume:8}),{code:'INVALID_MODEL_OUTPUT'});

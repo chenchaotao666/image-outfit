@@ -46,7 +46,10 @@
     <view wx:for="{{state.albums}}" wx:key="*this" wx:for-item="albumName" class="inspiration-album">
       <view class="album-heading">
         {{albumName}}
-        <button bindtap="uploadInspiration" data-album="{{albumName}}" aria-label="上传灵感">＋</button>
+        <button class="album-upload" bindtap="uploadInspiration" data-album="{{albumName}}" aria-label="上传灵感">
+          <image src="{{asset}}plus-dark.png" mode="aspectFit" />
+          <view class="ui-chevron"></view>
+        </button>
       </view>
       <view class="look-grid {{!viewGrid ? 'list-layout' : ''}}">
         <view

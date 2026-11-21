@@ -1,5 +1,5 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-const root=path.resolve(__dirname,'../../config/styling');
+const root=path.resolve(__dirname,'../../config/llm-prompt');
 const fields=['face','brows','eyes','nose','lips','chin'];
 function load(){
  const rules=JSON.parse(fs.readFileSync(path.join(root,'风格DNA/面部量感与曲直感/面部量感与曲直感-判断规则.json'),'utf8'));

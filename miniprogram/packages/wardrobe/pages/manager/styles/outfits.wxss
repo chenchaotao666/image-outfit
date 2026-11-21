@@ -12,7 +12,7 @@
   font-size: 26rpx;
   gap: 10rpx;
 }
-.compact {
+page .compact {
   min-height: 50rpx;
   padding: 5rpx 22rpx;
   width: auto;
@@ -205,7 +205,7 @@
   padding-bottom: 22rpx;
   font-size: 23rpx;
 }
-.calendar-day {
+page .calendar-day {
   height: 92rpx;
   border: 1rpx solid #f1f2f1;
   background: #fff;

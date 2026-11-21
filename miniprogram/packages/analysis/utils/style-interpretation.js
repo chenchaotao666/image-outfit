@@ -1,5 +1,5 @@
 // Consumer copy. These are explanations and try-on suggestions, not measured thresholds.
-// Rationale: config/styling/判断依据-文献与理论.json (proportion, texture, body fit).
+// Rationale: config/llm-prompt/判断依据-文献与理论.json (proportion, texture, body fit).
 const VOLUME_COPY=[
  {meaning:'“大量感”描述的是五官与轮廓在整体中的视觉分量，不是脸的实际大小。',clothes:'可以先试大廓形方向：选择肩线清晰、有结构感的外套，再用一处醒目图案或配饰作重点。松量和衣长按身形调整，不必刻意买大一码。'},
  {meaning:'“中大量感”指视觉分量介于中等与较强之间，不代表每一处五官都大。',clothes:'可以先试中大廓形方向：有一定结构、略有松量的外套，搭配简洁内搭。图案或装饰选一处作重点，肩线和衣长以试穿合适为准。'},

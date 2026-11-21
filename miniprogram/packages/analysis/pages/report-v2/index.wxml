@@ -17,17 +17,67 @@
    <view wx:for="{{item.blocks}}" wx:for-item="block" wx:key="blockKey" class="metric-block"><view wx:if="{{block.name}}" class="metric-block-title">{{block.name}}</view><view wx:for="{{block.rows}}" wx:for-item="metric" wx:key="id" class="data-row {{metric.pending ? 'pending-row' : ''}}"><text>{{metric.label}}</text><text>{{metric.display}}</text></view></view>
    <view wx:if="{{item.showReason}}" class="unavailable">{{item.reason}}</view><button wx:if="{{item.action}}" class="small-link measurement-retry" data-id="{{item.id}}" bindtap="explain">{{item.action}} →</button>
 
-   <view wx:if="{{item.id === 'outline'}}" class="inline-recommendation"><view class="recommendation-heading">脸型适合「眼镜」推荐如下</view><view class="glasses-panel" data-kind="glasses" bindtap="detail"><view class="gold-label">推荐：</view><view class="glasses-feature"><image src="/assets/report/glasses-detail.png" mode="aspectFit"/><view>{{vm.copy.glasses[0].name}}</view></view><view wx:for="{{vm.copy.glasses}}" wx:for-item="glasses" wx:if="{{index > 0}}" wx:key="name" class="glasses-option"><text>{{glasses.tier}}：</text><text class="frame-symbol">{{index === 1 ? '▱—▱' : '○—○'}}</text>{{glasses.name}}</view></view></view>
-   <view wx:if="{{item.id === 'brows'}}" class="inline-recommendation"><view class="recommendation-heading">脸型适合「眉型」推荐如下</view><view class="brow-panel" bindtap="browReason"><view class="gold-label">根据你的脸型特点：</view><view class="brow-feature"><view class="brow-art"><image src="/assets/report/portrait-complete.png" mode="aspectFit"/></view><view class="brow-content"><view class="brow-name">{{vm.browRecommendation.faceLabel}}</view><text>{{vm.copy.face}}</text></view></view><view class="gold-label">推荐适合你的眉型：</view><view class="brow-feature"><view class="brow-art"><image src="/assets/report/brow-detail.png" mode="aspectFit"/></view><view class="brow-content"><view class="brow-name">{{vm.copy.browName}}</view><text>{{vm.copy.browAdvice}}</text></view></view></view></view>
+   <view wx:if="{{item.id === 'outline'}}" class="inline-recommendation">
+    <view class="recommendation-heading" wx:if="{{vm.copy.generalEyewear}}">眼镜试戴参考</view>
+    <view class="recommendation-heading" wx:else>脸型适合「<text class="strong">眼镜</text>」推荐如下</view>
+    <view wx:if="{{vm.copy.glasses.length}}" class="glasses-panel" data-kind="glasses" bindtap="detail">
+     <view class="eyewear-hero">
+      <view>最合适：</view>
+      <view class="eyewear-product">
+       <view class="eyewear-disc">
+        <image class="eyewear-backdrop" src="/packages/analysis/assets/eyewear-disc.svg" mode="aspectFit" aria-hidden="true"/>
+        <image class="eyewear-photo" src="{{vm.copy.glasses[0].image}}" mode="aspectFit"/>
+       </view>
+       <text>{{vm.copy.glasses[0].displayName}}</text>
+      </view>
+     </view>
+     <view class="eyewear-options">
+      <view wx:for="{{vm.copy.eyewearRows}}" wx:key="tier" wx:for-item="row" class="eyewear-row">
+       <text class="eyewear-label">{{row.tier}}：</text>
+       <view class="eyewear-pair">
+        <view wx:for="{{row.frames}}" wx:for-item="frame" wx:key="name" class="eyewear-option">
+         <view wx:if="{{frame.shape}}" class="eyewear-icon shape-{{frame.shape}}" aria-hidden="true"><view class="lens"></view><view class="bridge"></view><view class="lens"></view></view>
+         <text>{{frame.displayName}}</text>
+        </view>
+       </view>
+      </view>
+     </view>
+    </view>
+    <view wx:else class="caption">这份报告的脸型与镜框资料不足，重新检测后可查看完整推荐。</view>
+   </view>
+   <view wx:if="{{item.id === 'brows'}}" class="inline-recommendation">
+    <view class="recommendation-heading">脸型适合「<text class="strong">眉型</text>」推荐如下</view>
+    <view class="brow-panel" bindtap="browReason">
+     <view class="gold-label">{{report.mode === 'demo' ? '示例脸型特点：' : '你的脸型特点：'}}</view>
+     <view class="brow-feature">
+      <image class="brow-art" src="/packages/analysis/assets/brow-face.png" mode="aspectFit"/>
+      <view class="brow-content"><view class="brow-name">{{vm.browRecommendation.faceLabel}}</view>
+       <text wx:for="{{vm.copy.browFaceLines}}" wx:key="*this">{{item}}</text>
+      </view>
+     </view>
+     <view class="gold-label">推荐尝试的妆容眉型：</view>
+     <view class="brow-feature">
+      <image class="brow-art" src="/assets/report/brow-detail.png" mode="aspectFit"/>
+      <view class="brow-content"><view class="brow-name">{{vm.browRecommendation.name}}</view>
+       <text wx:for="{{vm.browRecommendation.steps}}" wx:key="index">{{item}}</text>
+      </view>
+     </view>
+    </view>
+   </view>
   </view>
   <view class="assessment-section" id="skin-section"><view class="skin-heading-row"><view class="section-heading feature-heading">{{vm.copy.skinTitle}}</view></view><view class="caption">{{report.mode === 'demo' ? '示例报告' : '根据本次照片检测'}}</view><view class="quote skin-conclusions"><text wx:if="{{vm.copy.skin.length}}">本次检测结果：</text><text wx:for="{{vm.copy.skin}}" wx:key="id" class="skin-finding {{item.status === 'present' ? 'skin-positive' : ''}}" data-id="{{item.id}}" bindtap="skinFinding">{{item.text}}{{index === vm.copy.skin.length - 1 ? '。' : '，'}}</text><text wx:if="{{!vm.copy.skin.length}}">{{vm.skinAssessment.photoSummary}}</text><text class="skin-closing">日常注意温和清洁、保湿和防晒。</text></view><view wx:if="{{vm.skinAdvanced}}" class="skin-advanced"><button class="skin-photo-open" bindtap="openSkinImage" data-key="original">查看检测图片 →</button><view wx:for="{{vm.skinAdvanced.sections}}" wx:for-item="section" wx:key="title" class="skin-data-section"><view class="story-subheading">{{section.title}}</view><view wx:for="{{section.rows}}" wx:for-item="metric" wx:key="label" class="data-row"><text>{{metric.label}}</text><view class="skin-data-value"><text>{{metric.value}}</text><button wx:if="{{metric.image}}" class="skin-photo-link" data-key="{{metric.key}}" bindtap="openSkinImage">查看图片</button></view></view></view></view></view>
   <view class="section-heading feature-heading">你的身材与比例</view><view class="caption">{{vm.referenceBody.photoCount ? '根据全身照与身高估算' : '根据身高比例估算'}}</view><image src="/assets/report/body-measurement.png" mode="aspectFit" class="body-illustration"/><view class="body-progress"><text wx:for="{{['体重偏轻','体重正常','体重超重','体重肥胖']}}" wx:key="*this" class="{{vm.bmiBand === index ? 'active' : ''}}">{{item}}</text></view>
-  <view class="body-data-card"><view class="floating-label">你的「体型分析」结果如下</view><view class="bmi-heading">BMI体质指数</view><view class="bmi-value">「{{vm.bmi}}」<text>（体重kg / 身高²m²）</text></view><view class="body-divider"></view><view wx:for="{{vm.referenceBody.rows}}" wx:key="id" class="data-row"><view>{{item.label}}<text wx:if="{{item.value}}" class="body-row-source">{{item.source}}</text></view><text class="{{item.value ? '' : 'pending-value'}}">{{item.value ? item.display : '—'}}</text></view><view class="body-ratios"><view wx:if="{{report.manualMeasurements && report.manualMeasurements.waist && report.manualMeasurements.hip}}">腰臀比<text>{{vm.bodyRatios.waistHip}}</text></view><view wx:if="{{report.manualMeasurements && report.manualMeasurements.leg}}">腿长 / 身高<text>{{vm.bodyRatios.legHeight}}</text></view></view><view class="micro body-source">{{vm.referenceBody.note}}</view><button class="small-link" bindtap="editMeasurements">校正尺寸（可选） →</button><button class="small-link" bindtap="bodyGuide">查看各部位尺量方法 →</button></view>
-  <view class="quote">{{vm.copy.body}}</view>
+  <view class="body-data-card"><view class="floating-label">你的「体型分析」结果如下</view><view class="bmi-heading">BMI体质指数</view><view class="bmi-value">「{{vm.bmi}}」<text>（体重kg / 身高²m²）</text></view><view class="body-divider"></view><view wx:for="{{vm.referenceBody.rows}}" wx:key="id" class="data-row"><view>{{item.label}}<text wx:if="{{item.value && item.source !== '身高比例参考'}}" class="body-row-source">{{item.source}}</text></view><text class="{{item.value ? '' : 'pending-value'}}">{{item.value ? item.display : '—'}}</text></view><view class="body-ratios"><view wx:if="{{report.manualMeasurements && report.manualMeasurements.waist && report.manualMeasurements.hip}}">腰臀比<text>{{vm.bodyRatios.waistHip}}</text></view><view wx:if="{{report.manualMeasurements && report.manualMeasurements.leg}}">腿长 / 身高<text>{{vm.bodyRatios.legHeight}}</text></view></view><button class="small-link" bindtap="editMeasurements">校正尺寸（可选） →</button></view>
   <view class="assessment-section" id="score-section"><view class="section-heading feature-heading">{{vm.stylingScore.complete ? '你的造型评分为' + vm.stylingScore.total + '分' : '你的造型评分 · 待补充'}}</view><view class="caption">{{vm.stylingScore.config.copy.caption}}</view>
   <view wx:if="{{vm.stylingScore.complete}}" class="score-meter"><canvas canvas-id="completion" id="completion" style="width:{{chartWidth}}px;height:{{chartHeight * 0.58}}px"></canvas><view class="score-value">{{vm.stylingScore.complete ? vm.stylingScore.total : '待补充'}}<text>{{vm.stylingScore.label}}</text></view></view><view wx:if="{{vm.stylingScore.complete}}" class="score-bands"><text wx:for="{{vm.stylingScore.config.bands}}" wx:key="min">{{item.min}}–{{item.max}} {{item.label}}</text></view><view class="micro center">{{vm.stylingScore.config.copy.boundary}}</view>
   <view class="score-breakdown compact-hidden"><view wx:for="{{vm.stylingScore.rows}}" wx:key="id" class="score-row"><view><text>{{item.name}}</text><text>{{item.score === null ? '待补充' : item.score + ' / ' + item.weight}}</text></view><view class="score-track"><view style="width:{{item.score === null ? 0 : item.score / item.weight * 100}}%"></view></view></view></view><view wx:if="{{!vm.stylingScore.complete}}" class="unavailable">已获得 {{vm.stylingScore.count}} / 5 项评价。{{vm.stylingScore.count ? '部分项目证据不足，点击下方查看具体原因。' : '本次报告未返回可用评分，请查看原因后再补充。'}}</view><button class="small-link" bindtap="scoreDetails">查看评分依据与改善建议 →</button></view>
-  <view class="chapter-takeaway"><view class="floating-label">形象提升建议</view><view>{{vm.copy.summary}}</view><view class="strong takeaway-summary">先选合身的衣服，配色保持协调，发型和细节整理干净。</view></view>
+  <view class="chapter-takeaway">
+   <view class="floating-label">形象提升建议</view>
+   <view>不要以为匆匆忙忙随手穿在身上的衣服对自己没有影响，</view>
+   <view>一个人的命运往往取决于某些不为人知的细节</view>
+   <view>国际心理学专家研究指出，</view>
+   <view class="strong">良好的外在形象，会在职场和人际交往中使人对我们的认同和欣赏感提高30%。</view>
+  </view>
  </view></view>
 
  <view class="chapter" id="chapter-1"><view class="chapter-title">你的面部及服装单品属性</view><view class="chapter-body style-chapter">
@@ -36,7 +86,7 @@
  </view></view>
 
  <view class="chapter" id="chapter-2"><view class="chapter-title">你的面部色彩属性</view><view class="chapter-body">
-  <view wx:for="{{vm.referenceColors}}" wx:key="key" class="color-analysis"><view class="row-head"><view class="story-subheading">Ⅰ {{item.heading}}「{{item.label}}」</view><button class="explain" data-tip="{{item.key}}" bindtap="tip">ⓘ</button></view><view class="caption">拍照光线和化妆情况会影响色彩观察</view><image src="{{item.image}}" mode="aspectFit" class="color-comparison"/><view class="scale-strip"><view wx:for="{{item.items}}" wx:for-item="option" wx:for-index="n" wx:key="*this" class="{{item.selected === n ? 'selected' : ''}}">{{option}}</view></view><view class="body-copy">{{item.text}}</view><view wx:if="{{item.advice}}" class="body-copy">{{item.advice}}</view></view>
+  <view wx:for="{{vm.referenceColors}}" wx:key="key" class="color-analysis"><view class="row-head"><view class="story-subheading">Ⅰ {{item.heading}}「{{item.label}}」</view><button class="explain" data-tip="{{item.key}}" bindtap="tip">ⓘ</button></view><view class="caption">拍照光线和化妆情况会影响色彩观察</view><image src="{{item.image}}" mode="aspectFit" class="color-comparison"/><view wx:if="{{item.selected !== null}}" class="scale-strip"><view wx:for="{{item.items}}" wx:for-item="option" wx:for-index="n" wx:key="*this" class="{{item.selected === n ? 'selected' : ''}}">{{option}}</view></view><view class="body-copy">{{item.text}}</view><view wx:if="{{item.advice}}" class="body-copy">{{item.advice}}</view></view>
   <view class="section-heading feature-heading">{{vm.colorGuide.reportCopy.heading}}「{{vm.colorGuide.label}}」</view><view class="caption">{{vm.colorGuide.reportCopy.caption}}</view><image class="color-system" src="/assets/report/color-system.png" mode="aspectFit"/><view class="row-head"><view class="section-heading small-heading">{{vm.colorGuide.reportCopy.analysisHeading}}</view><button class="explain" bindtap="colorBasis">ⓘ</button></view><view class="quote color-summary">{{vm.colorGuide.summary}}</view><view class="action-card" bindtap="openColorGuide"><view>{{vm.colorGuide.reportCopy.actionHeading}}</view><text>{{vm.colorGuide.reportCopy.actionLabel}}</text><view class="action-watermark watermark-color">◉</view></view>
  </view></view>
 

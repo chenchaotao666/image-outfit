@@ -66,7 +66,7 @@
   text-align: center;
   color: #fff;
 }
-.home-avatar {
+page .home-avatar {
   position: relative;
   width: 88rpx;
   height: 88rpx;
@@ -110,7 +110,7 @@
   flex-direction: column;
   gap: 84rpx;
 }
-.home-pill {
+page .home-pill {
   position: relative;
   display: flex;
   align-items: center;

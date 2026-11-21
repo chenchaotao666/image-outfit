@@ -14,7 +14,20 @@ function validate(raw,context){
  if(!['warm','cool','neutral','unknown'].includes(raw.temperature))fail();o.temperature=raw.temperature;
  o.features=list(raw.features,6,(f,i)=>{if(!f||f.id!==FEATURES[i])fail();const ids=f.metricIds==null?[]:f.metricIds;if(!Array.isArray(ids)||ids.some(id=>typeof id!=='string')||ids.length>10)fail();const metrics=context?.geometry?.metrics||[];return {id:f.id,label:str(f.label),observation:str(f.observation),advice:str(f.advice),metricIds:context?[...new Set(ids)].filter(id=>metrics.some(m=>m.id===id&&m.group===f.id&&m.source==='geometry'&&m.status==='available'&&Number.isFinite(m.value))):[]};});
  o.scaleEvidence={};if(raw.scaleEvidence!=null){if(typeof raw.scaleEvidence!=='object'||Array.isArray(raw.scaleEvidence))fail();for(const key of ['volume','curvature','dynamics','lightness','chroma','temperature'])o.scaleEvidence[key]=str(raw.scaleEvidence[key]);}
- o.glasses=list(raw.glasses,3,g=>({name:str(g.name),reason:str(g.reason),tier:str(g.tier)}));o.browAdvice=str(raw.browAdvice);
+ if(context?.requirePhotoColor&&!raw.photoColor)fail();
+ if(raw.photoColor!=null){
+  if(typeof raw.photoColor!=='object'||Array.isArray(raw.photoColor))fail();
+  o.photoColor={};
+  for(const key of ['lightness','chroma']){
+   if(context?.requirePhotoColor&&!Object.hasOwn(raw.photoColor,key))fail();
+   const entry=raw.photoColor[key];
+   if(entry==null)continue;
+   if(!Number.isInteger(entry.level)||entry.level<0||entry.level>4)fail();
+   o.photoColor[key]={level:entry.level,skin:str(entry.skin),otherRegion:str(entry.otherRegion)};
+  }
+ }
+ if(!require('../styling/eyewear').validRecommendations(raw.glasses))fail();
+ o.glasses=raw.glasses.map(({name,reason,tier})=>({name,reason:str(reason),tier}));o.browAdvice=str(raw.browAdvice);
  if(raw.browRecommendation!=null){const b=raw.browRecommendation;o.browRecommendation={name:str(b.name),reason:str(b.reason),steps:list(b.steps,3,str)};}
  o.outfits=list(raw.outfits,4,(x,i)=>{if(x.season!==['春','夏','秋','冬'][i])fail();if(!Array.isArray(x.colors)||x.colors.length<2||x.colors.length>3||x.colors.some(c=>!/^#[0-9a-f]{6}$/i.test(c)))fail();return Object.fromEntries([...['season','title','top','bottom','layer','shoes','accessory','reason'].map(k=>[k,str(x[k])]),['colors',x.colors]]);});
  o.hairOptions=list(raw.hairOptions,3,x=>Object.fromEntries(['name','reason','maintenance'].map(k=>[k,str(x[k])])));

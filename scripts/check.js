@@ -1,6 +1,8 @@
 require('node:child_process').execFileSync(process.execPath,[require('node:path').resolve(__dirname,'build-tpo-copy.cjs'),'--check'],{stdio:'inherit'});
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const root=path.resolve(__dirname,'../miniprogram');
+require('node:child_process').execFileSync(process.execPath,[path.resolve(__dirname,'build-eyewear.cjs'),'--check'],{stdio:'inherit'});
+require('node:child_process').execFileSync(process.execPath,[path.resolve(__dirname,'build-face-description.cjs'),'--check'],{stdio:'inherit'});
 require('node:child_process').execFileSync(process.execPath,[path.resolve(__dirname,'build-color-guide.cjs'),'--check'],{stdio:'inherit'});
 require('node:child_process').execFileSync(process.execPath,[path.resolve(__dirname,'build-season-guide.cjs'),'--check'],{stdio:'inherit'});
 require('node:child_process').execFileSync(process.execPath,[path.resolve(__dirname,'build-wardrobe-plan.cjs'),'--check'],{stdio:'inherit'});

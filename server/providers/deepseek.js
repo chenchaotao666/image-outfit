@@ -7,10 +7,7 @@ function payload(input,model){
  if(input.images.body)content.push({type:'image_url',image_url:{url:input.images.body,detail:'high'}});
  for(const crop of input.skinCrops||[]){content.push({type:'text',text:prompts.crop(crop)},{type:'image_url',image_url:{url:crop.image,detail:'high'}});}
  const repair=input.reportRepair?rendered.repair:'';
- const provider=input.geometry?.provider==='Face++';
- const instructions=provider?rendered.providerSystem:rendered.system;
- const detailPrompt=provider?rendered.providerDetails:rendered.details;
-   const messages=[{role:'system',content:instructions+(input.reportVersion===2?'\n'+detailPrompt:'')+repair},{role:'user',content}];
+ const messages=[{role:'system',content:rendered.system+(input.reportVersion===2?'\n'+rendered.details:'')+repair},{role:'user',content}];
  if(input.reportRepair&&input.repairText){messages.push({role:'assistant',content:input.repairText},{role:'user',content:rendered.repairUser});}
  return {model,messages,thinking:{type:'disabled'},response_format:{type:'json_object'},temperature:input.reportRepair?prompts.config.parameters.repairTemperature:prompts.config.parameters.temperature,max_tokens:input.reportVersion===2?prompts.config.parameters.v2MaxTokens:prompts.config.parameters.maxTokens,stream:false};
 }
@@ -32,7 +29,7 @@ async function analyzeOnce(input,config,signal,fetchImpl=fetch){
  require('./faceplusplus').applyDetection(parsed,input.geometry);
  const normalized=result(parsed,!!input.images.body);
  if(input.geometry?.status==='unavailable'&&['medium','high'].includes(normalized.face.confidence))normalized.face.confidence='low';
- if(input.reportVersion===2)normalized.details=require('../analysis/details').validate(parsed.details,{geometry:input.geometry,quality:normalized.quality,requireSkinConcerns:input.skinAnalysisVersion==='skin-concerns-1'});
+ if(input.reportVersion===2)normalized.details=require('../analysis/details').validate(parsed.details,{geometry:input.geometry,quality:normalized.quality,requirePhotoColor:true,requireSkinConcerns:input.skinAnalysisVersion==='skin-concerns-1'});
  return normalized;
  }catch(error){
   if(error.code==='INVALID_MODEL_OUTPUT'&&choice.message.content.length<=60000)Object.defineProperty(error,'repairText',{value:choice.message.content});

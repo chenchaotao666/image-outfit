@@ -2,8 +2,7 @@
   "version": "face-mock-1",
   "source": {
     "reportId": "faceplusplus-integration",
-    "createdAt": "2026-11-15T11:02:12.142Z",
-    "description": "复用项目已保存检测报告的geometry，保留检测值，排除照片、凭据、token与请求标识。"
+    "createdAt": "2026-11-15T11:02:12.142Z"
   },
   "faceAge": null,
   "geometry": {

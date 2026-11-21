@@ -1,4 +1,4 @@
-// Generated from config/styling/衣橱规划.
+// Generated from config/llm-prompt/衣橱规划.
 module.exports={
   "version": "2.0.0",
   "sourceIds": [
@@ -166,13 +166,11 @@ module.exports={
   "combinationAdvice": "上装可以比下装多一些，便于换洗和变化；先补齐纯色基础款，再增加图案和设计细节。一件外套尽量搭配两套内搭，鞋包优先选择能重复使用的颜色。已有够用的单品不必重复购买。",
   "unit": "规划单位：普通服装按件、鞋按双、套装按套。百分比表示计划中的单位占比，不是预算或现有衣橱统计。",
   "itemRules": {
-    "version": "1.0.0",
     "title": "衣橱单品规划",
     "english": "My style wardrobe items",
     "intro": "衣服不一定要多，关键是能组合成适合自己的穿搭。先整理已有单品，留下合身、常穿、容易搭配的款式，再按日常场合补齐缺口。",
     "emphasis": "从一件外套、两套内搭开始，配上合适的裤装和鞋履。让新添的每一件衣服，都能与现有衣橱产生新的组合。",
     "heading": "你的衣橱单品搭配示范如下",
-    "logic": "分类按 groups 顺序展示，关联衣橱规划的 category；建议数量沿用衣橱规划规则。每类图片按 enabled、group 和 gender 筛选，按 order 排序。编号表示展示顺序，不是购买优先级。图片为款式示范，不声称来自个人面部诊断。",
     "groups": [
       {
         "id": "coats",
@@ -213,7 +211,6 @@ module.exports={
     ]
   },
   "itemLibrary": {
-    "version": "1.0.0",
     "cover": {
       "src": "/packages/wardrobe-guide/assets/cover.jpg",
       "source": "小程序参考/推荐/衣橱规划.png",

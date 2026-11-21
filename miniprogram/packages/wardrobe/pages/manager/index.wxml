@@ -2,7 +2,7 @@
 <view wx:else class="closet-app screen-{{screen}} tab-{{tab}} {{!screen && tab === 'home' ? 'on-home' : ''}}">
   <view
     class="closet-nav {{(!screen && tab === 'closet') || screen === 'outfit-select' ? 'nav-dark' : ''}} {{!screen && (tab === 'home' || tab === 'mine') ? 'nav-clear' : ''}}"
-    style="padding-top:{{top}}px"
+    style="padding-top:{{top}}px;height:{{navHeight}}px"
   >
     <button wx:if="{{screen || tab !== 'home'}}" class="back-button" bindtap="back" aria-label="返回">
       <image src="{{asset}}back-{{!screen && (tab === 'closet' || tab === 'home') || screen === 'outfit-select' || screen === 'catalog' ? 'white' : 'dark'}}.png" />
@@ -11,7 +11,7 @@
   </view>
   <view
     class="nav-spacer"
-    style="height:{{top + 44}}px"
+    style="height:{{top + navHeight}}px"
     wx:if="{{screen || (tab !== 'home' && tab !== 'mine' && tab !== 'closet')}}"
   ></view>
   <include src="views/home.wxml" />

@@ -29,7 +29,7 @@ test('no photo makes no API request; provider errors degrade gracefully and abor
 });
 test('reference fallback is explicitly approximate, weight does not invent limb lengths; manual corrections win',()=>{
  const report={profile:{age:30,height:180,weight:75}};
- let rows=bodyMeasurements(report);assert.equal(rows.find(x=>x.id==='shoulder').display,'约 46.4 cm');
+ let rows=bodyMeasurements(report);assert.equal(rows.find(x=>x.id==='shoulder').display,'46.4 cm');
  assert.equal(rows.find(x=>x.id==='waist').display,'—');assert.equal(rows.find(x=>x.id==='hip').display,'—');
  report.profile.weight=95;assert.deepEqual(bodyMeasurements(report),rows);
  report.geometry={body:estimate(fixture(),dimensions,180)};

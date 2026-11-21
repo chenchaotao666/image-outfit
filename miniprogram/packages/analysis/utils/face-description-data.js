@@ -1,0 +1,17 @@
+// Generated from config/llm-prompt/形象DNA/脸型分析/脸型解读-展示规则.json
+module.exports={
+  "matchField": "label",
+  "descriptions": {
+    "瓜子脸": "上部较宽，下巴收窄，整体线条流畅。",
+    "椭圆脸": "脸部轮廓圆润，额头到下巴过渡自然。",
+    "圆脸": "面部线条圆润，轮廓柔和。",
+    "方脸": "下颌轮廓较明显，面部线条利落。",
+    "长脸": "面部纵向比例较长。",
+    "菱形脸": "颧部较宽，额头和下巴相对收窄。"
+  },
+  "fallback": {
+    "field": "observations",
+    "index": 0,
+    "maxLength": 45
+  }
+};

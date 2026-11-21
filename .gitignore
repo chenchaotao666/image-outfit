@@ -4,9 +4,6 @@
 __pycache__/
 node_modules/
 /server/data/
-project.private.config.json
-evaluation/
-current-wechat.png
 *.log
 .env
 .env.*

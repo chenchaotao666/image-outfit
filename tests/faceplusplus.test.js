@@ -18,6 +18,7 @@ test('two Face++ endpoints run sequentially once, credentials never enter result
 });
 test('LLM cannot replace Face++ detections and receives no local crop detection prompt',async()=>{
  const g=adapt(features,skin),raw=JSON.parse(JSON.stringify(require('./ai-fixture.cjs')));raw.details=sample().analysis.details;raw.face.label='错误脸型';raw.quality.usable=false;
+ raw.details.photoColor={lightness:null,chroma:null};
  const input={profile:{weight:140},preferences:{},images:{face},geometry:g,reportVersion:2,skinAnalysisVersion:'skin-concerns-1'};
  const p=payload(input,'deepseek-flash');assert.ok(p.messages[0].content.includes('禁止重新判断'));assert.ok(!p.messages[0].content.includes('geometry.skinRegions'));
  const a=await analyze(input,config,new AbortController().signal,async()=>({ok:true,json:async()=>({choices:[{finish_reason:'stop',message:{content:JSON.stringify(raw)}}]})}));

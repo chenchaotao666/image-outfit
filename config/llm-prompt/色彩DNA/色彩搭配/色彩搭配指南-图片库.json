@@ -1,0 +1,10 @@
+{
+  "images": [
+    {"id":"green-white","src":"/assets/report/look-spring.jpg","alt":"绿色上衣搭配白色长裤","tags":["white-color"],"gender":"男","occasion":"日常休闲","enabled":true,"source":"用户提供的界面参考，裁切记录见 miniprogram/assets/report/sources.json","rights":"reference_only"},
+    {"id":"print-white","src":"/assets/report/look-summer.jpg","alt":"印花衬衫搭配白色短裤","tags":["white-color"],"gender":"男","occasion":"日常休闲","enabled":true,"source":"用户提供的界面参考，裁切记录见 miniprogram/assets/report/sources.json","rights":"reference_only"},
+    {"id":"rust-black","src":"/assets/report/look-autumn.jpg","alt":"砖红色上衣搭配黑色长裤","tags":["dark-color"],"gender":"男","occasion":"日常休闲","enabled":true,"source":"用户提供的界面参考，裁切记录见 miniprogram/assets/report/sources.json","rights":"reference_only"},
+    {"id":"black-grey","src":"/assets/report/look-layer.jpg","alt":"黑色上衣搭配灰色格纹长裤","tags":["dark-color"],"gender":"男","occasion":"日常休闲","enabled":true,"source":"用户提供的界面参考，裁切记录见 miniprogram/assets/report/sources.json","rights":"reference_only"},
+    {"id":"taupe-layers","src":"/assets/report/occasion-relaxed.jpg","alt":"灰褐外套与米色裤装的层次搭配","tags":["tonal"],"gender":"男","occasion":"日常休闲","enabled":true,"source":"用户提供的界面参考，裁切记录见 miniprogram/assets/report/sources.json","rights":"reference_only"},
+    {"id":"brown-layers","src":"/assets/report/occasion-social.jpg","alt":"深棕上衣搭配浅棕长裤","tags":["tonal"],"gender":"男","occasion":"社交聚会","enabled":true,"source":"用户提供的界面参考，裁切记录见 miniprogram/assets/report/sources.json","rights":"reference_only"}
+  ]
+}

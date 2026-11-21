@@ -1,0 +1,69 @@
+{
+  "variables": {
+    "user.age": {
+      "path": "profile.age"
+    },
+    "user.heightCm": {
+      "path": "profile.height"
+    },
+    "user.weightKg": {
+      "path": "profile.weight",
+      "transform": "jinToKg"
+    },
+    "user.gender": {
+      "path": "profile.gender"
+    },
+    "face.geometry.classifications": {
+      "path": "geometry.classifications",
+      "provider": "Face++"
+    },
+    "face.geometry.metrics": {
+      "path": "geometry.metrics"
+    },
+    "skin.data": {
+      "path": "geometry.skin",
+      "provider": "Face++"
+    },
+    "photo.hasBody": {
+      "path": "hasBodyPhoto"
+    },
+    "body.data": {
+      "path": "geometry.body"
+    },
+    "face.geometry.groups": {
+      "path": "geometry.groups"
+    },
+    "photo.provider": {
+      "path": "provider"
+    },
+    "face.geometry.ratios": {
+      "path": "geometry.ratios"
+    },
+    "face.geometry.ratios.outline": {
+      "path": "geometry.ratios.outline",
+      "provider": "Face++"
+    },
+    "face.geometry.classifications.face": {
+      "path": "geometry.classifications.face",
+      "provider": "Face++"
+    },
+    "face.geometry.classifications.chin": {
+      "path": "geometry.classifications.chin",
+      "provider": "Face++"
+    },
+    "face.geometry.groups.outline": {
+      "path": "geometry.groups.outline",
+      "provider": "Face++",
+      "fields": ["status", "reason"]
+    },
+    "skin.color": {
+      "path": "geometry.skinColor"
+    },
+    "skin.detectedAge": {
+      "path": "geometry.skinAge"
+    },
+    "body.reference": {
+      "path": "geometry.bodyReference"
+    }
+  }
+}

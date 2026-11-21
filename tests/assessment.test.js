@@ -2,7 +2,7 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const model=require('../miniprogram/packages/analysis/utils/report-assessment'),{sample}=require('../miniprogram/packages/analysis/utils/report-v2'),{validate}=require('../server/analysis/details');
 function report(){const r=sample();r.mode='ai';r.analysis.quality={usable:true,faceVisible:true,bodyVisible:true};r.analysis.details.stylingScore={version:'styling-v1',items:model.DIMENSIONS.map(([id])=>({id,level:4,evidence:'照片中可见的具体依据',advice:'可执行建议'}))};return r;}
 test('shared score configuration controls calculation, labels and model instructions',()=>{
- const config=require('../config/styling/形象DNA/造型评分/造型评分-评分规则.json');
+ const config=require('../config/llm-prompt/形象DNA/造型评分/造型评分-评分规则.json');
  assert.deepEqual(model.DIMENSIONS,config.dimensions.map(d=>[d.id,d.name,d.weight]));
  const prompt=require('../server/styling/styling-prompts').render({}).details;
  assert.ok(prompt.includes(JSON.stringify(config.dimensions)));

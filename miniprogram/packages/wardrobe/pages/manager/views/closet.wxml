@@ -1,5 +1,5 @@
 <view wx:if="{{(!screen && tab === 'closet') || screen === 'catalog' || screen === 'outfit-select'}}" class="wardrobe-view">
-  <view class="wardrobe-hero" style="padding-top:{{screen ? 16 : top + 64}}px">
+  <view class="wardrobe-hero" style="min-height:calc({{top + navHeight}}px + {{screen === 'catalog' ? 16 : 124}}rpx)">
     <image class="wardrobe-hero-image" src="{{asset}}closet-header.jpg" mode="aspectFill" />
     <view class="wardrobe-toolbar" wx:if="{{screen !== 'catalog'}}">
       <button class="icon-box" bindtap="openSheet" data-sheet="season" aria-label="选择季节">
@@ -75,7 +75,7 @@
           
         </view>
       </view>
-      <view class="closet-empty" wx:if="{{!visibleItems.length}}">
+      <view class="closet-empty" wx:if="{{!visibleItems.length && (!state.items.length || screen || query || color || season !== '四季' || category === '全部')}}">
         <image class="empty-illustration" src="{{asset}}empty-wardrobe.jpg" mode="aspectFit" />
         <view>{{state.items.length ? '没有符合条件的服饰' : '暂无单品数据哦'}}</view>
         <text>{{state.items.length ? '试试其他分类或筛选条件' : '把喜欢的衣服收进来，让每天的穿搭更轻松'}}</text>

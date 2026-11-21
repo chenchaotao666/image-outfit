@@ -34,7 +34,11 @@ module.exports={
  showBangda(){
   this.history=[];const defaults={favorites:[],likes:[],outfits:[],requests:[],topics:[],comments:{l10:[{id:'office-comment',author:'温凉',text:'好~',date:'11-18 20:30 广东'}]},profile:{name:'温凉',handle:'HN774857',bio:'',gender:'男',age:'26',height:'165',weight:'50',style:'简约率性',city:'',avatar:A+'avatar-self.jpg',background:A+'profile-photo.jpg'},privacy:{outfits:true,favorites:true,followers:true,following:true,products:true}};
   const saved=documents.read('bangda')||{};this.db=Object.assign(defaults,saved);this.db.profile=Object.assign({handle:'HN774857',avatar:A+'avatar-self.jpg',background:A+'profile-photo.jpg',city:''},defaults.profile,saved.profile||{});this.db.privacy=Object.assign({outfits:true,favorites:true,followers:true,following:true,products:true},saved.privacy||{});
-  this.setData({top:wx.getWindowInfo().statusBarHeight,profile:this.db.profile,categoryGroups:catalog.categoryGroups,categoryGroup:'热门搜索',categorySections:catalog.categoryGroups[0].sections,colors:catalog.colors,occasions:catalog.occasions,styleTypes:catalog.types,filterStyles:catalog.styles,styleOptions:catalog.styleOptions,menuItems:catalog.menu,adviceTitles:catalog.adviceTitles,adviceTexts:catalog.adviceTexts,templates:Array.from({length:14},(_,i)=>i),mineType:'搭配',mineTypes:['搭配','专题','分类','单品'],trayCollapsed:false,role:0,plainExport:false,categoryQuery:'',archiveStyles:[],shapeOptions:['H型','A型','梯型','O型','倒三角型'],stageOptions:['职场','学生党','孕期'],form:{},sheet:'',rewardDismissed:false,requestRewardDismissed:false,myStatus:'发布',libraryFavorites:false});this.refresh();
+  const {statusBarHeight: top} = wx.getWindowInfo();
+  const capsule = wx.getMenuButtonBoundingClientRect?.();
+  const navHeight = capsule && capsule.height > 0 && capsule.top >= top
+    ? capsule.height + 2 * (capsule.top - top) : 44;
+  this.setData({top,navHeight,profile:this.db.profile,categoryGroups:catalog.categoryGroups,categoryGroup:'热门搜索',categorySections:catalog.categoryGroups[0].sections,colors:catalog.colors,occasions:catalog.occasions,styleTypes:catalog.types,filterStyles:catalog.styles,styleOptions:catalog.styleOptions,menuItems:catalog.menu,adviceTitles:catalog.adviceTitles,adviceTexts:catalog.adviceTexts,templates:Array.from({length:14},(_,i)=>i),mineType:'搭配',mineTypes:['搭配','专题','分类','单品'],trayCollapsed:false,role:0,plainExport:false,categoryQuery:'',archiveStyles:[],shapeOptions:['H型','A型','梯型','O型','倒三角型'],stageOptions:['职场','学生党','孕期'],form:{},sheet:'',rewardDismissed:false,requestRewardDismissed:false,myStatus:'发布',libraryFavorites:false});this.refresh();
  },
  refresh(){
   const d=this.data;const productMode=d.tab==='products'||d.selectMode;let source=productMode?catalog.products:catalog.looks;
@@ -137,5 +141,5 @@ module.exports={
  posterAddText(){this.setData({posterExtra:this.data.posterInput||'',posterInput:''});},
  buy(){wx.showModal({title:'参考商品',content:'此页面为参考商品展示，尚未接入真实购买，不会产生订单或扣款。',showCancel:false});},
  closeSheet(){this.setData({sheet:''});},
- back(){if(this.data.sheet){this.closeSheet();return;}if(this.data.selectMode){this.confirmProducts();return;}const prev=this.history.pop();if(prev)this.setData({...prev,sheet:''});else wx.navigateBack();if(this.data.view==='request')this.setData({requestOutfits:(this.data.request.examples||[]).concat(this.db.outfits.filter(o=>o.requestId===this.data.request.id))});this.refresh();}
+ back(){if(this.data.sheet){this.closeSheet();return;}if(this.data.selectMode){this.confirmProducts();return;}const prev=this.history.pop();if(prev)this.setData({...prev,sheet:''});else {wx.navigateBack({fail:()=>wx.switchTab({url:'/pages/home/index'})});return;}if(this.data.view==='request')this.setData({requestOutfits:(this.data.request.examples||[]).concat(this.db.outfits.filter(o=>o.requestId===this.data.request.id))});this.refresh();}
 };

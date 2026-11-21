@@ -28,3 +28,25 @@ test('documented photo observations retain their scope and do not certify person
  const r=sample();r.analysis.details.scaleEvidence={lightness:'肤色明度适中，头发较深。',chroma:'面部颜色偏柔和，光线可能影响观感。',temperature:'肤色偏黄'};
  const audit=color.apply(r.analysis,color.load());assert.equal(r.analysis.details.lightness,2);assert.equal(r.analysis.details.chroma,null);assert.equal(r.analysis.details.temperature,'unknown');assert.equal(audit.dimensions[0].status,'model_photo_observation');
 });
+test('photo observations survive validation and saved report rendering independently',()=>{
+ const {validate}=require('../server/analysis/details');
+ const skin='两颊颜色较浅。',otherRegion='发色较深。';
+ for(const level of [0,1,2,3,4,null]){
+  const r=sample();
+  r.analysis.details=validate({...r.analysis.details,photoColor:{
+   lightness:{level:0,skin,otherRegion},
+   chroma:level===null?null:{level,skin:'两颊色彩柔和。',otherRegion:'唇色也偏灰柔。'}
+  }});
+  r.colorAudit=color.apply(r.analysis,color.load());
+  const [lightness,chroma]=view(JSON.parse(JSON.stringify(r))).referenceColors;
+  assert.equal(lightness.selected,0);assert.match(lightness.detailText,/两颊颜色较浅/);
+  assert.equal(chroma.selected,level);assert.equal(chroma.label,level===null?'暂无数据':chroma.items[level]);
+  assert.equal(r.analysis.details.chroma,null);
+ }
+ const d=sample().analysis.details;
+ assert.throws(()=>validate(d,{requirePhotoColor:true}),{code:'INVALID_MODEL_OUTPUT'});
+ assert.throws(()=>validate({...d,photoColor:{lightness:null}},{requirePhotoColor:true}),{code:'INVALID_MODEL_OUTPUT'});
+ for(const entry of [{level:5,skin,otherRegion},{level:2,skin,otherRegion:''}]){
+  assert.throws(()=>validate({...d,photoColor:{chroma:entry}}),{code:'INVALID_MODEL_OUTPUT'});
+ }
+});

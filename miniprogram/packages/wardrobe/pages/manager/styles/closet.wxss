@@ -20,7 +20,7 @@
   gap: 15rpx;
   padding: 0 30rpx;
 }
-.icon-box {
+page .icon-box {
   background: #ececebe8;
   width: 74rpx;
   height: 74rpx;
@@ -32,7 +32,7 @@
   width: 36rpx;
   height: 36rpx;
 }
-.match-button {
+page .match-button {
   gap: 12rpx;
   font-size: 28rpx;
   padding: 0 20rpx;

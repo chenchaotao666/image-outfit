@@ -13,6 +13,7 @@ Page({
     screen: "",
     title: "",
     top: 44,
+    navHeight: 44,
     sheet: "",
     category: "全部",
     season: "四季",
@@ -61,9 +62,12 @@ Page({
     }
   },
   showWardrobe(options) {
-    const info = wx.getWindowInfo();
+    const { statusBarHeight } = wx.getWindowInfo();
+    const capsule = wx.getMenuButtonBoundingClientRect?.();
+    const gap = capsule ? capsule.top - statusBarHeight : 0;
     this.setData({
-      top: info.statusBarHeight + 8,
+      top: statusBarHeight,
+      navHeight: capsule && capsule.height > 0 && gap >= 0 ? capsule.height + gap * 2 : 44,
       season: store.read().settings.season,
     });
     this.refresh();

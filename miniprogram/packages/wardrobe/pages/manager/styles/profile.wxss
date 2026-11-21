@@ -86,7 +86,7 @@
   align-items: center;
   gap: 36rpx;
 }
-.profile-avatar {
+page .profile-avatar {
   position: relative;
   width: 150rpx;
   height: 150rpx;

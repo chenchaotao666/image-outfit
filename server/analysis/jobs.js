@@ -30,6 +30,7 @@ function createJobs(model,config,vision=(face,signal)=>detect(face,signal,config
    const analysis=applyDetection(await model(input,config,job.controller.signal),input.geometry);if(job.controller.signal.aborted)return;
    if(input.geometry.mock?.enabled)analysis.warnings.unshift('Face Mock模式：脸部与皮肤数据来自已保存报告，不是本次照片的新检测；穿搭建议仍由LLM生成。');
    const recommendationAudit=knowledge.apply(analysis,input.stylingKnowledge,input.stylingContext);
+   require('../styling/eyewear').apply(analysis,input.geometry);
    const judgmentAudit=judgment.apply(analysis,input.geometry,input.styleJudgment,input.preferences);
    const personalStyleAudit=personalStyle.apply(analysis,input.geometry,personalPolicy);
    const colorAudit=colorAssessment.apply(analysis,colorPolicy,input.geometry);

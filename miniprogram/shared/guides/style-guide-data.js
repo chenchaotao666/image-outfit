@@ -1,14 +1,11 @@
-// Generated from config/styling/风格DNA/风格解析.
+// Generated from config/llm-prompt/风格DNA/风格解析.
 module.exports={
   "rules": {
-    "version": "1.0.0",
-    "matching": "优先采用报告personalStyleAudit.index，其次analysis.details.styleIndex；仅接受0至5整数。未知时不默认某类。图库为编辑示范，非用户试穿或模型选图。",
     "styles": [
       {
         "index": 0,
         "label": "稳重绅士",
         "tagline": "结构清晰 · 克制有序",
-        "intro": "尝试合身衬衫、轻结构西装与直筒裤。",
         "principles": [
           {
             "title": "廓形建议",
@@ -64,7 +61,6 @@ module.exports={
         "index": 1,
         "label": "潮流前卫",
         "tagline": "对比鲜明 · 一处重点",
-        "intro": "用一件有设计细节的单品作为重点，其余保持协调。",
         "principles": [
           {
             "title": "廓形建议",
@@ -120,7 +116,6 @@ module.exports={
         "index": 2,
         "label": "儒雅精致",
         "tagline": "线条柔和 · 细节精致",
-        "intro": "尝试细针织、轻结构外套与小面积精细配饰。",
         "principles": [
           {
             "title": "廓形建议",
@@ -176,7 +171,6 @@ module.exports={
         "index": 3,
         "label": "阳光少年",
         "tagline": "轻盈简洁 · 清爽舒展",
-        "intro": "尝试清爽上衣、轻薄外套与简洁运动鞋。",
         "principles": [
           {
             "title": "廓形建议",
@@ -232,7 +226,6 @@ module.exports={
         "index": 4,
         "label": "欧美冷峻",
         "tagline": "利落剪裁 · 清晰对比",
-        "intro": "尝试利落夹克、直线领口与简洁深浅对比。",
         "principles": [
           {
             "title": "廓形建议",
@@ -288,7 +281,6 @@ module.exports={
         "index": 5,
         "label": "随性自然",
         "tagline": "自然面料 · 舒适层次",
-        "intro": "尝试自然面料衬衫、简洁外套与舒适直筒裤。",
         "principles": [
           {
             "title": "廓形建议",
@@ -343,7 +335,6 @@ module.exports={
     ]
   },
   "copy": {
-    "pageTitle": "风格解析",
     "eyebrow": "你的专属风格参考",
     "english": "Fashion & Dress & Style",
     "fashion": "FASHION",
@@ -361,7 +352,6 @@ module.exports={
     "actionLabel": "点击查看你的风格解析"
   },
   "library": {
-    "version": "1.0.0",
     "cover": {
       "src": "/packages/style-guide/assets/reference.png",
       "width": 620,
@@ -446,7 +436,6 @@ module.exports={
         "rights": "reference_only",
         "region": true
       }
-    ],
-    "description": "已有素材以region方式显示用户参考图中的服装区域，不修改原图。新增独立图片时填写src、gender、enabled、source、rights即可，省略region及区域尺寸；展示规则通过imageId引用图片。"
+    ]
   }
 };

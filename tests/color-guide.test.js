@@ -1,8 +1,8 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const {view}=require('../miniprogram/packages/analysis/utils/color-guide');
 test('result text and page headings are read verbatim from the Chinese copy configuration',()=>{
- const copy=require('../config/styling/色彩DNA/色彩类型分析/色彩类型分析-界面文案.json');
- const pageCopy=require('../config/styling/色彩DNA/色彩搭配/色彩搭配指南-界面文案.json');
+ const copy=require('../config/llm-prompt/色彩DNA/色彩类型分析/色彩类型分析-界面文案.json');
+ const pageCopy=require('../config/llm-prompt/色彩DNA/色彩搭配/色彩搭配指南-界面文案.json');
  for(const hue of [0,1,2,3]){
   const g=view({geometry:{provider:'Face++',raw:{skin:{skin_hue_ha:{skin_hue:hue}}}}});
   assert.equal(g.summary,copy.results[g.ruleId].summary);

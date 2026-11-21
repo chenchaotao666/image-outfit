@@ -1,6 +1,0 @@
-【皮肤照片观察】
-当前检测来源：{{photo.provider}}
-接口皮肤数据：{{skin.data}}
-局部区域可用性：{{skin.regions}}
-步骤：区分已有接口检测与照片可见外观；无接口结果时仅对可见区域作观察，检查灯光、遮挡和压缩影响。缺失区域不等于正常，也不能仅因年龄或性别推断皮肤问题。下列是本模块字段与判断要求。
-另返回details.skinObservations数组4项，id依次shine/texture/tone/lines，对应表面光泽/可见纹理/肤色均匀观感/可见细纹。各项结构{"id":"shine","status":"uncertain","evidence":"可见部位和外观或看不清的原因","advice":"拍摄复核建议"}。status仅visible或uncertain；visible表示该项目清晰可观察，不表示有问题。仅描述可见外观，不输出油性/干性肤质、皮肤年龄、健康分数、病名、毛孔或黑头计数，不把灯光反射直接解释为出油。

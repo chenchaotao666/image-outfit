@@ -1,6 +1,6 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 function load(){
- const root=path.resolve(__dirname,'../../config/styling');
+ const root=path.resolve(__dirname,'../../config/llm-prompt');
  const config=JSON.parse(fs.readFileSync(path.join(root,'风格DNA/个人风格/个人风格-推荐规则.json'),'utf8'));
  const refs=JSON.parse(fs.readFileSync(path.join(root,'判断依据-文献与理论.json'),'utf8'));
  const names=['稳重绅士','潮流前卫','儒雅精致','阳光少年','欧美冷峻','随性自然'];

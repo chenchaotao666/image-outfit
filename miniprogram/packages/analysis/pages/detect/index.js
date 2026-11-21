@@ -3,29 +3,46 @@ const v2 = require('../../utils/report-v2');
 const analysis = require('../../utils/analysis');
 const store = require('../../../../shared/report-store');
 Page({
-  data: { stage:'photo', notice:true, agreed:false, photo:'', bodyPhoto:'', profile:{gender:'男',age:'',height:'',weight:''}, error:'', progress:0, scanText:'面部轮廓与五官比例', scanSteps:['面部轮廓与五官比例','个人风格与身形结构','季节色彩与搭配建议','发型与场合穿搭'], busy:false },
+  data: { stage:'photo', notice:true, tutorial:false, agreed:false, photo:'', bodyPhoto:'', profile:{gender:'男',age:'',height:'',weight:''}, error:'', progress:0, scanText:'面部轮廓与五官比例', scanSteps:['面部轮廓与五官比例','个人风格与身形结构','季节色彩与搭配建议','发型与场合穿搭'], busy:false },
   onLoad(){this.setData({preferences:{},occasions:['日常休闲','商务通勤','社交聚会'],styles:['简洁耐看','精致优雅','个性鲜明'],maintenance:['轻松打理','愿意造型']});const p=api.pending();if(p){this.control={stopped:false};this.setData({notice:false,stage:'analyzing',real:true,scanText:'正在恢复分析任务…'});api.resume(p,s=>this.updateStage(s),this.control).then(r=>this.finish(r)).catch(e=>{if(!this.disposed)this.setData({stage:'photo',error:e.message});});}},
   preference(e){this.setData({['preferences.'+e.currentTarget.dataset.field]:e.currentTarget.dataset.value});},
-  acknowledge() { this.setData({notice:false,agreed:true}); },
-  choose() {
+  acknowledge() { this.setData({notice:false,tutorial:true,agreed:true}); },
+  finishTutorial() { this.setData({tutorial:false}); },
+  switchFaceCamera() { this.setData({faceCamera:this.data.faceCamera === 'back' ? 'front' : 'back'}); },
+  choose(event) {
     if (!this.data.agreed) return this.setData({notice:true});
     if (this.data.busy) return;
     this.setData({busy:true,error:''});
-    wx.chooseMedia({ count:1,mediaType:['image'],sourceType:['album','camera'],sizeType:['compressed'],camera:'front',
+    const source = event?.currentTarget?.dataset?.source;
+    wx.chooseMedia({ count:1,mediaType:['image'],sourceType:source ? [source] : ['album','camera'],sizeType:['compressed'],camera:this.data.faceCamera || 'front',
       success:res => { const file=res.tempFiles[0]; if(file.size>10*1024*1024){this.setData({error:'请选择小于10MB的照片'});return;} this.setData({photo:file.tempFilePath,stage:'confirm'}); },
       fail:err => { if(!/cancel/.test(err.errMsg||'')) this.setData({error:'无法读取照片，请检查微信相机/相册权限后重试。'}); },
       complete:() => this.setData({busy:false}) });
   },
-  confirmPhoto() { this.setData({stage:'profile',error:''});if(this.agePhoto!==this.data.photo){this.setData({faceAge:null,ageStatus:'idle',ageError:''});this.detectFaceAge();} },
-  detectFaceAge(){
-    if(this.data.ageStatus==='loading'||this.ageConsentOpen)return;
-    const photo=this.data.photo;if(!photo)return;
-    const run=async()=>{const token={};this.ageRequest=token;this.agePhoto=photo;this.setData({ageStatus:'loading',faceAge:null,ageError:''});
-      try{const result=await api.faceAge(photo);if(!this.disposed&&this.ageRequest===token&&this.data.photo===photo)this.setData({faceAge:result.age,ageStatus:'done'});}
-      catch(e){if(!this.disposed&&this.ageRequest===token&&this.data.photo===photo)this.setData({ageStatus:'failed',ageError:e.message});}
-    };
-    if(this.ageConsent)return run();
-    this.ageConsentOpen=true;wx.showModal({title:'面部年龄分析',content:'将这张正脸照发送至 Face++，估计照片中的面部呈现年龄。结果仅供参考，不会替代你填写的实际年龄。',confirmText:'同意检测',success:res=>{this.ageConsentOpen=false;if(res.confirm){this.ageConsent=true;run();}},fail:()=>{this.ageConsentOpen=false;}});
+  confirmPhoto() {
+    if (this.agePhoto !== this.data.photo) {
+      this.ageRequest = null;
+      this.agePhoto = this.data.photo;
+      this.setData({faceAge:null, ageStatus:'idle', ageError:''});
+    }
+    this.setData({stage:'profile', error:''});
+  },
+  async detectFaceAge() {
+    const photo = this.data.photo;
+    if (!photo || this.data.ageStatus === 'loading') return;
+    const request = {};
+    this.ageRequest = request;
+    this.setData({ageStatus:'loading', faceAge:null, ageError:''});
+    try {
+      const result = await api.faceAge(photo);
+      if (!this.disposed && this.ageRequest === request && this.data.photo === photo) {
+        this.setData({faceAge:result.age, ageStatus:'done'});
+      }
+    } catch (error) {
+      if (!this.disposed && this.ageRequest === request && this.data.photo === photo) {
+        this.setData({ageStatus:'failed', ageError:error.message});
+      }
+    }
   },
   gender(e) { this.setData({'profile.gender':e.currentTarget.dataset.value}); },
   input(e) { this.setData({['profile.'+e.currentTarget.dataset.field]:e.detail.value,error:''}); },

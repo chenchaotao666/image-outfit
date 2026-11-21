@@ -1,0 +1,9 @@
+{
+  "frames": {
+    "椭圆框": "oval.png",
+    "方框": "square.png",
+    "圆框": "round.png",
+    "半框": "half-rim.png",
+    "倒梯形框": "trapezoid.png"
+  }
+}

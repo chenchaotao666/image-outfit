@@ -1,12 +1,11 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-const FILE=path.resolve(__dirname,'../../config/styling/推荐规则-加载索引.json');
+const FILE=path.resolve(__dirname,'../../config/llm-prompt/推荐规则-加载索引.json');
 const fields=new Set(['face','brows','occasion','style','maintenance','hasBodyPhoto','temperature']);
 const text=v=>typeof v==='string'&&v.trim().length>0&&v.length<=500;
 const list=(v,n,fn=text)=>Array.isArray(v)&&v.length===n&&v.every(fn);
 const targets={
  'style.tips':v=>list(v,3),
  'body.recommendations':v=>list(v,3),
- 'details.glasses':v=>list(v,3,(x,i)=>x&&text(x.name)&&text(x.reason)&&x.tier===['推荐','可尝试','谨慎选择'][i]),
  'details.browRecommendation':v=>v&&text(v.name)&&text(v.reason)&&list(v.steps,3)
 };
 function validate(k){

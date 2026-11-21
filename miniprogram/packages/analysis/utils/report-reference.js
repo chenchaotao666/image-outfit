@@ -1,4 +1,7 @@
 const tpoCopy=require('./tpo-copy-data');
+const faceRules=require('./face-description-data');
+const eyewear=require('./eyewear-images');
+const {matchFrames,tiers}=require('./eyewear-match');
 // Reference-led layout. Observations, measurements and missing inputs stay distinct.
 const BODY_FIELDS=[['shoulder','肩宽'],['arm','上肢全长'],['upperArm','上臂长'],['forearm','前臂长'],['torso','躯干长'],['hand','手长'],['leg','腿长'],['calf','小腿长'],['waist','腰围'],['hip','臀围']];
 const ACQUISITION=[
@@ -135,13 +138,35 @@ function brief(text,max=66){
  for(const clause of clauses){if((result+clause).length>max)break;result+=(result?'，':'')+clause;}
  return result?result+'。':sentence.slice(0,max)+'…';
 }
+// Older reports may store these names in details.glasses.
+const legacyFrameNames = new Map([
+ ['椭圆形框','椭圆框'], ['轻盈椭圆框','椭圆框'], ['方形框','方框'],
+ ['圆形框','圆框'], ['半边框','半框'], ['半框镜架','半框'], ['倒梯形','倒梯形框']
+]);
 function reportCopy(report){
- const a=report.analysis,d=a.details,face=a.face.label;
- const faceText=({'瓜子脸':'上部较宽，下巴收窄，整体线条流畅。','椭圆脸':'脸部轮廓圆润，额头到下巴过渡自然。','圆脸':'面部线条圆润，轮廓柔和。','方脸':'下颌轮廓较明显，面部线条利落。','长脸':'面部纵向比例较长。','菱形脸':'颧部较宽，额头和下巴相对收窄。'})[face]||brief(a.face.observations?.[0],45);
+ const a=report.analysis,d=a.details;
+ const {matchField,descriptions,fallback}=faceRules;
+ const legacyTiers={'推荐':'最合适','可尝试':'一般','谨慎选择':'不推荐'};
+ const saved=(d.glasses||[]).filter(g=>typeof g?.name==='string').map(g=>{
+  const raw=g.name.trim().replace(/眼镜$/,'');
+  const name=legacyFrameNames.get(raw)||raw;
+  return {...g,name,tier:legacyTiers[g.tier]||g.tier};
+ }).filter(g=>Object.prototype.hasOwnProperty.call(eyewear.images,g.name));
+ const face=report.geometry?.provider==='Face++'?report.geometry.classifications?.face:a.face.label;
+ const matched=matchFrames(face,eyewear.matches,saved);
+ const complete=saved.length===5&&new Set(saved.map(g=>g.name)).size===5&&saved.every((g,i)=>g.tier===tiers[i]);
+ const glasses=(matched||(complete?saved:[])).map(g=>({...g,image:eyewear.images[g.name],
+  shape:eyewear.shapes[g.name],displayName:g.name+'眼镜'}));
+ const generalEyewear=!matched&&report.mode!=='demo';
+ const eyewearRows=['一般','不推荐'].map(tier=>({tier,frames:glasses.filter(frame=>frame.tier===tier)}));
+ const label=a.face[matchField];
+ const faceText=Object.prototype.hasOwnProperty.call(descriptions,label)
+  ?descriptions[label]
+  :brief(a.face[fallback.field]?.[fallback.index],fallback.maxLength);
  const skin=report.geometry?.skin?.items||d.skinConcerns?.items||[];
  const names={eyeBags:'眼袋',darkCircles:'黑眼圈',foreheadLines:'抬头纹',crowFeet:'鱼尾纹',glabellaLines:'眉间纹',nasolabialFolds:'法令纹',foreheadPores:'额头毛孔明显',leftCheekPores:'左颊毛孔明显',rightCheekPores:'右颊毛孔明显',chinPores:'下巴毛孔明显',blackheads:'黑头',acne:'痘痘',spots:'斑点'};
  const findings=skin.map(x=>{const name=names[x.id]||x.name;return {id:x.id,status:x.status,text:/Pores$/.test(x.id)?name.replace('明显',x.status==='present'?'明显':x.status==='not_observed'?'不明显':'待确认'):(x.status==='present'?'有':x.status==='not_observed'?'未见明显':'待确认：')+name};});
- return {face:faceText,summary:brief(a.summary),glasses:d.glasses.map(x=>({...x,reason:brief(x.reason,45)})),browName:d.browRecommendation?.name||'自然眉',browAdvice:brief(d.browRecommendation?.reason||d.browAdvice,55),skin:findings,skinTitle:'你的皮肤分析结果',style:brief(d.styleReason),color:brief(a.color.summary),season:'春夏以清爽透气为主，秋冬增加层次。按你的色彩建议选择单品，更容易搭配。',occasion:tpoCopy.intro+tpoCopy.categories.join('、')+tpoCopy.ending,tpo:tpoCopy,tpoCategories:tpoCopy.categories.join('、'),hair:brief(a.hair.summary),body:brief(a.body.recommendations?.[0]),paletteLabel:a.color.label};
+ return {face:faceText,summary:brief(a.summary),glasses,eyewearRows,generalEyewear,browFaceLines:faceText.replace(/。$/,'').split(/[，；]/).filter(Boolean),skin:findings,skinTitle:'你的皮肤分析结果',style:brief(d.styleReason),color:brief(a.color.summary),season:'春夏以清爽透气为主，秋冬增加层次。按你的色彩建议选择单品，更容易搭配。',occasion:tpoCopy.intro+tpoCopy.categories.join('、')+tpoCopy.ending,tpo:tpoCopy,tpoCategories:tpoCopy.categories.join('、'),hair:brief(a.hair.summary),body:brief(a.body.recommendations?.[0]),paletteLabel:a.color.label};
 }
 // Enum labels match the Face++ official skin analysis demo.
 function skinAdvanced(report){
@@ -178,8 +203,7 @@ function view(report,groups,wardrobe){
  for(const item of referenceColors)if(d.scaleEvidence&&d.scaleEvidence[item.key])item.text+=' 本次依据：'+d.scaleEvidence[item.key];
  const measuredBody=Object.fromEntries(Object.entries(report.manualMeasurements||{}).filter(([key,value])=>BODY_FIELDS.some(([id])=>id===key)&&typeof value==='number'&&Number.isFinite(value)&&value>0&&value<=300));
  const bodyRows=bodyMeasurements(report,measuredBody);
- const bodyPhoto=report.geometry?.body;
- const referenceBody={rows:bodyRows,filled:Object.keys(measuredBody).length,label:a.body.label,photoCount:bodyRows.filter(r=>r.source==='照片估算').length,note:bodyPhoto?.status==='available'?'照片估算与身高比例参考分项标注；均非尺量值。':bodyPhoto?.status==='unavailable'?bodyPhoto.reason:'按身高与常见成人比例估算，体重用于 BMI，非本人实测尺寸。'};
+ const referenceBody={rows:bodyRows,filled:Object.keys(measuredBody).length,label:a.body.label,photoCount:bodyRows.filter(r=>r.source==='照片估算').length};
  const measuredGroups=groups.filter(g=>g.status!=='demo'&&g.rows.length).length;
  const completion={count:measuredGroups,total:9,percent:Math.round(measuredGroups/9*100),example:report.mode==='demo',label:report.mode==='demo'?'示例报告':'面部项目覆盖率'};
 
@@ -198,7 +222,12 @@ function view(report,groups,wardrobe){
   const decision=report.colorAudit?.dimensions?.find(x=>x.id===item.key);
   item.text=decision?decision.meaning+' '+decision.explanation:colorMeaning[item.key]+' '+(d.scaleEvidence?.[item.key]?'本次记录：'+d.scaleEvidence[item.key]:'这份报告未记录本项具体判断依据，当前标签尚待复核。');
   item.advice=decision?.advice||colorAdvice[item.key];
-  if(decision){item.heading=decision.heading;if(decision.result===null||decision.result==='unknown'){item.selected=null;item.label='暂待判断';}}
+  if(decision){
+   item.heading=decision.heading;
+   const level=decision.photoLevel??decision.result;
+   item.selected=Number.isInteger(level)&&level>=0&&level<item.items.length?level:null;
+   item.label=item.selected===null?'暂无数据':item.items[item.selected];
+  }
   item.detailText=item.text;
   item.detailAdvice=item.advice;
   if(item.key==='lightness'){
@@ -211,6 +240,12 @@ function view(report,groups,wardrobe){
    item.text=item.selected===null?'这张照片还无法判断面部纯度。日常可以先用灰色、米白色搭配一件柔和彩色上装，简单好搭。':'按本次照片分析，你的面部纯度参考为「'+item.label+'」。'+suggestions[item.selected];
   }else item.text=item.selected===null?'暂时无法确定冷暖，先从中性色搭配开始。':('本次照片参考为「'+item.label+'」，可以作为试穿配色的起点。');
   item.advice='';
+  if(item.key!=='temperature'&&item.selected===null){
+   item.label='暂无数据';
+   item.text=decision&&Object.prototype.hasOwnProperty.call(decision,'photoLevel')
+    ?'本次分析未取得足够的正脸照片观察依据。可用自然光下清晰、无遮挡的正脸照重新分析。'
+    :'这份报告没有保存此项档位。请用正脸照重新生成报告。';
+  }
   if(item.key==='temperature'){
    const code=report.geometry?.provider==='Face++'?report.geometry.raw?.skin?.skin_hue_ha?.skin_hue:null;
    const available=Number.isInteger(code)&&code>=0&&code<=2;
@@ -237,7 +272,7 @@ function bodyMeasurements(report,manual={}){
   const reference=adult&&height>=100&&height<=250&&ratios[id]?Math.round(height*ratios[id]*10)/10:null;
   const value=manual[id]||photo?.value||reference;
   const source=manual[id]?'用户尺量':photo?'照片估算':reference?'身高比例参考':'待补充';
-  return {id,label,value:value||'',source,estimated:source==='照片估算'||source==='身高比例参考',display:value?(manual[id]?'':'约 ')+value.toFixed(1)+' cm':'—'};
+  return {id,label,value:value||'',source,estimated:source==='照片估算'||source==='身高比例参考',display:value?value.toFixed(1)+' cm':'—'};
  });
 }
 module.exports={faceGroups,view,BODY_FIELDS,skinAdvanced,bodyMeasurements};

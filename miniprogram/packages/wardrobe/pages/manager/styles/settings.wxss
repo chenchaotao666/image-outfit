@@ -221,7 +221,7 @@
   width: 25rpx;
   height: 25rpx;
 }
-.sheet-option {
+page .sheet-option {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -241,7 +241,7 @@
   text-align: center;
   padding: 20rpx;
 }
-.sheet-cancel {
+page .sheet-cancel {
   width: 100%;
   border-top: 6rpx solid #f7f7f7;
   padding-top: 24rpx;

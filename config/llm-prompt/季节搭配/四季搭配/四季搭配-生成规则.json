@@ -1,0 +1,37 @@
+{
+  "modules": {
+    "seasons": {
+      "name": "四季搭配",
+      "output": "details.outfits",
+      "instruction": "春夏秋冬各一套，包含上下装、鞋、外搭及配饰；考虑当地温度未知。 此模块尚无已核对专业规则；不得把模型候选建议说成专业理论、最佳答案或脸型必然搭配。",
+      "outputMode": "llm_guided"
+    }
+  },
+  "rules": [
+    {
+      "id": "season-work",
+      "module": "seasons",
+      "enabled": false,
+      "priority": 10,
+      "sourceIds": [
+        "editorial"
+      ],
+      "when": {
+        "all": [
+          {
+            "field": "occasion",
+            "op": "eq",
+            "value": "商务通勤"
+          }
+        ]
+      },
+      "reason": "四季以同一搭配结构替换厚薄与层次。",
+      "advice": [
+        "春秋用衬衫加轻外套，夏季减少层次，冬季增加针织中层；按实际温度增减。"
+      ],
+      "set": {},
+      "disabledReason": "未取得直接支持这条具体推荐的专业资料，暂不参与知识匹配。",
+      "evidence": []
+    }
+  ]
+}
